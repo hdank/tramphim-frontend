@@ -1,0 +1,50 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/Layout.astro";
+import Header from "../../components/Header/Header";
+import CategoryMovies from "../../components/CategoryMovies/LoaiPhim";
+import Footer from "../../components/Footer";
+import Seo from "../../seometas/SeoLoaiPhim.astro";
+import { getCategoryData, BASE_URL } from "../../utils/getCategoryData";
+
+const slug = Astro.params.slug;
+const initialPage = 1;
+const limit = 30;
+const data = await getCategoryData(slug, initialPage, limit);
+
+if (data.error) {
+  return new Response(data.error, {
+    status: 500,
+  });
+}
+
+const { categoryData, currentCategoryName } = data;
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <Seo slug={slug} currentCategoryName={currentCategoryName} />
+  </Fragment>
+
+  <Header client:load />
+
+  <main class="main-type-layout">
+    <div class="type-content-flex">
+      <section class="type-main-section">
+        <CategoryMovies
+          initialData={categoryData}
+          initialSlug={slug}
+          baseUrl={BASE_URL}
+          initialLimit={limit}
+          tittle={currentCategoryName}
+          client:load
+        />
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>

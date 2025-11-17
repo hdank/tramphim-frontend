@@ -1,0 +1,55 @@
+---
+export const prerender = false;
+export const revalidate = 1800; 
+import BaseLayout from "../../layouts/Layout.astro";
+import Header from "../../components/Header/Header";
+import SearchResultsWithFilter from "../../components/SearchMovies/SearchMovies";
+import TopMovies from "../../components/TopMovies/TopMovies";
+import Footer from "../../components/Footer";
+import SeoComponent from "../../seometas/SeoTimKiem.astro";
+
+import { searchMovies, getTopMovies } from "../../utils/getTimKiem";
+
+const keyword = Astro.url.searchParams.get("q") ?? "";
+
+const movies = await searchMovies(keyword);
+const topmovies = await getTopMovies();
+
+if (!topmovies) {
+  return new Response(
+    "Không thể lấy dữ liệu phim hàng đầu. Vui lòng thử lại sau.",
+    { status: 500 }
+  );
+}
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <SeoComponent keyword={keyword} />
+  </Fragment>
+
+  <main class="main-search-layout">
+    <div class="header-wrapper-search">
+      <Header client:load />
+    </div>
+
+    <div class="content-columns-flex">
+      <div class="search-results-column">
+        <SearchResultsWithFilter
+          initialSearchMovies={movies}
+          searchKeyword={keyword}
+          initialLimit={10}
+          tittle="Tìm kiếm"
+          client:load
+        />
+      </div>
+
+      <div class="top-movies-sidebar-column">
+        <TopMovies movies={topmovies} client:load />
+      </div>
+    </div>
+  </main>
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>

@@ -1,0 +1,53 @@
+<div
+  id="mobile-nav"
+  class="fixed bottom-4 right-2 flex-col gap-2 z-50 md:hidden hidden transition-opacity duration-300"
+>
+  <button
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    class="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shadow-md"
+    aria-label="Cuộn lên đầu trang"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      class="h-5 w-5"
+    >
+      <path fill="currentColor" d="M15 20H9v-8H4.16L12 4.16L19.84 12H15z"
+      ></path>
+    </svg>
+  </button>
+
+  <a
+    href="/"
+    class="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shadow-md"
+    aria-label="Trang chủ"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+        class="h-5 w-5"
+
+    >
+      <path
+        fill="currentColor"
+        d="M12.581 2.686a1 1 0 0 0-1.162 0l-9.5 6.786l1.162 1.627L12 4.73l8.919 6.37l1.162-1.627zm7 10l-7-5a1 1 0 0 0-1.162 0l-7 5a1 1 0 0 0-.42.814V20a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6.5a1 1 0 0 0-.418-.814"
+      ></path>
+    </svg>
+  </a>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const nav = document.getElementById("mobile-nav");
+      if (!nav) return;
+      window.addEventListener("scroll", function () {
+        const isScrolled = window.scrollY > 100;
+        nav.classList.toggle("hidden", !isScrolled);
+        nav.classList.toggle("flex", isScrolled);
+      });
+    });
+  </script>
+</div>

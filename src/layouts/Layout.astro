@@ -1,0 +1,46 @@
+---
+import "../styles/global.css";
+import MobileNav from "../components/MobileNav.astro";
+import ToastProvider from "../components/Toast/ToastProvider";
+import BottomBanner from "../components/Banner/BottomBanner.astro";
+
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#191B24" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v21.0"
+    ></script>
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Phim Vietsub HD RSS"
+      href="/rss.xml"
+    />
+
+    <slot name="head" />
+  </head>
+  <body class="page-body">
+    <ToastProvider client:load>
+      <slot />
+    </ToastProvider>
+
+    <MobileNav />
+
+    <div id="fb-root"></div>
+  </body>
+</html>

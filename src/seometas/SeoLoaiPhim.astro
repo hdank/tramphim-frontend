@@ -1,0 +1,100 @@
+---
+const { slug, currentCategoryName } = Astro.props;
+const capitalizeWords = (str) =>
+  str
+    .toLowerCase()
+    .split(" ")
+    .filter(word => word.trim() !== "")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+const categoryCap = capitalizeWords(currentCategoryName);
+
+const siteName = "MePhimTV";
+const currentUrl = Astro.url.href;
+const siteUrl = Astro.url.origin;
+
+const titleTag = `${categoryCap} Miễn Phí Cập Nhật Nhanh Nhất Mới Nhất Full HD Tại ${siteName}`;
+const seoDescription = `Tuyển Chọn ${categoryCap} Vietsub, Thuyết Minh Đầy Đủ, Xem Miễn Phí Chất Lượng HD Trên ${siteName}.`;
+
+const fullSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${currentUrl}#webpage`,
+      url: currentUrl,
+      name: titleTag,
+      isPartOf: { "@id": `${siteUrl}#website` },
+      description: seoDescription,
+      breadcrumb: { "@id": `${currentUrl}#breadcrumb` },
+      inLanguage: "vi",
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${currentUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Trang Chủ",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: currentCategoryName.charAt(0).toUpperCase() + currentCategoryName.slice(1),
+          item: currentUrl,
+        },
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}#website`,
+      url: siteUrl,
+      name: siteName,
+      description: `Xem Phim Vietsub Thuyết Minh HD Tại ${siteName}`,
+      inLanguage: "vi-VN",
+      publisher: { "@id": `${siteUrl}#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteUrl}/tim-kiem?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}#organization`,
+      name: siteName,
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/logo.png`,
+        contentUrl: `${siteUrl}/logo.png`,
+      },
+      image: { "@id": `${siteUrl}#organization` },
+    },
+  ],
+};
+---
+
+<title>{titleTag}</title>
+<meta name="description" content={seoDescription} />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href={currentUrl} />
+
+<meta property="og:title" content={titleTag} />
+<meta property="og:description" content={seoDescription} />
+<meta property="og:url" content={currentUrl} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="vi_VN" />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:image" content={`${siteUrl}/thumb_web.png`} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={titleTag} />
+<meta name="twitter:description" content={seoDescription} />
+<meta name="twitter:image" content={`${siteUrl}/thumb_web.png`} />
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<script type="application/ld+json" set:html={JSON.stringify(fullSchema)} />

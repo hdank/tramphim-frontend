@@ -1,0 +1,142 @@
+---
+const { slug } = Astro.params;
+
+console.log("🔄 RENDER MOVIE PAGE:", slug, new Date());
+
+export const prerender = false;
+export const revalidate = 5; 
+
+import BaseLayout from "../../layouts/Layout.astro";
+import Header from "../../components/Header/Header";
+import MovieDetail from "../../components/MovieDetail/MovieDetailStaticInfo";
+import Footer from "../../components/Footer";
+import MovieTabsAndCast from "../../components/MovieDetail/MovieTab";
+import { getMoviePageData, BASE_URL } from "../../utils/getMovieData";
+import TopMovies from "../../components/TopMovies/TopMovies";
+import FacebookComments from "../../components/FacebookComments";
+import SEO from "../../seometas/SeoPhim.astro";
+import Breadcrumb from "../../components/Breadcrumb";
+let movie = null;
+try {
+  const movieApiUrl = `${BASE_URL}/api/phim/${slug}/`;
+  const movieResponse = await fetch(movieApiUrl);
+
+  if (movieResponse.ok) {
+    const movieData = await movieResponse.json();
+    movie = movieData;
+  } else {
+  }
+} catch (error) {}
+
+if (!movie) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not Found",
+  });
+}
+
+let vietsub = [];
+let thuyetminh = [];
+let longtieng = [];
+let firstEpisode = null;
+let actors = [];
+let images = [];
+let topmovies = [];
+let thongbao = [];
+let phanLienQuan = [];
+try {
+  const moviePageData = await getMoviePageData(slug);
+  vietsub = moviePageData.vietsub || [];
+  thuyetminh = moviePageData.thuyetminh || [];
+  longtieng = moviePageData.longtieng || [];
+  firstEpisode = moviePageData.firstEpisode || null;
+  phanLienQuan = moviePageData.phanlienquan || null;
+  topmovies = moviePageData.topmovies;
+  actors = moviePageData.actors || [];
+  images = moviePageData.images || [];
+  thongbao = moviePageData.thongbao;
+} catch (error) {}
+const firstEpisodeSlug = firstEpisode?.tap_phim?.slug;
+const firstEpisodeType = firstEpisode?.ngon_ngu;
+const pageUrl = Astro.url.href;
+const slugCookieName = `fav_${slug}`;
+const initialIsFavorite = Astro.cookies.get(slugCookieName)?.value === "1";
+const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <SEO movie={movie} slug={slug} />
+  </Fragment>
+
+  <div
+    class="relative"
+    style={{
+      backgroundImage: `url(${movie.banner_url})`,
+      backgroundSize: "auto",
+      backgroundPosition: "center",
+    }}
+  >
+    <img
+      src={movie.banner_url}
+      alt="banner phim"
+      fetchpriority="high"
+      decoding="async"
+      class="hidden"
+    />
+
+    <div class="movie-banner-background"></div>
+    <div class="movie-content-base">
+      <div class="header-shadow">
+        <Header client:load />
+      </div>
+
+      <main class="main-content-layout">
+        <MovieDetail
+          movie={movie}
+          firstEpisodeSlug={firstEpisodeSlug}
+          firstEpisodeType={firstEpisodeType}
+          client:load
+          thongbao={thongbao}
+          initialIsFavorite={initialIsFavorite}
+        />
+      </main>
+    </div>
+  </div>
+
+  <div class="breadcrumb-padding">
+    <Breadcrumb movie={movie} />
+  </div>
+  <div class="page-wrapper-base">
+    <div class="main-column-flex">
+      <div class="detail-tabs-column">
+        <MovieTabsAndCast
+          vietsubEpisodes={vietsub}
+          thuyetMinhEpisodes={thuyetminh}
+          longtiengEpisodes={longtieng}
+          slug={slug}
+          currentType={null}
+          movieTitle={movie.ten_phim}
+          trailer_url={movie.trailer_url}
+          phanlienquan={phanLienQuan}
+          actors={actors}
+          images={{ images: images }}
+          initialSortAscending={sortEpisode}
+          client:load
+        />
+        <div class="comment-section-padding">
+          <h2 class="comment-section-title">Bình Luận Phim</h2>
+          <FacebookComments url={pageUrl} client:visible />
+        </div>
+      </div>
+
+      <div class="sidebar-column">
+        <TopMovies movies={topmovies} client:idle />
+      </div>
+    </div>
+  </div>
+
+  <footer class="px-0">
+    <Footer />
+  </footer>
+</BaseLayout>

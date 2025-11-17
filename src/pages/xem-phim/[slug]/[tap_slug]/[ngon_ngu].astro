@@ -1,0 +1,225 @@
+---
+export const prerender = false;
+import BaseLayout from "../../../../layouts/Layout.astro";
+import VideoPlayer from "../../../../components/VideoPlayer/VideoPlayer";
+import Episodes from "../../../../components/EposideList/EpisodeList";
+import Header from "../../../../components/Header/Header";
+import TopMovies from "../../../../components/TopMovies/TopMovies";
+import RecommendMovies from "../../../../components/Recommended_Movies/RecommendedMovies";
+import Footer from "../../../../components/Footer";
+import ServerButtons from "../../../../components/ServerButton/ServerButtons";
+import Seo from "../../../../seometas/SeoXemPhim.astro";
+import MovieDetail from "../../../../components/MovieDetail/MovieDetailPlayer";
+import FacebookComments from "../../../../components/FacebookComments";
+import { getDisplayEpisodeNumber } from "../../../../utils/movieUtils";
+import {
+  fetchVideoSource,
+  fetchJson,
+  BASE_URL,
+  fetchAllMovieData,
+  SKIP_AD_API_URL,
+  checkSkipAdStatus,
+} from "../../../../utils/getEpisodeData";
+
+interface MovieInfo {
+  ten_phim?: string;
+  ten_khac?: string;
+  poster_url?: string;
+  banner_url?: string;
+  name?: string;
+}
+
+interface VideoSourceResult {
+  videoData: {
+    link_video: string;
+    tap_phim: {
+      phim: MovieInfo;
+      skip_intro_time?: number;
+      so_tap: string;
+      slug: string;
+    };
+  } | null;
+  finalServer: string;
+  hasSv1Video: boolean;
+  hasSv2Video: boolean;
+  hasSv3Video: boolean;
+}
+
+interface AllMovieDataResult {
+  movie: MovieInfo & { mo_ta?: string };
+  vietsubData: any;
+  thuyetminhData: any;
+  longtiengData: any;
+  topData: { data: any[] };
+  deXuatData: { data: any[] };
+}
+
+const { slug, tap_slug, ngon_ngu = "vietsub" } = Astro.params;
+
+if (!slug || !tap_slug) {
+  return new Response("Không tìm thấy phim hoặc tập phim", { status: 404 });
+}
+
+const server = Astro.url.searchParams.get("server") || "sv2";
+
+let originalVideoUrl: string | null = null;
+let phimInfo: MovieInfo = {};
+let finalServer = server;
+let hasSv1Video = false;
+let hasSv2Video = false;
+let hasSv3Video = false;
+let skipIntroTime = 0;
+let episodeNumberFromApi = tap_slug;
+
+try {
+  const videoSourceResult = (await fetchVideoSource(
+    slug,
+    tap_slug,
+    ngon_ngu,
+    server
+  )) as VideoSourceResult;
+
+  if (!videoSourceResult.videoData) {
+    return new Response(
+      "Không thể tải dữ liệu phim. Video không khả dụng trên bất kỳ máy chủ nào.",
+      { status: 404 }
+    );
+  }
+
+  originalVideoUrl = videoSourceResult.videoData.link_video;
+  phimInfo = videoSourceResult.videoData.tap_phim?.phim ?? {};
+  finalServer = videoSourceResult.finalServer;
+  hasSv1Video = videoSourceResult.hasSv1Video;
+  hasSv2Video = videoSourceResult.hasSv2Video;
+  hasSv3Video = videoSourceResult.hasSv3Video;
+  skipIntroTime = videoSourceResult.videoData.tap_phim?.skip_intro_time || 0;
+  episodeNumberFromApi =
+    videoSourceResult.videoData.tap_phim?.so_tap || tap_slug;
+} catch (error) {
+  console.error("Lỗi khi fetch video source:", error);
+  return new Response("Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.", {
+    status: 500,
+  });
+}
+
+let finalVideoUrl: string | null = originalVideoUrl;
+const isSkipAdEnabled = await checkSkipAdStatus();
+if (isSkipAdEnabled && originalVideoUrl) {
+  const encodedUrl = encodeURIComponent(originalVideoUrl);
+  finalVideoUrl = `${SKIP_AD_API_URL}?url=${encodedUrl}`;
+}
+
+const {
+  movie,
+  vietsubData,
+  thuyetminhData,
+  longtiengData,
+  topData,
+  deXuatData,
+} = (await fetchAllMovieData(slug, tap_slug, ngon_ngu)) as AllMovieDataResult;
+
+const finalPhimInfo: MovieInfo = movie || phimInfo || {};
+const displayEpisode = episodeNumberFromApi || getDisplayEpisodeNumber(tap_slug);
+const tenPhim = finalPhimInfo.ten_phim;
+const tenKhac = finalPhimInfo.ten_khac;
+const poster = finalPhimInfo.poster_url;
+const banner = finalPhimInfo.banner_url;
+const mota = movie?.mo_ta;
+
+const autoSkipCookie = Astro.cookies.get("autoSkipIntro")?.value === "1";
+const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
+
+const pageUrl = Astro.url.href;
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <Seo
+      tenPhim={tenPhim as string}
+      tenKhac={tenKhac as string}
+      currentEpisode={displayEpisode}
+      currentType={ngon_ngu}
+      thumbnail={poster as string}
+      slug={slug}
+      mota={mota}
+    />
+  </Fragment>
+
+  <Header client:idle />
+
+  <main class="main-content-wrapper">
+    <div class="player-section-flex">
+      <section class="player-container-section">
+        <VideoPlayer
+          client:load
+          originalUrl={finalVideoUrl}
+          slug={slug}
+          ngonngu={ngon_ngu}
+          sotap={tap_slug}
+          banner={banner}
+          poster={poster}
+          ten_phim={tenPhim as string}
+          activeServer={finalServer}
+          vietsubEpisodes={vietsubData}
+          thuyetminhEpisodes={thuyetminhData}
+          skipTimes={{ intro: { end: skipIntroTime || 60 }, recap: null }}
+        />
+
+        <ServerButtons
+          client:idle
+          slug={slug}
+          so_tap={tap_slug}
+          ngon_ngu={ngon_ngu}
+          finalServer={finalServer}
+          hasSv1Video={hasSv1Video}
+          hasSv2Video={hasSv2Video}
+          hasSv3Video={hasSv3Video}
+          initialAutoSkip={autoSkipCookie}
+        />
+      </section>
+    </div>
+
+    <div class="movie-detail-divider">
+      <MovieDetail movie={movie} client:load />
+    </div>
+
+    <div class="episode-and-sidebar-flex">
+      <section class="episode-list-column">
+        <Episodes
+          client:idle
+          vietsub={vietsubData}
+          thuyetminh={thuyetminhData}
+          longtieng={longtiengData}
+          slug={slug}
+          movieTitle={tenPhim as string}
+          currentEpisodeSlug={tap_slug}
+          currentType={ngon_ngu}
+          initialSortAscending={sortEpisode}
+        />
+
+        <div class="comment-section-padding">
+          <h2 class="comment-section-title">Bình Luận Phim</h2>
+          <FacebookComments url={pageUrl} client:visible />
+        </div>
+
+        <div class="recommend-section-wrapper">
+          <RecommendMovies
+            movies={deXuatData?.data}
+            title="Đề Xuất Cho Bạn"
+            client:idle
+            loading={false}
+            error={null}
+          />
+        </div>
+      </section>
+
+      <aside class="sidebar-column">
+        <TopMovies movies={topData?.data ?? []} client:idle />
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>

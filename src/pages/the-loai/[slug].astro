@@ -1,0 +1,54 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/Layout.astro";
+import Header from "../../components/Header/Header";
+import CategoryMovies from "../../components/CategoryMovies/TheLoai";
+import Footer from "../../components/Footer";
+import { getAllTheLoaiPaths } from "../../utils/getStaticPathsTheLoai";
+import SeoTheLoai from "../../seometas/SeoTheLoai.astro";
+import { fetchTheLoaiData } from "../../utils/getTheLoaiData";
+
+const slug = Astro.params.slug;
+const initialPage = Number(Astro.url.searchParams.get("page") ?? "1");
+const limit = 30;
+
+const data = await fetchTheLoaiData(
+  slug,
+  initialPage,
+  limit,
+  Astro.url.searchParams
+);
+
+if (data.error) {
+  return new Response(data.error, {
+    status: 500,
+  });
+}
+
+const { categoryData, currentCategoryName, BASE_URL } = data;
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <SeoTheLoai slug={slug} currentCategoryName={currentCategoryName} />
+  </Fragment>
+  <Header client:load />
+  <main class="main-category-layout">
+    <div class="category-content-flex">
+      <section class="category-main-section">
+        <CategoryMovies
+          initialData={categoryData}
+          initialSlug={slug}
+          baseUrl={BASE_URL}
+          initialLimit={limit}
+          tittle={currentCategoryName}
+          client:load
+        />
+      </section>
+    </div>
+  </main>
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>

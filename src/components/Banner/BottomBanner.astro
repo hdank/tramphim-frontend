@@ -1,0 +1,81 @@
+---
+import bannerImageLeft from "../../assets/ad.svg";
+import bannerImageRight from "../../assets/ad.svg";
+export interface Props {
+  linkUrlLeft: string;
+  linkUrlRight: string;
+}
+const { linkUrlLeft, linkUrlRight } = Astro.props;
+---
+
+<div
+  id="floating-ad-wrapper"
+  class="fixed bottom-0 left-0 right-0 z-20 flex justify-center pointer-events-none"
+>
+  <div
+    class="relative w-full flex justify-center pointer-events-auto px-8 2xl:px-0"
+  >
+    <div
+      id="bottom-banner-container"
+      class="w-full flex flex-col lg:flex-row justify-center items-center"
+    >
+      <a
+        href={linkUrlLeft}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block relative group"
+      >
+        <img
+          src={bannerImageLeft.src}
+          width={bannerImageLeft.width}
+          height={bannerImageLeft.height}
+          alt="Quảng cáo trái"
+          class="block w-full h-auto max-h-[70px] object-cover"
+        />
+      </a>
+
+      <a
+        href={linkUrlRight}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block relative group"
+      >
+        <img
+          src={bannerImageRight.src}
+          width={bannerImageRight.width}
+          height={bannerImageRight.height}
+          alt="Quảng cáo phải"
+          class="block w-full h-auto max-h-[70px] object-cover"
+        />
+        <button
+          class="close-banner-btn absolute top-2 left-2 z-10 px-1 py-1 bg-black/70 text-white rounded text-xs hover:scale-105 transition-all duration-300"
+          aria-label="Đóng quảng cáo"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            ><path
+              fill="currentColor"
+              d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"
+            ></path></svg
+          >
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const adWrapper = document.getElementById("floating-ad-wrapper");
+  const closeButtons = document.querySelectorAll(".close-banner-btn");
+  if (adWrapper && closeButtons.length > 0) {
+    closeButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        adWrapper.remove();
+      });
+    });
+  }
+</script>

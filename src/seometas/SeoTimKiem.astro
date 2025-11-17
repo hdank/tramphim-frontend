@@ -1,0 +1,71 @@
+---
+const siteName = "MePhimTv";
+const { keyword } = Astro.props;
+const siteUrl = Astro.url.origin;
+
+const getSearchSeoData = (kw: string) => {
+  const currentUrl = Astro.url.href;
+  const titleTag = `${siteName} | Phim Vietsub HD | Phim Hay | Xem Phim Online | Phim Mới Full HD`;
+  const seoDescription = `${siteName} - Xem phim online Vietsub miễn phí. Thưởng thức phim chiếu rạp, phim lẻ, phim bộ đặc sắc, bom tấn mới nhất. Luôn cập nhật phim nhanh chóng, bao gồm phim bộ Trung Quốc và Hàn Quốc.`;
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Trang chủ",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: `Tìm kiếm: ${kw}`,
+        item: currentUrl,
+      },
+    ],
+  };
+
+  return {
+    title: titleTag,
+    description: seoDescription,
+    url: currentUrl,
+    ogImage: `${siteUrl}/thumb_web.png`,
+    breadcrumbSchema,
+  };
+};
+
+const seoData = getSearchSeoData(keyword);
+const siteLocale = "vi_VN";
+---
+
+
+<title>{seoData.title}</title>
+<meta name="description" content={seoData.description} />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href={seoData.url} />
+
+<meta property="og:title" content={seoData.title} />
+<meta property="og:description" content={seoData.description} />
+<meta property="og:url" content={seoData.url} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content={siteLocale} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:image" content={seoData.ogImage} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={seoData.title} />
+<meta name="twitter:description" content={seoData.description} />
+<meta name="twitter:image" content={seoData.ogImage} />
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+{
+  seoData.breadcrumbSchema && (
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(seoData.breadcrumbSchema)}
+    />
+  )
+}

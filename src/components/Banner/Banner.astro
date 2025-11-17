@@ -1,0 +1,70 @@
+---
+import bannerImageLeft from "../../assets/ad.svg";
+import bannerImageRight from "../../assets/ad.svg";
+export interface Props {
+  linkUrlLeft: string;
+  linkUrlRight: string;
+}
+const { linkUrlLeft, linkUrlRight } = Astro.props;
+---
+
+<div class="banner-wrapper relative w-full max-w-screen-xl mx-auto py-8">
+  <button
+    class="banner-close-btn absolute top-10 right-2 z-10 p-1 bg-black/70 text-white rounded text-xs hover:scale-105 transition-transform duration-300"
+    aria-label="Đóng quảng cáo"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      ><path
+        fill="currentColor"
+        d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"
+      ></path></svg
+    >
+  </button>
+
+  <div class="w-full flex flex-col lg:flex-row justify-center items-center">
+    <a
+      href={linkUrlLeft}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="block w-full lg:w-1/2"
+    >
+      <img
+        src={bannerImageLeft.src}
+        width={bannerImageLeft.width}
+        height={bannerImageLeft.height}
+        alt="Quảng cáo trái"
+        class="block w-full h-auto max-h-[70px] object-cover"
+      />
+    </a>
+    <a
+      href={linkUrlRight}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="block w-full lg:w-1/2"
+    >
+      <img
+        src={bannerImageRight.src}
+        width={bannerImageRight.width}
+        height={bannerImageRight.height}
+        alt="Quảng cáo phải"
+        class="block w-full h-auto max-h-[70px] object-cover"
+      />
+    </a>
+  </div>
+</div>
+
+<script>
+  const allBanners = document.querySelectorAll(".banner-wrapper");
+  allBanners.forEach((banner) => {
+    const closeBtn = banner.querySelector(".banner-close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        banner.remove();
+      });
+    }
+  });
+</script>

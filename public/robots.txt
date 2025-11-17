@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Allow: /
+
+Sitemap: https://hhkungfu.at1/sitemap.xml

@@ -1,0 +1,89 @@
+---
+export const prerender = false;
+export const revalidate = 1800; 
+
+import BaseLayout from "../layouts/Layout.astro";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer";
+import MovieLichChieu from "../components/LichChieu/LichChieu";
+import Seo from "../seometas/SeoLichChieu.astro";
+import { getLichChieuPageData } from "../utils/getLichChieuData";
+
+const data = await getLichChieuPageData();
+
+const {
+  movies_thu2,
+  movies_thu3,
+  movies_thu4,
+  movies_thu5,
+  movies_thu6,
+  movies_thu7,
+  movies_cn,
+} = data;
+const loading = false;
+const error = null;
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <Seo />
+  </Fragment>
+
+  <Header client:load />
+  <div class="lich-chieu-main-container">
+    <div class="lich-chieu-content-wrapper">
+      <main id="main-content ">
+        <div class="lich-chieu-card-gap">
+          <section>
+            <MovieLichChieu
+              movies={movies_thu2}
+              title="Thứ Hai"
+              loading={loading}
+              error={error}
+            />
+            <MovieLichChieu
+              movies={movies_thu3}
+              title="Thứ Ba"
+              loading={loading}
+              error={error}
+            />
+            <MovieLichChieu
+              movies={movies_thu4}
+              title="Thứ Tư"
+              loading={loading}
+              error={error}
+            />
+            <MovieLichChieu
+              movies={movies_thu5}
+              title="Thứ Năm"
+              loading={loading}
+              error={error}
+            />
+            <MovieLichChieu
+              movies={movies_thu6}
+              title="Thứ Sáu"
+              loading={loading}
+              error={error}
+            />
+            <MovieLichChieu
+              movies={movies_thu7}
+              title="Thứ Bảy"
+              loading={loading}
+              error={error}
+            />
+            <MovieLichChieu
+              movies={movies_cn}
+              title="Chủ Nhật"
+              loading={loading}
+              error={error}
+            />
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/Layout.astro";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer";
+import AllToPics from "../../components/ToPics/AllToPics"; 
+import { fetchTopics} from "../../utils/getTopics"; 
+const themesDataForReact = await fetchTopics();
+
+---
+
+<BaseLayout>
+<Fragment slot="head"></Fragment>
+<div class="min-h-screen flex flex-col">
+  <Header client:load />
+  <main class="flex-1 w-full max-w-screen-xl container mx-auto  py-2 lg:py-8">
+    <section class="w-full">
+      <AllToPics
+        themesData={themesDataForReact}
+        client:load
+      />
+    </section>
+  </main>
+
+  <footer>
+    <Footer />
+  </footer>
+</div>
+</BaseLayout>

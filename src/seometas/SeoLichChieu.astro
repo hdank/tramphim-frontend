@@ -1,0 +1,85 @@
+---
+const origin = Astro.url.origin;   
+const canonicalUrl = Astro.url.href; 
+
+const siteName = "HH3D";
+const title = "Lịch Chiếu Phim Hoạt Hình Trung Quốc 3D | HH3D";
+const description =
+  "Danh sách phim hoạt hình 3D được chiếu mỗi ngày vào tất cả các tuần, cập nhật lịch chiếu HH3D để không bỏ lỡ tập nào.";
+
+const ogImage = `${origin}/logo.png`;
+const currentCategoryName = "Lịch Chiếu";
+
+const fullSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { "@id": `${origin}#website` },
+      breadcrumb: { "@id": `${canonicalUrl}#breadcrumb` },
+      inLanguage: "vi-VN",
+    },
+
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Trang chủ", item: origin },
+        { "@type": "ListItem", position: 2, name: currentCategoryName, item: canonicalUrl },
+      ],
+    },
+
+    {
+      "@type": "WebSite",
+      "@id": `${origin}#website`,
+      url: origin,
+      name: siteName,
+      description: `Xem Phim Vietsub Thuyết Minh HD tại ${siteName}`,
+      inLanguage: "vi-VN",
+      publisher: { "@id": `${origin}#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${origin}/tim-kiem?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+
+    {
+      "@type": "Organization",
+      "@id": `${origin}#organization`,
+      name: siteName,
+      url: origin,
+      logo: {
+        "@type": "ImageObject",
+        url: `${origin}/logo.png`,
+        contentUrl: `${origin}/logo.png`,
+      },
+    },
+  ],
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow" />
+
+<link rel="canonical" href={canonicalUrl} />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:site_name" content={siteNTame} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="vi_VN" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(fullSchema)} />

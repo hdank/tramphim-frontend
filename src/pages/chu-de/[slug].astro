@@ -1,0 +1,53 @@
+---
+export const prerender = false;
+export const revalidate = 1800;
+
+import BaseLayout from "../../layouts/Layout.astro";
+import Header from "../../components/Header/Header";
+import CategoryMovies from "../../components/CategoryMovies/ChuDe";
+import Footer from "../../components/Footer";
+import Seo from "../../seometas/SeoLoaiPhim.astro";
+import { getCategoryData, BASE_URL } from "../../utils/getChuDeData";
+
+const slug = Astro.params.slug;
+const initialPage = 1;
+const limit = 30;
+
+const data = await getCategoryData(slug, initialPage, limit);
+
+if (data.error) {
+  return new Response("Lỗi server", { status: 500 });
+}
+
+const { categoryData, currentCategoryName } = data;
+
+if (!categoryData?.data || categoryData.data.length === 0) {
+  return Astro.redirect('/404');
+}
+---
+<BaseLayout>
+  <Fragment slot="head">
+    <Seo slug={slug} currentCategoryName={currentCategoryName} />
+  </Fragment>
+
+  <Header client:load />
+
+  <main class="main-type-layout">
+    <div class="type-content-flex">
+      <section class="type-main-section">
+        <CategoryMovies
+          initialData={categoryData}
+          initialSlug={slug}
+          baseUrl={BASE_URL}
+          initialLimit={limit}
+          tittle={currentCategoryName}
+          client:load
+        />
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>
