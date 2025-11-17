@@ -77,7 +77,7 @@ ${sitemapFiles.map(file => ` <sitemap>
  * Lấy danh sách thể loại từ API
  */
 async function fetchTheLoaiList() {
- const apiUrl = "https://api.motchillx.site/api/theloai/";
+ const apiUrl = `${apiBaseUrl}/api/theloai/`;
  console.log(`\n📥 Đang lấy danh sách thể loại từ API...`);
  
  try {

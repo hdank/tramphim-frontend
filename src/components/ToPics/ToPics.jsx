@@ -19,6 +19,9 @@ const defaultColors = [
 ];
 
 const ThemeSection = ({ themesData }) => {
+  if (!Array.isArray(themesData)) {
+    themesData = [];
+  }
   const fetchedThemes = themesData.map((theme, index) => ({
     ...theme,
     color: defaultColors[index % defaultColors.length]
