@@ -1,7 +1,7 @@
 /* empty css                                     */
 import { e as createComponent, f as createAstro, r as renderTemplate, u as unescapeHTML, h as addAttribute, l as renderComponent, n as Fragment, m as maybeRenderHead } from '../../chunks/astro/server_BuMcwEkM.mjs';
 import 'kleur/colors';
-import { $ as $$Layout, H as Header, F as Footer } from '../../chunks/index_eDR0il5k.mjs';
+import { $ as $$Layout, H as Header, F as Footer } from '../../chunks/index_BCmV18BO.mjs';
 import { jsxs, jsx } from 'react/jsx-runtime';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -1044,7 +1044,7 @@ const $$SeoPhim = createComponent(($$result, $$props, $$slots) => {
   Astro2.self = $$SeoPhim;
   const { movie, slug } = Astro2.props;
   const SEO = {
-    siteName: "MePhimTV",
+    siteName: "Tr\u1EA1m Phim",
     siteUrl: Astro2.url.origin,
     canonical: Astro2.url.href,
     name: capitalizeWords(movie.ten_phim || ""),

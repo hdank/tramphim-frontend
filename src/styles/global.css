@@ -741,7 +741,11 @@
     @apply flex flex-wrap items-center gap-4 lg:gap-16;
   }
   .footer-logo-img {
-    @apply h-12;
+    /* reduced from 2x — more balanced (approx 1.5x original) */
+  @apply h-16 sm:h-20 md:h-24;
+    max-width: 420px; /* reduce max width proportionally */
+    width: auto;
+    height: auto;
   }
 
   .footer-nav-list {

@@ -20,7 +20,7 @@ const Footer = () => {
             {/* Logo */}
             <img
               src={typeof logo === "string" ? logo : logo.src}
-              className="h-12"
+              className="footer-logo-img"
               loading="lazy"
               alt="Trạm Phim - Xem phim Vietsub HD"
             />
@@ -46,12 +46,12 @@ const Footer = () => {
             <li className="text-sm">
               Liên hệ:{" "}
               <a
-                href="https://t.me/meomeochill"
+                href="https://www.facebook.com/profile.php?id=61581940541481"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-white transition-colors hover:text-sky-400"
               >
-                @meomeochill
+                TramPhim
               </a>
             </li>
           </ul>
@@ -61,7 +61,7 @@ const Footer = () => {
         <div className="border-t border-gray-700 pt-4">
           <address className="text-sm not-italic">
             {/* Đã sửa tên trang web theo yêu cầu của bạn ở bước trước */}
-            <p>Copyright © {year} HoatHinh3D.</p>
+            <p>Copyright © {year} Trạm Phim.</p>
           </address>
         </div>
       </div>

@@ -1,7 +1,7 @@
 /* empty css                                     */
 import { e as createComponent, f as createAstro, r as renderTemplate, u as unescapeHTML, h as addAttribute, l as renderComponent, n as Fragment, m as maybeRenderHead } from '../../chunks/astro/server_BuMcwEkM.mjs';
 import 'kleur/colors';
-import { $ as $$Layout, H as Header, F as Footer } from '../../chunks/index_eDR0il5k.mjs';
+import { $ as $$Layout, H as Header, F as Footer } from '../../chunks/index_BCmV18BO.mjs';
 import { jsxs, jsx } from 'react/jsx-runtime';
 import { useState, useEffect, useCallback } from 'react';
 import { r as rutGonTinhTrangNgonNgu, a as rutGonTinhTrangPhim } from '../../chunks/movieUtils_BzNI1rrt.mjs';
@@ -693,7 +693,7 @@ const $$Astro$1 = createAstro();
 const $$SeoTheLoai = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$SeoTheLoai;
-  const siteName = "MePhimTV";
+  const siteName = "Tr\u1EA1m Phim";
   const { slug, currentCategoryName } = Astro2.props;
   const siteUrl = Astro2.url.origin;
   const currentUrl = Astro2.url.href;

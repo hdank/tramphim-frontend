@@ -1,7 +1,7 @@
 /* empty css                                  */
 import { e as createComponent, l as renderComponent, r as renderTemplate, n as Fragment, m as maybeRenderHead } from '../chunks/astro/server_BuMcwEkM.mjs';
 import 'kleur/colors';
-import { $ as $$Layout, H as Header, F as Footer } from '../chunks/index_eDR0il5k.mjs';
+import { $ as $$Layout, H as Header, F as Footer } from '../chunks/index_BCmV18BO.mjs';
 import { jsx, jsxs } from 'react/jsx-runtime';
 export { renderers } from '../renderers.mjs';
 
@@ -16,6 +16,9 @@ const defaultColors = [
   "from-[#574E7F] to-[#736399]"
 ];
 const AllToPics = ({ themesData }) => {
+  if (!Array.isArray(themesData)) {
+    themesData = [];
+  }
   const fetchedThemes = themesData?.map((theme, index) => ({
     ...theme,
     color: defaultColors[index % defaultColors.length]

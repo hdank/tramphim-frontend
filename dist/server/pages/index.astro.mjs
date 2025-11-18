@@ -1,7 +1,7 @@
 /* empty css                                  */
 import { e as createComponent, f as createAstro, l as renderComponent, n as Fragment$1, r as renderTemplate, u as unescapeHTML, h as addAttribute, o as renderScript, m as maybeRenderHead } from '../chunks/astro/server_BuMcwEkM.mjs';
 import 'kleur/colors';
-import { $ as $$Layout, H as Header, F as Footer } from '../chunks/index_eDR0il5k.mjs';
+import { $ as $$Layout, H as Header, F as Footer } from '../chunks/index_BCmV18BO.mjs';
 import { jsxs, jsx, Fragment } from 'react/jsx-runtime';
 import { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -711,8 +711,8 @@ const $$SeoHome = createComponent(($$result, $$props, $$slots) => {
   const siteUrl = Astro2.url.origin;
   const SEO = {
     siteName: "HH3D",
-    pageTitle: "MephimTV - Phim M\u1EDBi, Phim Hay Vietsub Thuy\u1EBFt Minh",
-    description: "MephimTV mang \u0111\u1EBFn phim m\u1EDBi, phim hay Vietsub v\xE0 Thuy\u1EBFt minh ch\u1EA5t l\u01B0\u1EE3ng cao. C\u1EADp nh\u1EADt phim l\u1EBB 2025, phim chi\u1EBFu r\u1EA1p hot c\xF9ng tuy\u1EC3n t\u1EADp phim b\u1ED9 Trung Qu\u1ED1c v\xE0 H\xE0n Qu\u1ED1c h\u1EA5p d\u1EABn nh\u1EA5t.",
+    pageTitle: "Tr\u1EA1m Phim - Phim M\u1EDBi, Phim Hay Vietsub Thuy\u1EBFt Minh",
+    description: "Tr\u1EA1m Phim mang \u0111\u1EBFn phim m\u1EDBi, phim hay Vietsub v\xE0 Thuy\u1EBFt minh ch\u1EA5t l\u01B0\u1EE3ng cao. C\u1EADp nh\u1EADt phim l\u1EBB 2025, phim chi\u1EBFu r\u1EA1p hot c\xF9ng tuy\u1EC3n t\u1EADp phim b\u1ED9 Trung Qu\u1ED1c v\xE0 H\xE0n Qu\u1ED1c h\u1EA5p d\u1EABn nh\u1EA5t.",
     logoUrl: "/logo.png",
     ogImage: "/thumb_web.png"};
   const {
@@ -795,6 +795,9 @@ const defaultColors = [
   "from-[#574E7F] to-[#736399]"
 ];
 const ThemeSection = ({ themesData }) => {
+  if (!Array.isArray(themesData)) {
+    themesData = [];
+  }
   const fetchedThemes = themesData.map((theme, index) => ({
     ...theme,
     color: defaultColors[index % defaultColors.length]
@@ -894,7 +897,7 @@ const $$Index = createComponent(async ($$result, $$props, $$slots) => {
   const loading = false;
   const error = null;
   return renderTemplate`${renderComponent($$result, "BaseLayout", $$Layout, {}, { "default": async ($$result2) => renderTemplate`  ${maybeRenderHead()}<div id="splash-screen"></div> ${renderComponent($$result2, "Header", Header, { "client:load": true, "client:component-hydration": "load", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/Header/Header", "client:component-export": "default" })} <div class="main-container"> <h1 class="sr-only">
-Motchill - Phim Mới, Phim Hay Vietsub | Xem Online Full HD 4K
+Trạm Phim - Phim hay tại Trạm
 </h1> <div class="main-content-wrapper"> <main id="main-content"> ${renderComponent($$result2, "Hero", MovieCard$2, { "client:load": true, "movies": moviehots, "loading": loading, "client:component-hydration": "load", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/Hero/Hero", "client:component-export": "default" })} ${renderComponent($$result2, "ChuDe", ThemeSection, { "client:idle": true, "themesData": themes, "client:component-hydration": "idle", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/ToPics/ToPics.jsx", "client:component-export": "default" })} <div class="card-column-gap"> <section> ${renderComponent($$result2, "MovieCardTop", MovieCard, { "client:idle": true, "movies": moviehots, "title": "TOP 10 H\xF4m Nay", "loading": loading, "error": error, "client:component-hydration": "idle", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/MovieCardHome/CardColumnTop.jsx", "client:component-export": "default" })} </section> <section> ${renderComponent($$result2, "MovieCardColumn", MovieCard$1, { "client:idle": true, "title": "Phim C\xF3 T\u1EADp M\u1EDBi", "movies": movieupdates, "loading": loading, "error": error, "client:component-hydration": "idle", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/MovieCardHome/CardColumn.jsx", "client:component-export": "default" })} </section> <section class="fade-in-on-visible"> ${renderComponent($$result2, "MovieCardColumn", MovieCard$1, { "client:idle": true, "title": "Phim Chi\u1EBFu R\u1EA1p Hot Nh\u1EA5t 2025", "movies": moviechieuraps, "loading": loading, "error": error, "client:component-hydration": "idle", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/MovieCardHome/CardColumn.jsx", "client:component-export": "default" })} </section> <section class="fade-in-on-visible"> ${renderComponent($$result2, "MovieCardColumn", MovieCard$1, { "client:visible": true, "title": "Phim L\u1EBB", "movies": moviephimles, "loading": loading, "error": error, "client:component-hydration": "visible", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/MovieCardHome/CardColumn.jsx", "client:component-export": "default" })} </section> <section class="fade-in-on-visible"> ${renderComponent($$result2, "MovieCardColumn", MovieCard$1, { "client:visible": true, "title": "Phim B\u1ED9", "movies": moviephimbos, "loading": loading, "error": error, "client:component-hydration": "visible", "client:component-path": "/home/vohaidang/Desktop/tramphim-v2/ui/src/components/MovieCardHome/CardColumn.jsx", "client:component-export": "default" })} </section> <!-- <section class="fade-in-on-visible">
             <MovieCardCategory
               client:visible

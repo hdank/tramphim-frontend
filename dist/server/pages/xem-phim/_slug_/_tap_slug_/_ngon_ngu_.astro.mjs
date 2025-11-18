@@ -1,7 +1,7 @@
 /* empty css                                           */
 import { e as createComponent, f as createAstro, r as renderTemplate, u as unescapeHTML, h as addAttribute, l as renderComponent, n as Fragment$1, m as maybeRenderHead } from '../../../../chunks/astro/server_BuMcwEkM.mjs';
 import 'kleur/colors';
-import { $ as $$Layout, H as Header, F as Footer } from '../../../../chunks/index_eDR0il5k.mjs';
+import { $ as $$Layout, H as Header, F as Footer } from '../../../../chunks/index_BCmV18BO.mjs';
 import { jsxs, jsx, Fragment } from 'react/jsx-runtime';
 import { useRef, useState, useEffect, useCallback } from 'react';
 import Artplayer from 'artplayer';
@@ -1079,7 +1079,7 @@ const $$SeoXemPhim = createComponent(($$result, $$props, $$slots) => {
     slug,
     mota
   } = Astro2.props;
-  const siteName = "MephimTv";
+  const siteName = "Tr\u1EA1m Phim";
   const siteUrl = Astro2.url.origin;
   const canonical = Astro2.url.href;
   const name = capitalizeWords(tenPhim);

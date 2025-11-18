@@ -38,12 +38,12 @@ const Footer = () => {
             <li className="text-sm">
               Liên hệ:{" "}
               <a
-                href="https://t.me/meomeochill"
+                href="https://www.facebook.com/profile.php?id=61581940541481"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-contact-link"
               >
-                @meomeochill
+                TramPhim
               </a>
             </li>
           </ul>

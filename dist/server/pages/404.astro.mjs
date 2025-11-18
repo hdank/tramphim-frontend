@@ -5,7 +5,7 @@ import 'clsx';
 export { renderers } from '../renderers.mjs';
 
 const $$404 = createComponent(($$result, $$props, $$slots) => {
-  return renderTemplate`<html lang="vi"> <head><meta charset="UTF-8"><title>Trang không tồn tại | MotChill</title><meta name="description" content="Rất tiếc, trang bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra lại địa chỉ hoặc quay về trang chủ để khám phá."><meta name="viewport" content="width=device-width, initial-scale=1.0">${renderHead()}</head> <body class="bg-[#191B24] text-white flex items-center justify-center min-h-screen p-4"> <div class="container text-center space-y-8"> <h1 class="text-7xl font-extrabold text-[#ffd785] animate-bounce">404</h1> <h2 class="text-3xl font-bold">Không tìm thấy trang</h2> <p class="text-gray-400 leading-relaxed">
+  return renderTemplate`<html lang="vi"> <head><meta charset="UTF-8"><title>Trang không tồn tại | Trạm Phim</title><meta name="description" content="Rất tiếc, trang bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra lại địa chỉ hoặc quay về trang chủ để khám phá."><meta name="viewport" content="width=device-width, initial-scale=1.0">${renderHead()}</head> <body class="bg-[#191B24] text-white flex items-center justify-center min-h-screen p-4"> <div class="container text-center space-y-8"> <h1 class="text-7xl font-extrabold text-[#ffd785] animate-bounce">404</h1> <h2 class="text-3xl font-bold">Không tìm thấy trang</h2> <p class="text-gray-400 leading-relaxed">
 Có vẻ như trang bạn đang cố gắng truy cập đã bị xóa hoặc địa chỉ URL
         không chính xác. Đừng lo lắng, hãy quay về trang chủ để tìm kiếm những
         bộ phim hấp dẫn khác!

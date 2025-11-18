@@ -618,7 +618,7 @@ export default function Header() {
                   <img
                     src={typeof logo === "string" ? logo : logo.src}
                     alt="Logo trang web phim"
-                    className=" h-8 w-auto lg:h-10  "
+                    className="h-12 w-auto sm:h-14 md:h-16 lg:h-20 xl:h-24"
                   />
                 </a>
               </div>

@@ -1,11 +1,11 @@
 /* empty css                                     */
 import { e as createComponent, f as createAstro, l as renderComponent, r as renderTemplate, n as Fragment, m as maybeRenderHead } from '../../chunks/astro/server_BuMcwEkM.mjs';
 import 'kleur/colors';
-import { $ as $$Layout, H as Header, F as Footer } from '../../chunks/index_eDR0il5k.mjs';
+import { $ as $$Layout, H as Header, F as Footer } from '../../chunks/index_BCmV18BO.mjs';
 import { jsxs, jsx } from 'react/jsx-runtime';
 import { useState, useEffect, useCallback } from 'react';
 import { r as rutGonTinhTrangNgonNgu, a as rutGonTinhTrangPhim } from '../../chunks/movieUtils_BzNI1rrt.mjs';
-import { $ as $$SeoLoaiPhim } from '../../chunks/SeoLoaiPhim_BU8_IhwF.mjs';
+import { $ as $$SeoLoaiPhim } from '../../chunks/SeoLoaiPhim_B7VOEysJ.mjs';
 export { renderers } from '../../renderers.mjs';
 
 function CategoryMovies({
