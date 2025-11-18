@@ -51,7 +51,7 @@ const Footer = () => {
 
         <div className="footer-copyright-divider">
           <address className="footer-copyright-text">
-            <p>Copyright © {year} MePhimTV.</p>
+            <p>Copyright © {year} Trạm Phim.</p>
           </address>
         </div>
       </div>

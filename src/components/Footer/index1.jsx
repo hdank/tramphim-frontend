@@ -22,7 +22,7 @@ const Footer = () => {
               src={typeof logo === "string" ? logo : logo.src}
               className="h-12"
               loading="lazy"
-              alt="Motchill - Xem phim Vietsub HD"
+              alt="Trạm Phim - Xem phim Vietsub HD"
             />
           </div>
         </section>

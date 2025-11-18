@@ -124,12 +124,12 @@ export default function MovieActions({
 
   const handleShare = () => {
     const shareData = {
-      title: `${movieName || "Phim"} | MotChill`,
-      text: "Khám phá phim hấp dẫn mỗi ngày ",
+      title: `${movieName || "Phim"} | Trạm Phim`,
+      text: "Phim hay tại Trạm ",
       url: window.location.href,
     };
 
-    if (navigator.share) {
+    if (navigator.shaTrạmre) {
       navigator
         .share(shareData)
         .catch((error) => console.log("Lỗi khi chia sẻ:", error));
