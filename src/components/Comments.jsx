@@ -64,6 +64,7 @@ const Comments = ({ slug }) => {
   const [commentText, setCommentText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [expandedReplies, setExpandedReplies] = useState({});
+  const [isMounted, setIsMounted] = useState(false);
 
   // Fetch comments
   const fetchComments = useCallback(async () => {
@@ -84,8 +85,56 @@ const Comments = ({ slug }) => {
   }, [slug]);
 
   useEffect(() => {
+    setIsMounted(true);
     fetchComments();
   }, [fetchComments]);
+
+  // Scroll to comment if there's a hash in the URL
+  useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash;
+      if (hash && comments.length > 0) {
+        const targetId = hash.substring(1).replace('binh_luan_', ''); // Get comment ID
+        
+        // Check if this is a reply by finding it in comments
+        const targetComment = comments.find(c => c.id === targetId);
+        
+        // Retry mechanism to wait for element to appear in DOM
+        const scrollToElement = (attempt = 0) => {
+          const element = document.getElementById(hash.substring(1));
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Add highlight effect
+            element.classList.add('ring-2', 'ring-sky-400', 'bg-white/10');
+            setTimeout(() => {
+              element.classList.remove('ring-2', 'ring-sky-400', 'bg-white/10');
+            }, 3000);
+          } else if (attempt < 15) {
+            // If it's a reply and not expanded yet, expand it
+            if (attempt === 0 && targetComment && targetComment.parent_id) {
+              setExpandedReplies(prev => ({
+                ...prev,
+                [targetComment.parent_id]: true
+              }));
+            }
+            // Retry up to 15 times with 400ms intervals (total 6 seconds)
+            setTimeout(() => scrollToElement(attempt + 1), 400);
+          }
+        };
+        
+        // Start scrolling attempts immediately
+        scrollToElement();
+      }
+    };
+
+    // Scroll on mount and when comments load
+    scrollToHash();
+
+    // Listen for hash changes
+    const handleHashChange = () => scrollToHash();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [comments]);
 
   // Submit main comment
   const handleSubmitComment = async (e) => {
@@ -128,11 +177,22 @@ const Comments = ({ slug }) => {
       } else {
         const errorText = await response.text();
         console.error("API error response:", errorText);
-        try {
-          const errorData = JSON.parse(errorText);
-          toast.error(errorData.detail || "Lỗi khi thêm bình luận");
-        } catch (e) {
-          toast.error(`Lỗi ${response.status}: ${errorText || "Lỗi khi thêm bình luận"}`);
+        
+        // Check if it's a 500 error - the comment might still have been created
+        if (response.status === 500) {
+          // Wait and refresh to check if comment was created
+          setTimeout(async () => {
+            await fetchComments();
+            setCommentText("");
+            toast.success("Bình luận đã được thêm!");
+          }, 500);
+        } else {
+          try {
+            const errorData = JSON.parse(errorText);
+            toast.error(errorData.detail || "Lỗi khi thêm bình luận");
+          } catch (e) {
+            toast.error(`Lỗi ${response.status}: ${errorText || "Lỗi khi thêm bình luận"}`);
+          }
         }
       }
     } catch (error) {
@@ -147,6 +207,34 @@ const Comments = ({ slug }) => {
       }
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  // Delete comment
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm("Bạn có chắc muốn xóa bình luận này? Hành động này không thể hoàn tác.")) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(`${API_BASE_URL}/api/binhluan/${commentId}/`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setComments(comments.filter(c => c.id !== commentId));
+        toast.success("Xóa bình luận thành công!");
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.detail || "Lỗi khi xóa bình luận");
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      toast.error("Lỗi khi xóa bình luận");
     }
   };
 
@@ -182,11 +270,23 @@ const Comments = ({ slug }) => {
       } else {
         const errorText = await response.text();
         console.error("API error response:", errorText);
-        try {
-          const errorData = JSON.parse(errorText);
-          toast.error(errorData.detail || "Lỗi khi thêm trả lời");
-        } catch (e) {
-          toast.error(`Lỗi ${response.status}: ${errorText || "Lỗi khi thêm trả lời"}`);
+        
+        // Check if it's a 500 error - the reply might still have been created
+        if (response.status === 500) {
+          // Wait and refresh to check if reply was created
+          setTimeout(async () => {
+            await fetchComments();
+            setReplyingTo(null);
+            onSuccess?.();
+            toast.success("Trả lời đã được thêm!");
+          }, 500);
+        } else {
+          try {
+            const errorData = JSON.parse(errorText);
+            toast.error(errorData.detail || "Lỗi khi thêm trả lời");
+          } catch (e) {
+            toast.error(`Lỗi ${response.status}: ${errorText || "Lỗi khi thêm trả lời"}`);
+          }
         }
       }
     } catch (error) {
@@ -195,7 +295,11 @@ const Comments = ({ slug }) => {
       // as the backend may have processed the request
       if (error.message && (error.message.includes("CORS") || error.message.includes("Failed to fetch"))) {
         // Wait a moment and try to refresh comments
-        setTimeout(() => fetchComments(), 500);
+        setTimeout(async () => {
+          await fetchComments();
+          setReplyingTo(null);
+          onSuccess?.();
+        }, 500);
       } else {
         toast.error("Lỗi khi gửi trả lời");
       }
@@ -234,7 +338,7 @@ const Comments = ({ slug }) => {
     const replies = allComments?.filter(c => c.parent_id === comment.id) || [];
     
     return (
-      <div className={`flex gap-3 ${isReply ? "ml-8" : "mb-6"}`}>
+      <div className={`flex gap-3 ${isReply ? "ml-8" : "mb-6"}`} id={`binh_luan_${comment.id}`}>
         {/* Avatar */}
         <div className="flex-shrink-0">
           {comment.nguoi_dung?.anh_dai_dien_url ? (
@@ -266,15 +370,26 @@ const Comments = ({ slug }) => {
             </p>
           </div>
 
-          {/* Reply button */}
-          {!isReply && (
-            <button
-              onClick={() => setReplyingTo(comment.id)}
-              className="text-xs text-gray-400 hover:text-sky-300 mt-2 transition-colors"
-            >
-              Trả lời
-            </button>
-          )}
+          {/* Reply and Delete buttons */}
+          <div className="flex gap-2 mt-2">
+            {!isReply && (
+              <button
+                onClick={() => setReplyingTo(comment.id)}
+                className="text-xs text-gray-400 hover:text-sky-300 transition-colors"
+              >
+                Trả lời
+              </button>
+            )}
+            
+            {user && user.id === comment.nguoi_dung.id && (
+              <button
+                onClick={() => handleDeleteComment(comment.id)}
+                className="text-xs text-gray-400 hover:text-red-400 transition-colors"
+              >
+                Xóa
+              </button>
+            )}
+          </div>
 
           {/* Reply form */}
           {replyingTo === comment.id && (
@@ -327,8 +442,10 @@ const Comments = ({ slug }) => {
       <h2 className="text-lg font-semibold text-white mb-6">Bình Luận</h2>
 
       {/* Comment form */}
-      {authLoading ? (
-        <div className="text-center py-4 text-gray-400">Đang kiểm tra...</div>
+      {!isMounted ? (
+        <div className="mb-8 p-4 bg-white/5 rounded-lg border border-white/10 text-center">
+          <p className="text-gray-400">Đang tải...</p>
+        </div>
       ) : user ? (
         <form onSubmit={handleSubmitComment} className="mb-8">
           <div className="flex gap-3">

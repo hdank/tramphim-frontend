@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import logo from "../../assets/logo.png";
 
 import UserProfileDropdown from "../User/UserProfileDropdown";
+import NotificationDropdown from "../Notifications/NotificationDropdown";
 import { AuthProvider } from "../../context/AuthProvider";
 
 const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
@@ -737,6 +738,7 @@ export default function Header() {
               )}
             </div>
 
+            <NotificationDropdown />
             <UserProfileDropdown />
           </div>
         </div>
