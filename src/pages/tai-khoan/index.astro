@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import UserProfile from '../../components/User/UserProfile';
+import Header from '../../components/Header/Header';
+import { AuthProvider } from '../../context/AuthProvider';
+---
+
+<Layout title="Thông tin tài khoản - Trạm Phim">
+  <Header client:only="react" />
+  <UserProfile client:only="react" />
+</Layout>

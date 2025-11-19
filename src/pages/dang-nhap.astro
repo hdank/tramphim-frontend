@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SignIn from '../components/Auth/SignIn';
+import Header from '../components/Header/Header';
+import { AuthProvider } from '../context/AuthProvider';
+---
+
+<Layout title="Đăng nhập - Trạm Phim">
+  <Header client:only="react" />
+  <SignIn client:only="react" />
+</Layout>

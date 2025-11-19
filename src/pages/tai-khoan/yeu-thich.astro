@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FavoriteMoviesPage from '../../components/User/FavoriteMoviesPage';
+import Header from '../../components/Header/Header';
+import { AuthProvider } from '../../context/AuthProvider';
+---
+
+<Layout title="Phim Yêu Thích - Trạm Phim">
+  <Header client:only="react" />
+  <FavoriteMoviesPage client:only="react" />
+</Layout>
