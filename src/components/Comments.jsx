@@ -1,0 +1,385 @@
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "../context/AuthProvider";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
+
+const ReplyForm = React.memo(({ parentId, isSubmitting, onSubmit, onCancel }) => {
+  const [text, setText] = useState("");
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, [parentId]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const trimmed = text.trim();
+    if (!trimmed) {
+      toast.error("Vui lòng nhập nội dung trả lời");
+      return;
+    }
+    await onSubmit(trimmed, () => setText(""));
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-3">
+      <textarea
+        ref={textareaRef}
+        value={text}
+        onChange={(event) => setText(event.target.value)}
+        placeholder="Viết trả lời..."
+        className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-sky-400 resize-none"
+        rows="2"
+      />
+      <div className="flex gap-2 mt-2">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="px-4 py-1 bg-sky-400 text-white rounded text-sm font-medium hover:bg-sky-500 transition-colors disabled:opacity-50"
+        >
+          {isSubmitting ? "Đang gửi..." : "Gửi"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setText("");
+            onCancel?.();
+          }}
+          className="px-4 py-1 bg-white/10 text-gray-300 rounded text-sm font-medium hover:bg-white/20 transition-colors"
+        >
+          Hủy
+        </button>
+      </div>
+    </form>
+  );
+});
+
+const Comments = ({ slug }) => {
+  const { user, loading: authLoading } = useAuth();
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [expandedReplies, setExpandedReplies] = useState({});
+
+  // Fetch comments
+  const fetchComments = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/binhluan/phim/${slug}/`);
+      if (response.ok) {
+        const data = await response.json();
+        setComments(data);
+      } else {
+        console.error("Failed to fetch comments");
+      }
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [slug]);
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
+
+  // Submit main comment
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      toast.error("Vui lòng đăng nhập để bình luận");
+      return;
+    }
+
+    if (!commentText.trim()) {
+      toast.error("Vui lòng nhập bình luận");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(`${API_BASE_URL}/api/binhluan/add/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          slug: slug,
+          noi_dung: commentText,
+          parent: null,
+        }),
+      });
+
+      if (response.ok) {
+        const newComment = await response.json();
+        // Only add if it's a top-level comment
+        if (!newComment.parent_id) {
+          setComments([newComment, ...comments]);
+        }
+        setCommentText("");
+        toast.success("Bình luận đã được thêm!");
+      } else {
+        const errorData = await response.json();
+        console.error("API error:", errorData);
+        toast.error(errorData.detail || "Lỗi khi thêm bình luận");
+      }
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+      toast.error("Lỗi khi gửi bình luận");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Submit reply
+  const handleSubmitReply = async (parentId, text, onSuccess) => {
+    if (!user) {
+      toast.error("Vui lòng đăng nhập để trả lời");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await fetch(`${API_BASE_URL}/api/binhluan/add/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          slug: slug,
+          noi_dung: text,
+          parent: parentId,
+        }),
+      });
+
+      if (response.ok) {
+        // Refresh all comments to get the updated structure with replies
+        await fetchComments();
+        setReplyingTo(null);
+        onSuccess?.();
+        toast.success("Trả lời đã được thêm!");
+      } else {
+        const errorData = await response.json();
+        console.error("API error:", errorData);
+        toast.error(errorData.detail || "Lỗi khi thêm trả lời");
+      }
+    } catch (error) {
+      console.error("Error submitting reply:", error);
+      toast.error("Lỗi khi gửi trả lời");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Toggle replies visibility
+  const toggleReplies = (commentId) => {
+    setExpandedReplies((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
+
+  // Format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (seconds < 60) return "Vừa xong";
+    if (minutes < 60) return `${minutes} phút trước`;
+    if (hours < 24) return `${hours} giờ trước`;
+    if (days < 7) return `${days} ngày trước`;
+    return date.toLocaleDateString("vi-VN");
+  };
+
+  // Comment item component
+  const CommentItem = ({ comment, allComments, isReply = false }) => {
+    // Find replies for this comment from all comments
+    const replies = allComments?.filter(c => c.parent_id === comment.id) || [];
+    
+    return (
+      <div className={`flex gap-3 ${isReply ? "ml-8" : "mb-6"}`}>
+        {/* Avatar */}
+        <div className="flex-shrink-0">
+          {comment.nguoi_dung?.anh_dai_dien_url ? (
+            <img
+              src={comment.nguoi_dung.anh_dai_dien_url}
+              alt={comment.nguoi_dung.username}
+              className="w-10 h-10 rounded-full object-cover ring-2 ring-white/10"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold">
+              {comment.nguoi_dung?.username?.charAt(0).toUpperCase()}
+            </div>
+          )}
+        </div>
+
+        {/* Comment content */}
+        <div className="flex-1">
+          <div className="bg-white/5 rounded-lg p-3">
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-white">
+                {comment.nguoi_dung?.username}
+              </span>
+              <span className="text-xs text-gray-400">
+                {formatDate(comment.thoi_gian)}
+              </span>
+            </div>
+            <p className="text-sm text-gray-200 mt-2 break-words">
+              {comment.noi_dung}
+            </p>
+          </div>
+
+          {/* Reply button */}
+          {!isReply && (
+            <button
+              onClick={() => setReplyingTo(comment.id)}
+              className="text-xs text-gray-400 hover:text-sky-300 mt-2 transition-colors"
+            >
+              Trả lời
+            </button>
+          )}
+
+          {/* Reply form */}
+          {replyingTo === comment.id && (
+            <ReplyForm
+              parentId={comment.id}
+              isSubmitting={submitting}
+              onSubmit={(text, reset) =>
+                handleSubmitReply(comment.id, text, () => {
+                  reset();
+                })
+              }
+              onCancel={() => setReplyingTo(null)}
+            />
+          )}
+
+          {/* Nested replies */}
+          {replies.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => toggleReplies(comment.id)}
+                className="text-xs text-gray-400 hover:text-sky-300 transition-colors"
+              >
+                {expandedReplies[comment.id]
+                  ? "Ẩn trả lời"
+                  : `Xem ${replies.length} trả lời`}
+              </button>
+              {expandedReplies[comment.id] && (
+                <div className="mt-3 space-y-3">
+                  {replies.map((reply) => (
+                    <CommentItem
+                      key={reply.id}
+                      comment={reply}
+                      allComments={allComments}
+                      isReply={true}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const topLevelComments = comments.filter((comment) => !comment.parent_id);
+
+  return (
+    <div className="w-full max-w-4xl mx-auto rounded-lg bg-white/5 p-6 border border-white/10">
+      <h2 className="text-lg font-semibold text-white mb-6">Bình Luận</h2>
+
+      {/* Comment form */}
+      {authLoading ? (
+        <div className="text-center py-4 text-gray-400">Đang kiểm tra...</div>
+      ) : user ? (
+        <form onSubmit={handleSubmitComment} className="mb-8">
+          <div className="flex gap-3">
+            {/* User avatar */}
+            <div className="flex-shrink-0">
+              {user.anh_dai_dien_url ? (
+                <img
+                  src={user.anh_dai_dien_url}
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full object-cover ring-2 ring-white/10"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold">
+                  {user.username?.charAt(0).toUpperCase()}
+                </div>
+              )}
+            </div>
+
+            {/* Comment input */}
+            <div className="flex-1">
+              <textarea
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                placeholder="Chia sẻ ý kiến của bạn..."
+                className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-400 resize-none"
+                rows="3"
+              />
+              <div className="flex justify-end mt-3">
+                <button
+                  type="submit"
+                  disabled={submitting || !commentText.trim()}
+                  className="px-6 py-2 bg-sky-400 text-white rounded-lg font-medium hover:bg-sky-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitting ? "Đang gửi..." : "Bình luận"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      ) : (
+        <div className="mb-8 p-4 bg-white/5 rounded-lg border border-white/10 text-center">
+          <p className="text-gray-300 mb-4">
+            Vui lòng đăng nhập để bình luận
+          </p>
+          <a
+            href="/dang-nhap"
+            className="inline-block px-6 py-2 bg-sky-400 text-white rounded-lg font-medium hover:bg-sky-500 transition-colors"
+          >
+            Đăng nhập
+          </a>
+        </div>
+      )}
+
+      {/* Comments list */}
+      {loading ? (
+        <div className="text-center py-8 text-gray-400">
+          Đang tải bình luận...
+        </div>
+      ) : topLevelComments.length === 0 ? (
+        <div className="text-center py-8 text-gray-400">
+          Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
+        </div>
+      ) : (
+        <div className="space-y-0">
+          {topLevelComments.map((comment) => (
+            <CommentItem 
+              key={comment.id} 
+              comment={comment} 
+              allComments={comments}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Comments;

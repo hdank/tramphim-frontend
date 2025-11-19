@@ -13,7 +13,7 @@ import Footer from "../../components/Footer";
 import MovieTabsAndCast from "../../components/MovieDetail/MovieTab";
 import { getMoviePageData, BASE_URL } from "../../utils/getMovieData";
 import TopMovies from "../../components/TopMovies/TopMovies";
-import FacebookComments from "../../components/FacebookComments";
+import Comments from "../../components/Comments";
 import SEO from "../../seometas/SeoPhim.astro";
 import Breadcrumb from "../../components/Breadcrumb";
 let movie = null;
@@ -125,8 +125,7 @@ const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
           client:load
         />
         <div class="comment-section-padding">
-          <h2 class="comment-section-title">Bình Luận Phim</h2>
-          <FacebookComments url={pageUrl} client:visible />
+          <Comments slug={slug} client:visible />
         </div>
       </div>
 

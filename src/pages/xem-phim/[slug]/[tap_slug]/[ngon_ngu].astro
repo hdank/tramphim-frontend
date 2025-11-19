@@ -10,7 +10,7 @@ import Footer from "../../../../components/Footer";
 import ServerButtons from "../../../../components/ServerButton/ServerButtons";
 import Seo from "../../../../seometas/SeoXemPhim.astro";
 import MovieDetail from "../../../../components/MovieDetail/MovieDetailPlayer";
-import FacebookComments from "../../../../components/FacebookComments";
+import Comments from "../../../../components/Comments";
 import { getDisplayEpisodeNumber } from "../../../../utils/movieUtils";
 import {
   fetchVideoSource,
@@ -198,8 +198,7 @@ const pageUrl = Astro.url.href;
         />
 
         <div class="comment-section-padding">
-          <h2 class="comment-section-title">Bình Luận Phim</h2>
-          <FacebookComments url={pageUrl} client:visible />
+          <Comments slug={slug} client:visible />
         </div>
 
         <div class="recommend-section-wrapper">
