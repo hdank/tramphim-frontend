@@ -209,7 +209,7 @@ export default function NotificationDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="relative flex items-center text-white/80 hover:text-white focus:outline-none transition-colors"
+        className="relative flex items-center justify-center w-10 h-10 text-white/80 hover:text-white focus:outline-none transition-colors rounded-md"
         aria-label="Notifications"
       >
         <BellIcon hasUnread={unreadCount > 0} />
@@ -221,7 +221,7 @@ export default function NotificationDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto rounded-md bg-[#23252b] shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+        <div className="absolute left-4 right-4 mt-2 max-h-96 overflow-y-auto rounded-md bg-[#23252b] shadow-lg ring-1 ring-black ring-opacity-5 z-50 sm:left-auto sm:right-0 sm:w-80">
           <div className="sticky top-0 border-b border-gray-100/10 bg-[#23252b] px-4 py-3">
             <h3 className="text-sm font-medium text-white">Thông báo</h3>
           </div>
@@ -295,7 +295,7 @@ export default function NotificationDropdown() {
 
                   <button
                     onClick={(e) => deleteNotification(e, notification.id)}
-                    className="flex-shrink-0 text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all p-1"
+                    className="flex-shrink-0 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all p-1"
                     title="Xóa thông báo"
                   >
                     <svg

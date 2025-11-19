@@ -30,7 +30,7 @@ export default function UserProfileDropdown() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={toggleDropdown}
-                className="flex items-center space-x-2 text-white/80 hover:text-white focus:outline-none"
+                className="flex items-center justify-center w-10 h-10 text-white/80 hover:text-white focus:outline-none rounded-md"
                 aria-label="User menu"
             >
                 {user && user.anh_dai_dien_url ? (
@@ -47,7 +47,7 @@ export default function UserProfileDropdown() {
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100/10 rounded-md bg-[#23252b] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                <div className="absolute left-4 right-4 mt-2 origin-top-right divide-y divide-gray-100/10 rounded-md bg-[#23252b] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 sm:left-auto sm:right-0 sm:w-56">
                     <div className="px-4 py-3">
                         {user ? (
                             <>

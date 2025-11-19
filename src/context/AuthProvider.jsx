@@ -120,11 +120,50 @@ const uploadAvatar = async (file) => {
     }
 };
 
+const requestPasswordReset = async (email) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/api/auth/forgot-password/`, {
+            email
+        });
+        return {
+            success: true,
+            message: response.data.message
+        };
+    } catch (error) {
+        console.error("Request password reset failed:", error);
+        return {
+            success: false,
+            message: error.response?.data?.detail || "Yêu cầu đặt lại mật khẩu thất bại"
+        };
+    }
+};
+
+const resetPassword = async (email, code, newPassword, confirmPassword) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/api/auth/reset-password/`, {
+            email,
+            code,
+            new_password: newPassword,
+            confirm_password: confirmPassword
+        });
+        return {
+            success: true,
+            message: response.data.message
+        };
+    } catch (error) {
+        console.error("Reset password failed:", error);
+        return {
+            success: false,
+            message: error.response?.data?.detail || "Đặt lại mật khẩu thất bại"
+        };
+    }
+};
+
 // Hook for React components
 export const useAuth = () => {
     const user = useStore(userStore);
     const loading = useStore(loadingStore);
-    return { user, loading, login, register, logout, uploadAvatar };
+    return { user, loading, login, register, logout, uploadAvatar, requestPasswordReset, resetPassword };
 };
 
 // AuthProvider component to initialize auth on mount

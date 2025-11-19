@@ -1,0 +1,44 @@
+.code-input-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 24px 0;
+}
+
+.code-input-box {
+    width: 50px;
+    height: 60px;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1a202c;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', monospace;
+}
+
+.code-input-box:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: scale(1.05);
+}
+
+.code-input-box:hover {
+    border-color: #cbd5e0;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+    .code-input-container {
+        gap: 8px;
+    }
+
+    .code-input-box {
+        width: 40px;
+        height: 50px;
+        font-size: 20px;
+    }
+}

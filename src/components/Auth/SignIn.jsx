@@ -63,6 +63,14 @@ export default function SignIn() {
                         </div>
                     </div>
 
+                    <div className="flex items-center justify-between">
+                        <div className="text-sm">
+                            <a href="/forgot-password" className="font-medium text-sky-400 hover:text-sky-300 transition-colors duration-200">
+                                Quên mật khẩu?
+                            </a>
+                        </div>
+                    </div>
+
                     {error && (
                         <div className="text-center text-sm text-red-500">
                             {error}
