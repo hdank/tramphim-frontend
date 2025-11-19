@@ -126,13 +126,25 @@ const Comments = ({ slug }) => {
         setCommentText("");
         toast.success("Bình luận đã được thêm!");
       } else {
-        const errorData = await response.json();
-        console.error("API error:", errorData);
-        toast.error(errorData.detail || "Lỗi khi thêm bình luận");
+        const errorText = await response.text();
+        console.error("API error response:", errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          toast.error(errorData.detail || "Lỗi khi thêm bình luận");
+        } catch (e) {
+          toast.error(`Lỗi ${response.status}: ${errorText || "Lỗi khi thêm bình luận"}`);
+        }
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
-      toast.error("Lỗi khi gửi bình luận");
+      // Check if this is likely a CORS error - if so, still try to refresh comments
+      // as the backend may have processed the request
+      if (error.message && (error.message.includes("CORS") || error.message.includes("Failed to fetch"))) {
+        // Wait a moment and try to refresh comments
+        setTimeout(() => fetchComments(), 500);
+      } else {
+        toast.error("Lỗi khi gửi bình luận");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -168,13 +180,25 @@ const Comments = ({ slug }) => {
         onSuccess?.();
         toast.success("Trả lời đã được thêm!");
       } else {
-        const errorData = await response.json();
-        console.error("API error:", errorData);
-        toast.error(errorData.detail || "Lỗi khi thêm trả lời");
+        const errorText = await response.text();
+        console.error("API error response:", errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          toast.error(errorData.detail || "Lỗi khi thêm trả lời");
+        } catch (e) {
+          toast.error(`Lỗi ${response.status}: ${errorText || "Lỗi khi thêm trả lời"}`);
+        }
       }
     } catch (error) {
       console.error("Error submitting reply:", error);
-      toast.error("Lỗi khi gửi trả lời");
+      // Check if this is likely a CORS error - if so, still try to refresh comments
+      // as the backend may have processed the request
+      if (error.message && (error.message.includes("CORS") || error.message.includes("Failed to fetch"))) {
+        // Wait a moment and try to refresh comments
+        setTimeout(() => fetchComments(), 500);
+      } else {
+        toast.error("Lỗi khi gửi trả lời");
+      }
     } finally {
       setSubmitting(false);
     }
