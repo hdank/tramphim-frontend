@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { cleanhtml, rutGonTinhTrangNgonNgu } from "../../utils/movieUtils";
 import alarmGif from "../../assets/alarm.gif";
-import qrtele from "../../assets/qrtele.png";
+import qrfb from "../../assets/qrfb.png";
 
 // --- IndexedDB Constants (outside the component) ---
 const DB_NAME = "FavoriteDB";
@@ -694,13 +694,13 @@ const MovieDetail = ({
 
           <div className="mt-8 hidden flex-col items-center justify-center gap-2 sm:flex">
             <img
-              src={typeof qrtele === "string" ? qrtele : qrtele.src}
-              alt="Mã QR Telegram"
+              src={typeof qrfb === "string" ? qrfb : qrfb.src}
+              alt="Mã QR Facebook"
               className="h-32 w-32 object-contain"
             />
 
             <h3 className="text-xs font-medium text-gray-300">
-              Tham gia group Telegram
+              Tham gia group Facebook
             </h3>
           </div>
         </div>

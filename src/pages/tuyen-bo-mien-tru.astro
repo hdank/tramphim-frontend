@@ -1,0 +1,144 @@
+---
+import BaseLayout from "../layouts/Layout.astro";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/index";
+
+const title = "Tuyên bố Miễn trừ Trách nhiệm - Trạm Phim";
+const description = "Tuyên bố miễn trừ trách nhiệm của Trạm Phim về nội dung, bản quyền và dịch vụ.";
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </Fragment>
+
+  <Header client:load />
+
+  <div class="main-container">
+    <div class="main-content-wrapper">
+      <main id="main-content" class="policy-page">
+        <article class="policy-content">
+          <h1>Tuyên bố Miễn trừ Trách nhiệm của Trạm Phim</h1>
+
+          <section class="policy-section">
+            <h2>A. Miễn trừ trách nhiệm về Nội dung</h2>
+            <p>Trạm Phim chỉ là một nền tảng tổng hợp, tìm kiếm và chia sẻ thông tin về phim ảnh.</p>
+            <p>Chúng tôi không sản xuất, lưu trữ hoặc tải lên bất kỳ nội dung phim (video) nào trên máy chủ hoặc cơ sở dữ liệu của mình.</p>
+            <p>Nội dung được cung cấp trên Dịch vụ (bao gồm các khung phát video) là liên kết nhúng (embed) hoặc liên kết trỏ đến các máy chủ hoặc dịch vụ lưu trữ bên thứ ba (ví dụ: các nền tảng chia sẻ video công cộng).</p>
+            <p>Chúng tôi cố gắng đảm bảo tính chính xác của thông tin mô tả (tiêu đề, diễn viên, tóm tắt), nhưng không đảm bảo tính toàn vẹn, tính hợp pháp hoặc tính kịp thời của nội dung do bên thứ ba cung cấp.</p>
+            <p>Trạm Phim không chịu trách nhiệm pháp lý đối với bất kỳ nội dung nào được lưu trữ trên các máy chủ bên ngoài hoặc các vấn đề liên quan đến bản quyền phát sinh từ các liên kết đó. Người dùng có trách nhiệm tuân thủ luật pháp về bản quyền tại quốc gia của mình.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>B. Miễn trừ trách nhiệm về Tính sẵn có của Dịch vụ</h2>
+            <p>Dịch vụ được cung cấp trên cơ sở "nguyên trạng" (as is) và "sẵn có" (as available) mà không có bất kỳ đảm bảo nào, dù rõ ràng hay ngụ ý.</p>
+            <p>Chúng tôi không đảm bảo rằng Dịch vụ sẽ không bị gián đoạn, không có lỗi, an toàn, hoặc rằng các lỗi sẽ được sửa chữa.</p>
+            <p>Chúng tôi không chịu trách nhiệm về bất kỳ sự cố kết nối, lỗi kỹ thuật, hoặc sự không sẵn có của Dịch vụ do các yếu tố bên ngoài (ví dụ: sự cố máy chủ của bên thứ ba, sự cố Internet).</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>C. Giới hạn Trách nhiệm Chung</h2>
+            <p>Trong mọi trường hợp, Trạm Phim, giám đốc, nhân viên hoặc đại lý của chúng tôi sẽ không chịu trách nhiệm về bất kỳ thiệt hại trực tiếp, gián tiếp, ngẫu nhiên, đặc biệt, mang tính trừng phạt hoặc do hậu quả nào (bao gồm, nhưng không giới hạn ở, thiệt hại do mất lợi nhuận, mất dữ liệu hoặc gián đoạn kinh doanh) phát sinh từ việc bạn sử dụng hoặc không thể sử dụng Dịch vụ.</p>
+            <p>Bạn chịu hoàn toàn rủi ro khi sử dụng Dịch vụ.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>D. Bản quyền và Thủ tục Gỡ bỏ (DMCA)</h2>
+            <p>Nếu bạn là chủ sở hữu bản quyền hoặc đại diện được ủy quyền và tin rằng bất kỳ nội dung nào được liên kết hoặc nhúng trên Dịch vụ vi phạm bản quyền của bạn, vui lòng liên hệ trực tiếp với chúng tôi.</p>
+            <p>Trách nhiệm của chúng tôi là gỡ bỏ liên kết đến nội dung vi phạm bản quyền khỏi Dịch vụ, nhưng chúng tôi không có khả năng gỡ bỏ nội dung đó khỏi nguồn lưu trữ gốc (máy chủ của bên thứ ba).</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>E. Miễn trừ trách nhiệm về Giao dịch Thanh toán và Hoàn tiền</h2>
+            
+            <h3>Quy trình Thanh toán</h3>
+            <p>Dịch vụ của chúng tôi có thể yêu cầu thanh toán để truy cập các tính năng, nội dung cao cấp hoặc dịch vụ bổ sung. Bằng việc thực hiện thanh toán, bạn xác nhận rằng bạn là chủ sở hữu hợp pháp của phương thức thanh toán đó và đồng ý với mức phí đã công bố.</p>
+
+            <h3>Sử dụng Sai Mục đích Số tiền Nạp</h3>
+            <p>Mọi khoản tiền, điểm, hoặc số dư nạp vào Dịch vụ chỉ được sử dụng cho mục đích truy cập các dịch vụ cao cấp, tính năng bổ sung, hoặc các mục đích khác được Trạm Phim chỉ định rõ ràng trên nền tảng.</p>
+            <p>Trạm Phim không chịu trách nhiệm và sẽ không hoàn lại tiền nếu người dùng cố gắng sử dụng số tiền đã nạp để thực hiện các hành vi bị cấm, bất hợp pháp, hoặc sai mục đích khác (ví dụ: rửa tiền, giao dịch ngoài hệ thống, hoặc các hành vi vi phạm Điều khoản Sử dụng).</p>
+            <p>Chúng tôi có quyền thu hồi hoặc vô hiệu hóa số dư đã nạp nếu phát hiện có gian lận hoặc hành vi lạm dụng hệ thống thanh toán.</p>
+
+            <h3>Hoàn tiền</h3>
+            <p>Trạm Phim không đảm bảo hoàn tiền cho các gói dịch vụ đã mua, trừ khi có quy định rõ ràng khác trong chính sách hoàn tiền riêng biệt (nếu có nhu cầu hoàn tiền vui lòng liên hệ chăm sóc khách hàng).</p>
+            <p>Chúng tôi sẽ không chịu trách nhiệm hoàn tiền hoặc bồi thường nếu tài khoản của bạn bị đình chỉ hoặc chấm dứt do vi phạm Điều khoản Sử dụng.</p>
+          </section>
+        </article>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>
+
+<style>
+  .policy-page {
+    padding: 2rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .policy-content {
+    color: #fff;
+    line-height: 1.8;
+  }
+
+  .policy-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #ff6b35;
+  }
+
+  .policy-section {
+    margin-bottom: 2rem;
+  }
+
+  .policy-section h2 {
+    font-size: 1.5rem;
+    color: #ff6b35;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  .policy-section h3 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .policy-section p {
+    margin-bottom: 1rem;
+    color: #ddd;
+  }
+
+  .policy-section ul {
+    list-style-position: inside;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .policy-section li {
+    margin-bottom: 0.5rem;
+    color: #ddd;
+  }
+
+  @media (max-width: 768px) {
+    .policy-page {
+      padding: 1rem;
+    }
+
+    .policy-content h1 {
+      font-size: 1.8rem;
+    }
+
+    .policy-section h2 {
+      font-size: 1.2rem;
+    }
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../layouts/Layout.astro";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/index";
+
+const title = "Chính sách Bảo mật - Trạm Phim";
+const description = "Chính sách bảo mật của Trạm Phim. Tìm hiểu cách chúng tôi bảo vệ thông tin cá nhân của bạn.";
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </Fragment>
+
+  <Header client:load />
+
+  <div class="main-container">
+    <div class="main-content-wrapper">
+      <main id="main-content" class="policy-page">
+        <article class="policy-content">
+          <h1>Chính sách Bảo mật của Trạm Phim</h1>
+          
+          <p class="effective-date">
+            <strong>Ngày có hiệu lực:</strong> 26/10/2025
+          </p>
+
+          <p class="introduction">
+            Trạm Phim của chúng tôi cam kết bảo vệ quyền riêng tư của bạn. Chính sách Bảo mật này mô tả cách chúng tôi thu thập, sử dụng, tiết lộ và bảo vệ thông tin cá nhân của bạn khi bạn truy cập và sử dụng trang web/ứng dụng Trạm Phim (sau đây gọi là "Dịch vụ").
+          </p>
+
+          <section class="policy-section">
+            <h2>1. Thông tin Chúng tôi Thu thập</h2>
+            <p>Chúng tôi có thể thu thập các loại thông tin sau:</p>
+            
+            <h3>Thông tin Cá nhân (Nếu người dùng tạo tài khoản)</h3>
+            <ul>
+              <li>Tên người dùng</li>
+              <li>Địa chỉ email</li>
+              <li>Mật khẩu được mã hóa</li>
+            </ul>
+
+            <h3>Dữ liệu Sử dụng và Theo dõi</h3>
+            <ul>
+              <li>Địa chỉ Giao thức Internet (IP), loại trình duyệt, phiên bản trình duyệt</li>
+              <li>Các trang/phim bạn xem trên Dịch vụ, thời gian và ngày bạn truy cập</li>
+              <li>Thời gian dành cho các trang đó và các số liệu thống kê khác</li>
+              <li>Thông tin được thu thập thông qua Cookies và các công nghệ theo dõi tương tự</li>
+            </ul>
+          </section>
+
+          <section class="policy-section">
+            <h2>2. Cách Chúng tôi Sử dụng Thông tin của Bạn</h2>
+            <p>Chúng tôi sử dụng thông tin thu thập được cho các mục đích sau:</p>
+            <ul>
+              <li>Cung cấp, vận hành và duy trì Dịch vụ của chúng tôi</li>
+              <li>Cải thiện, cá nhân hóa và mở rộng Dịch vụ của chúng tôi (ví dụ: đề xuất phim)</li>
+              <li>Phân tích cách bạn sử dụng Dịch vụ của chúng tôi</li>
+              <li>Theo dõi và ngăn chặn gian lận, cũng như bảo đảm an toàn cho Dịch vụ</li>
+              <li>Gửi thông báo cập nhật, tin tức hoặc thông tin liên quan đến Dịch vụ (nếu bạn đăng ký)</li>
+            </ul>
+          </section>
+
+          <section class="policy-section">
+            <h2>3. Tiết lộ Thông tin Cá nhân</h2>
+            <p>Chúng tôi cam kết không bán, trao đổi hoặc chuyển giao thông tin cá nhân của bạn cho bên thứ ba vì mục đích thương mại. Tuy nhiên, chúng tôi có thể tiết lộ thông tin của bạn trong các trường hợp sau:</p>
+            
+            <h3>Nhà cung cấp Dịch vụ</h3>
+            <p>Chúng tôi có thể chia sẻ dữ liệu với các bên thứ ba đáng tin cậy giúp chúng tôi vận hành trang web, tiến hành công việc kinh doanh hoặc phục vụ người dùng, miễn là các bên đó đồng ý giữ bí mật thông tin này.</p>
+
+            <h3>Tuân thủ Pháp luật</h3>
+            <p>Khi được yêu cầu theo luật pháp hoặc để phản hồi các quy trình pháp lý hợp lệ (ví dụ: lệnh của tòa án, trát đòi hầu tòa).</p>
+
+            <h3>Bảo vệ Quyền lợi</h3>
+            <p>Để bảo vệ quyền, tài sản hoặc sự an toàn của Trạm Phim, người dùng hoặc những người khác.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>4. Bảo mật Dữ liệu</h2>
+            <p>Chúng tôi sử dụng các biện pháp bảo mật hành chính, kỹ thuật và vật lý hợp lý để bảo vệ thông tin cá nhân của bạn khỏi bị truy cập, sử dụng hoặc tiết lộ trái phép. Tuy nhiên, không có phương thức truyền tải qua Internet hoặc phương thức lưu trữ điện tử nào là an toàn 100%.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>5. Cookies</h2>
+            <p>Trạm Phim sử dụng "cookies" để thu thập thông tin và cải thiện Dịch vụ. Cookies là các tệp nhỏ được đặt trên thiết bị của bạn. Bạn có quyền từ chối tất cả cookies thông qua cài đặt trình duyệt của mình, nhưng điều này có thể ảnh hưởng đến trải nghiệm của bạn trên Dịch vụ.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>6. Liên kết của Bên Thứ Ba</h2>
+            <p>Dịch vụ của chúng tôi có thể chứa các liên kết đến các trang web khác không do chúng tôi điều hành. Nếu bạn nhấp vào một liên kết của bên thứ ba, bạn sẽ được chuyển đến trang web của bên thứ ba đó. Chúng tôi đặc biệt khuyên bạn nên xem xét Chính sách Bảo mật của mọi trang web bạn truy cập.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>7. Thay đổi Chính sách Bảo mật</h2>
+            <p>Chúng tôi có thể cập nhật Chính sách Bảo mật này theo thời gian. Chúng tôi sẽ thông báo cho bạn về bất kỳ thay đổi nào bằng cách đăng Chính sách Bảo mật mới trên trang này và cập nhật "Ngày có hiệu lực" ở đầu.</p>
+          </section>
+        </article>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>
+
+<style>
+  .policy-page {
+    padding: 2rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .policy-content {
+    color: #fff;
+    line-height: 1.8;
+  }
+
+  .policy-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #ff6b35;
+  }
+
+  .effective-date {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #333;
+  }
+
+  .introduction {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #ddd;
+  }
+
+  .policy-section {
+    margin-bottom: 2rem;
+  }
+
+  .policy-section h2 {
+    font-size: 1.5rem;
+    color: #ff6b35;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  .policy-section h3 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .policy-section p {
+    margin-bottom: 1rem;
+    color: #ddd;
+  }
+
+  .policy-section ul {
+    list-style-position: inside;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .policy-section li {
+    margin-bottom: 0.5rem;
+    color: #ddd;
+  }
+
+  @media (max-width: 768px) {
+    .policy-page {
+      padding: 1rem;
+    }
+
+    .policy-content h1 {
+      font-size: 1.8rem;
+    }
+
+    .policy-section h2 {
+      font-size: 1.2rem;
+    }
+  }
+</style>

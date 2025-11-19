@@ -1,0 +1,176 @@
+---
+import BaseLayout from "../layouts/Layout.astro";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/index";
+
+const title = "Điều khoản Sử dụng - Trạm Phim";
+const description = "Điều khoản sử dụng của Trạm Phim. Vui lòng đọc kỹ trước khi sử dụng dịch vụ của chúng tôi.";
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </Fragment>
+
+  <Header client:load />
+
+  <div class="main-container">
+    <div class="main-content-wrapper">
+      <main id="main-content" class="policy-page">
+        <article class="policy-content">
+          <h1>Điều khoản Sử dụng</h1>
+          
+          <p class="effective-date">
+            <strong>Ngày có hiệu lực:</strong> 26/10/2025
+          </p>
+
+          <p class="introduction">
+            Chào mừng bạn đến với Trạm Phim của chúng tôi. Bằng cách truy cập hoặc sử dụng Dịch vụ của chúng tôi, bạn đồng ý bị ràng buộc bởi các Điều khoản Sử dụng này ("Điều khoản"). Nếu bạn không đồng ý với tất cả các điều khoản và điều kiện của thỏa thuận này, bạn không được phép sử dụng Dịch vụ.
+          </p>
+
+          <section class="policy-section">
+            <h2>1. Chấp nhận Điều khoản</h2>
+            <p>Bằng việc sử dụng Dịch vụ, bạn xác nhận rằng bạn đủ tuổi hợp pháp để tạo thỏa thuận ràng buộc (tức là từ 18 tuổi trở lên, hoặc đã có sự đồng ý của cha mẹ/người giám hộ).</p>
+            <p>Bạn đồng ý rằng bạn đã đọc, hiểu và chấp nhận tất cả các điều khoản và điều kiện trong các Điều khoản này, cũng như Chính sách Bảo mật và Tuyên bố Miễn trừ Trách nhiệm của chúng tôi.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>2. Thay đổi Điều khoản</h2>
+            <p>Chúng tôi bảo lưu quyền, theo quyết định riêng của mình, chỉnh sửa hoặc thay thế các Điều khoản này bất cứ lúc nào. Chúng tôi sẽ cố gắng cung cấp thông báo ít nhất 30 ngày trước khi bất kỳ điều khoản mới nào có hiệu lực. Việc tiếp tục sử dụng Dịch vụ sau khi các thay đổi có hiệu lực đồng nghĩa với việc bạn chấp nhận các Điều khoản đã sửa đổi.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>3. Tài khoản Người dùng</h2>
+            <p>Nếu Dịch vụ yêu cầu bạn tạo một tài khoản, bạn phải cung cấp thông tin chính xác, đầy đủ và cập nhật.</p>
+            <p>Bạn chịu trách nhiệm bảo mật mật khẩu và chịu trách nhiệm cho tất cả các hoạt động xảy ra dưới tài khoản của mình.</p>
+            <p>Bạn phải thông báo ngay lập tức cho chúng tôi về bất kỳ hành vi sử dụng trái phép tài khoản hoặc vi phạm bảo mật nào khác.</p>
+            <p>Chúng tôi có quyền đình chỉ hoặc chấm dứt tài khoản của bạn ngay lập tức, mà không cần thông báo trước hoặc chịu trách nhiệm, vì bất kỳ lý do gì, bao gồm nhưng không giới hạn ở việc bạn vi phạm các Điều khoản.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>4. Quy tắc Sử dụng và Hành vi Cấm</h2>
+            <p>Bạn đồng ý không sử dụng Dịch vụ cho bất kỳ mục đích nào bị cấm bởi Điều khoản này hoặc bị cấm bởi luật pháp. Các hành vi bị cấm bao gồm:</p>
+            
+            <h3>Vi phạm Bản quyền</h3>
+            <p>Truy cập, sao chép, tái sản xuất, phân phối hoặc cung cấp bất kỳ nội dung nào mà bạn không có quyền hợp pháp để làm như vậy.</p>
+
+            <h3>Hành vi gây hại</h3>
+            <p>Tải lên, gửi hoặc truyền tải bất kỳ thông tin, dữ liệu, văn bản, tệp, liên kết hoặc tài liệu nào là bất hợp pháp, có hại, đe dọa, lạm dụng, quấy rối, phỉ báng, thô tục, khiêu dâm, hoặc xâm phạm quyền riêng tư của người khác.</p>
+
+            <h3>Xâm nhập Hệ thống</h3>
+            <p>Cố gắng can thiệp vào hoạt động bình thường của Dịch vụ, bao gồm tấn công từ chối dịch vụ, sử dụng virus hoặc các mã độc hại khác.</p>
+
+            <h3>Thu thập Dữ liệu</h3>
+            <p>Thu thập thông tin cá nhân của người dùng khác hoặc dữ liệu của Dịch vụ bằng các phương tiện tự động (ví dụ: "scraping", "spidering",...).</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>5. Sở hữu Trí tuệ</h2>
+            <p>Dịch vụ và nội dung gốc của nó (trừ nội dung được cung cấp bởi người dùng), các tính năng và chức năng là và sẽ vẫn là tài sản độc quyền của Trạm Phim và những người cấp phép của nó.</p>
+            
+            <h3>Nội dung Phim</h3>
+            <p>Trạm Phim chỉ đóng vai trò là công cụ tìm kiếm và nhúng liên kết. Chúng tôi không giữ bản quyền đối với các nội dung phim được nhúng từ các máy chủ bên ngoài. Mọi vấn đề bản quyền cần được giải quyết với các nhà cung cấp nội dung gốc đó.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>6. Liên kết đến Các Trang Web Khác</h2>
+            <p>Dịch vụ của chúng tôi có thể chứa các liên kết đến các trang web hoặc dịch vụ của bên thứ ba không thuộc sở hữu hoặc kiểm soát của Trạm Phim. Chúng tôi không chịu trách nhiệm về nội dung, chính sách bảo mật hoặc các hoạt động của bất kỳ trang web hoặc dịch vụ bên thứ ba nào.</p>
+          </section>
+
+          <section class="policy-section">
+            <h2>7. Chấm dứt</h2>
+            <p>Chúng tôi có thể chấm dứt hoặc đình chỉ quyền truy cập của bạn vào Dịch vụ ngay lập tức, mà không cần thông báo trước hoặc chịu trách nhiệm, nếu bạn vi phạm Điều khoản. Sau khi chấm dứt, quyền sử dụng Dịch vụ của bạn sẽ ngay lập tức bị chấm dứt.</p>
+          </section>
+        </article>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>
+
+<style>
+  .policy-page {
+    padding: 2rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .policy-content {
+    color: #fff;
+    line-height: 1.8;
+  }
+
+  .policy-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #ff6b35;
+  }
+
+  .effective-date {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #333;
+  }
+
+  .introduction {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #ddd;
+  }
+
+  .policy-section {
+    margin-bottom: 2rem;
+  }
+
+  .policy-section h2 {
+    font-size: 1.5rem;
+    color: #ff6b35;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  .policy-section h3 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .policy-section p {
+    margin-bottom: 1rem;
+    color: #ddd;
+  }
+
+  .policy-section ul {
+    list-style-position: inside;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .policy-section li {
+    margin-bottom: 0.5rem;
+    color: #ddd;
+  }
+
+  @media (max-width: 768px) {
+    .policy-page {
+      padding: 1rem;
+    }
+
+    .policy-content h1 {
+      font-size: 1.8rem;
+    }
+
+    .policy-section h2 {
+      font-size: 1.2rem;
+    }
+  }
+</style>

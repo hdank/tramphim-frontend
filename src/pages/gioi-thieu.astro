@@ -1,0 +1,147 @@
+---
+import BaseLayout from "../layouts/Layout.astro";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/index";
+
+const title = "Giới thiệu - Trạm Phim";
+const description = "Tìm hiểu về Trạm Phim - Nền tảng tổng hợp thông tin giải trí và điện ảnh hàng đầu.";
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </Fragment>
+
+  <Header client:load />
+
+  <div class="main-container">
+    <div class="main-content-wrapper">
+      <main id="main-content" class="about-page">
+        <article class="about-content">
+          <h1>Giới thiệu về Trạm Phim</h1>
+          
+          <p class="introduction">
+            Trạm Phim được thành lập với sứ mệnh trở thành điểm đến tổng hợp tin tức và thông tin giải trí hàng đầu cho những người yêu điện ảnh và truyền hình.
+          </p>
+
+          <section class="about-section">
+            <h2>Mục tiêu của chúng tôi:</h2>
+            
+            <div class="objective">
+              <h3>Cung cấp Thông tin</h3>
+              <p>Chúng tôi nỗ lực cung cấp những thông tin mới nhất và đáng tin cậy về các bộ phim, chương trình truyền hình, diễn viên và đạo diễn từ khắp nơi trên thế giới.</p>
+            </div>
+
+            <div class="objective">
+              <h3>Nền tảng Chia sẻ</h3>
+              <p>Trạm Phim hoạt động như một nền tảng tìm kiếm và tổng hợp, cung cấp các liên kết nhúng (embed) và thông tin về các nội dung giải trí công cộng.</p>
+            </div>
+
+            <div class="objective">
+              <h3>Trải nghiệm Tốt nhất</h3>
+              <p>Chúng tôi cam kết xây dựng một giao diện thân thiện, dễ sử dụng, giúp người dùng dễ dàng khám phá và theo dõi các bộ phim yêu thích của mình.</p>
+            </div>
+          </section>
+
+          <section class="about-section">
+            <h2>Tầm nhìn:</h2>
+            <p>Chúng tôi mong muốn xây dựng một cộng đồng điện ảnh tích cực, nơi người hâm mộ có thể tương tác, chia sẻ đánh giá và cập nhật những thông tin mới nhất một cách nhanh chóng và tiện lợi.</p>
+          </section>
+        </article>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding: 2rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .about-content {
+    color: #fff;
+    line-height: 1.8;
+  }
+
+  .about-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #ff6b35;
+  }
+
+  .introduction {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #ddd;
+    padding: 1.5rem;
+    border-left: 4px solid #ff6b35;
+    background-color: rgba(255, 107, 53, 0.1);
+  }
+
+  .about-section {
+    margin-bottom: 3rem;
+  }
+
+  .about-section h2 {
+    font-size: 1.8rem;
+    color: #ff6b35;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .objective {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: rgba(25, 27, 36, 0.8);
+    border-radius: 8px;
+    border-left: 4px solid #ff6b35;
+  }
+
+  .objective h3 {
+    font-size: 1.3rem;
+    color: #ff6b35;
+    margin-bottom: 0.8rem;
+  }
+
+  .objective p {
+    color: #ddd;
+    margin: 0;
+  }
+
+  .about-section > p {
+    color: #ddd;
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 768px) {
+    .about-page {
+      padding: 1rem;
+    }
+
+    .about-content h1 {
+      font-size: 1.8rem;
+    }
+
+    .about-section h2 {
+      font-size: 1.4rem;
+    }
+
+    .objective h3 {
+      font-size: 1.1rem;
+    }
+
+    .introduction {
+      padding: 1rem;
+      font-size: 1rem;
+    }
+  }
+</style>

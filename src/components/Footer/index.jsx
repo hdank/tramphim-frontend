@@ -3,10 +3,11 @@ import logo from "../../assets/logo.png";
 
 const Footer = () => {
   const navLinks = [
+    { name: "Giới thiệu", href: "/gioi-thieu" },
+    { name: "Chính sách bảo mật", href: "/chinh-sach-bao-mat" },
+    { name: "Điều khoản sử dụng", href: "/dieu-khoan-su-dung" },
     { name: "Hỏi - Đáp", href: "/" },
-    { name: "Chính sách bảo mật", href: "/" },
-    { name: "Điều khoản sử dụng", href: "/" },
-    { name: "Giới thiệu", href: "/" },
+    { name: "Tuyên bố miễn trừ trách nhiệm", href: "/tuyen-bo-mien-tru" },
   ];
 
   const year = new Date().getFullYear();
