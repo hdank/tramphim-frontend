@@ -32,7 +32,7 @@ export default function NotificationDropdown() {
   // Fetch notifications
   const fetchNotifications = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     try {
       const token = localStorage.getItem('access_token');
@@ -45,7 +45,7 @@ export default function NotificationDropdown() {
       if (response.ok) {
         const data = await response.json();
         setNotifications(data);
-        
+
         // Calculate unread count
         const unread = data.filter(n => !n.da_xem).length;
         setUnreadCount(unread);
@@ -113,7 +113,7 @@ export default function NotificationDropdown() {
 
   const deleteNotification = async (e, notificationId) => {
     e.stopPropagation();
-    
+
     try {
       const token = localStorage.getItem('access_token');
       const response = await fetch(
@@ -161,16 +161,16 @@ export default function NotificationDropdown() {
           const phimInfo = await response.json();
           const movieSlug = phimInfo.slug;
           const commentId = notification.binh_luan_id;
-          
+
           if (movieSlug && commentId) {
             const url = `/phim/${movieSlug}#binh_luan_${commentId}`;
-            
+
             // Check if we're already on the same page
             const currentPath = window.location.pathname;
             const targetPath = `/phim/${movieSlug}`;
-            
+
             setIsOpen(false);
-            
+
             if (currentPath === targetPath) {
               // Same page, just scroll to the element
               setTimeout(() => {
@@ -201,9 +201,7 @@ export default function NotificationDropdown() {
     setIsOpen(false);
   };
 
-  if (!user) {
-    return null;
-  }
+
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -221,14 +219,21 @@ export default function NotificationDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute left-4 right-4 mt-2 max-h-96 overflow-y-auto rounded-md bg-[#23252b] shadow-lg ring-1 ring-black ring-opacity-5 z-50 sm:left-auto sm:right-0 sm:w-80">
-          <div className="sticky top-0 border-b border-gray-100/10 bg-[#23252b] px-4 py-3">
+        <div className="fixed top-16 left-1/2 z-[60] mt-2 max-h-[80vh] w-[90vw] max-w-md -translate-x-1/2 overflow-y-auto rounded-xl bg-[#23252b]/95 backdrop-blur-xl border border-white/10 shadow-2xl ring-1 ring-black ring-opacity-5 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 sm:max-h-96 sm:translate-x-0">
+          <div className="sticky top-0 border-b border-gray-100/10 bg-[#23252b]/95 backdrop-blur-xl px-4 py-3 z-10">
             <h3 className="text-sm font-medium text-white">Thông báo</h3>
           </div>
 
           {loading ? (
             <div className="px-4 py-6 text-center text-gray-400">
               <p className="text-sm">Đang tải...</p>
+            </div>
+          ) : !user ? (
+            <div className="px-4 py-6 text-center">
+              <p className="text-sm text-gray-400">Vui lòng đăng nhập để xem thông báo</p>
+              <a href="/dang-nhap" className="mt-2 inline-block rounded-md bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/20">
+                Đăng nhập
+              </a>
             </div>
           ) : notifications.length === 0 ? (
             <div className="px-4 py-6 text-center">
@@ -239,11 +244,10 @@ export default function NotificationDropdown() {
               {notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className={`px-4 py-3 transition-colors group flex items-start gap-3 ${
-                    notification.da_xem
-                      ? 'hover:bg-white/5'
-                      : 'bg-white/10 hover:bg-white/15'
-                  }`}
+                  className={`px-4 py-3 transition-colors group flex items-start gap-3 ${notification.da_xem
+                    ? 'hover:bg-white/5'
+                    : 'bg-white/10 hover:bg-white/15'
+                    }`}
                 >
                   <div
                     onClick={() => handleNotificationClick(notification)}

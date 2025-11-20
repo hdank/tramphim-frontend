@@ -680,7 +680,7 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center px-0 md:gap-3 md:pl-4 lg:gap-6">
+          <div className="flex flex-shrink-0 items-center justify-center gap-2 px-0 md:gap-3 md:pl-4 lg:gap-6">
             <div ref={desktopSearchRef} className="relative hidden lg:block">
               <form
                 onSubmit={handleDesktopSearchSubmit}

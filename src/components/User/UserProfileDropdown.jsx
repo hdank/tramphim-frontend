@@ -47,7 +47,7 @@ export default function UserProfileDropdown() {
             </button>
 
             {isOpen && (
-                <div className="absolute left-4 right-4 mt-2 origin-top-right divide-y divide-gray-100/10 rounded-md bg-[#23252b] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 sm:left-auto sm:right-0 sm:w-56">
+                <div className="fixed top-16 left-1/2 z-[60] mt-2 w-[90vw] max-w-sm -translate-x-1/2 origin-top divide-y divide-gray-100/10 rounded-xl bg-[#23252b]/95 backdrop-blur-xl border border-white/10 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-64 sm:translate-x-0 sm:origin-top-right">
                     <div className="px-4 py-3">
                         {user ? (
                             <>
