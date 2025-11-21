@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/Layout.astro";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/index";
+import GameList from "../components/MiniGame/GameList";
+
+const title = "Mini Game - Trạm Phim";
+const description = "Thử thách trí nhớ với game lật thẻ và nhận điểm thưởng!";
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </Fragment>
+
+  <Header client:load />
+
+  <div class="main-container">
+    <div class="main-content-wrapper">
+      <main id="main-content" class="minigame-page">
+        <GameList client:load />
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>
+
+<style>
+  .minigame-page {
+    padding: 1rem;
+    min-height: calc(100vh - 200px);
+  }
+
+  @media (max-width: 768px) {
+    .minigame-page {
+      padding: 0.5rem;
+    }
+  }
+</style>

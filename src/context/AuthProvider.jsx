@@ -81,6 +81,28 @@ const logout = () => {
     window.location.href = '/';
 };
 
+const refreshUser = async () => {
+    console.log("[AuthProvider] refreshUser() called");
+    const token = localStorage.getItem('access_token');
+    if (token) {
+        try {
+            console.log("[AuthProvider] Fetching profile from", `${BASE_URL}/api/auth/profile/`);
+            const response = await axios.get(`${BASE_URL}/api/auth/profile/`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log("[AuthProvider] Profile fetched successfully:", response.data);
+            userStore.set(response.data);
+            console.log("[AuthProvider] userStore updated with new user data");
+            return { success: true, user: response.data };
+        } catch (error) {
+            console.error("[AuthProvider] User refresh failed:", error);
+            return { success: false };
+        }
+    }
+    console.log("[AuthProvider] No token found");
+    return { success: false };
+};
+
 const uploadAvatar = async (file) => {
     try {
         const token = localStorage.getItem('access_token');
@@ -163,7 +185,8 @@ const resetPassword = async (email, code, newPassword, confirmPassword) => {
 export const useAuth = () => {
     const user = useStore(userStore);
     const loading = useStore(loadingStore);
-    return { user, loading, login, register, logout, uploadAvatar, requestPasswordReset, resetPassword };
+
+    return { user, loading, login, register, logout, uploadAvatar, requestPasswordReset, resetPassword, refreshUser };
 };
 
 // AuthProvider component to initialize auth on mount

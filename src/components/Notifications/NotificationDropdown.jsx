@@ -14,7 +14,7 @@ const BellIcon = ({ hasUnread }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31M5 19.5A2.5 2.5 0 017.5 22h9a2.5 2.5 0 012.5-2.5M5 19.5v-.75A9.001 9.001 0 0118 9.75v.75m0 0h3.75a2.25 2.25 0 012.25 2.25v.75"
+      d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"
     />
   </svg>
 );
@@ -253,7 +253,14 @@ export default function NotificationDropdown() {
                     onClick={() => handleNotificationClick(notification)}
                     className="flex-1 cursor-pointer flex gap-3 items-start min-w-0"
                   >
-                    {notification.binh_luan?.nguoi_dung?.anh_dai_dien_url ? (
+                    {notification.loai === 'system' ? (
+                      <div className="h-8 w-8 rounded-full bg-sky-600 flex-shrink-0 flex items-center justify-center ring-1 ring-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+                          <path d="M10.464 8.746c.227-.18.497-.311.786-.394v2.795a2.252 2.252 0 01-.786-.393c-.394-.313-.546-.681-.546-1.004 0-.323.152-.691.546-1.004zM12.75 15.662v-2.824c.347.085.664.228.921.421.427.32.579.686.579.991 0 .305-.152.671-.579.991a2.534 2.534 0 01-.921.42z" />
+                          <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v.816a3.836 3.836 0 00-1.72.756c-.712.566-1.112 1.35-1.112 2.178 0 .829.4 1.612 1.113 2.178.502.4 1.102.647 1.719.756v2.978a2.536 2.536 0 01-.921-.421l-.879-.66a.75.75 0 00-.9 1.2l.879.66c.533.4 1.169.645 1.821.75V18a.75.75 0 001.5 0v-.81a4.124 4.124 0 001.821-.749c.745-.559 1.179-1.344 1.179-2.191 0-.847-.434-1.632-1.179-2.191a4.122 4.122 0 00-1.821-.75V8.354c.29.082.559.213.786.393l.415.33a.75.75 0 00.933-1.175l-.415-.33a3.836 3.836 0 00-1.719-.755V6z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    ) : notification.binh_luan?.nguoi_dung?.anh_dai_dien_url ? (
                       <img
                         src={notification.binh_luan.nguoi_dung.anh_dai_dien_url}
                         alt={notification.binh_luan.nguoi_dung.username}
@@ -268,18 +275,31 @@ export default function NotificationDropdown() {
                     )}
 
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white">
-                        <span className="font-medium">
-                          {notification.binh_luan?.nguoi_dung?.username}
-                        </span>
-                        {' '}
-                        {notification.loai === 'reply' && 'đã trả lời bình luận của bạn'}
-                      </p>
+                      {notification.loai === 'system' ? (
+                        <>
+                          <p className="text-sm text-white font-medium">
+                            Hệ thống
+                          </p>
+                          <p className="text-xs text-gray-300 mt-1 whitespace-pre-line">
+                            {notification.noi_dung}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-sm text-white">
+                            <span className="font-medium">
+                              {notification.binh_luan?.nguoi_dung?.username}
+                            </span>
+                            {' '}
+                            {notification.loai === 'reply' && 'đã trả lời bình luận của bạn'}
+                          </p>
 
-                      {notification.binh_luan?.noi_dung && (
-                        <p className="text-xs text-gray-400 line-clamp-2 mt-1">
-                          "{notification.binh_luan.noi_dung}"
-                        </p>
+                          {notification.binh_luan?.noi_dung && (
+                            <p className="text-xs text-gray-400 line-clamp-2 mt-1">
+                              "{notification.binh_luan.noi_dung}"
+                            </p>
+                          )}
+                        </>
                       )}
 
                       <p className="text-xs text-gray-500 mt-1">

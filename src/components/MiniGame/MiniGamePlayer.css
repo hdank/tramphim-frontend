@@ -1,0 +1,186 @@
+/* Mini Game Container Styles */
+.minigame-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.minigame-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.minigame-header h1 {
+    font-size: 2.5rem;
+    color: #ff6b35;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.game-info {
+    background: rgba(255, 107, 53, 0.1);
+    border-left: 4px solid #ff6b35;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin: 1rem auto;
+    max-width: 600px;
+}
+
+.welcome-text {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.user-name {
+    color: #ff6b35;
+    font-weight: 600;
+}
+
+.instruction {
+    font-size: 0.95rem;
+    color: #ddd;
+    margin: 0;
+}
+
+/* Game Iframe Wrapper */
+.game-wrapper {
+    position: relative;
+    width: 100%;
+    background: #1a1c24;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 107, 53, 0.2);
+    margin-bottom: 2rem;
+}
+
+.game-iframe {
+    width: 100%;
+    height: 800px;
+    border: none;
+    display: block;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+}
+
+/* Game Footer */
+.game-footer {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tip-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(25, 27, 36, 0.8);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+}
+
+.tip-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.tip-box p {
+    margin: 0;
+    color: #ddd;
+    font-size: 0.95rem;
+}
+
+/* Auth Required Screen */
+.minigame-auth-required {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-message-card {
+    background: rgba(25, 27, 36, 0.9);
+    border: 2px solid rgba(255, 107, 53, 0.3);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.auth-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.auth-message-card h2 {
+    font-size: 1.8rem;
+    color: #ff6b35;
+    margin-bottom: 1rem;
+}
+
+.auth-message-card p {
+    color: #ddd;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+}
+
+.btn-login {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b35, #ff8555);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .minigame-container {
+        padding: 1rem 0.5rem;
+    }
+
+    .minigame-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .game-info {
+        padding: 0.875rem 1rem;
+    }
+
+    .game-iframe {
+        height: 600px;
+    }
+
+    .tip-box {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .auth-message-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .auth-message-card h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-iframe {
+        height: 500px;
+    }
+
+    .minigame-header h1 {
+        font-size: 1.5rem;
+    }
+}

@@ -15,6 +15,10 @@ export default function UserProfileDropdown() {
     const dropdownRef = useRef(null);
 
     useEffect(() => {
+        console.log("[UserProfileDropdown] User updated:", user);
+    }, [user]);
+
+    useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
@@ -53,6 +57,10 @@ export default function UserProfileDropdown() {
                             <>
                                 <p className="text-sm text-white">Xin chào,</p>
                                 <p className="truncate text-sm font-medium text-white">{user.username}</p>
+                                <div className="flex items-center gap-1 mt-1 text-xs text-yellow-400">
+                                    <span>🪙</span>
+                                    <span>{user.points} Đậu</span>
+                                </div>
                             </>
                         ) : (
                             <p className="text-sm text-gray-400">Khách</p>
