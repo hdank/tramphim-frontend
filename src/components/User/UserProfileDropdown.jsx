@@ -14,6 +14,11 @@ export default function UserProfileDropdown() {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
+    const isPremium = (user) => {
+        if (!user || !user.premium_until) return false;
+        return new Date(user.premium_until) > new Date();
+    };
+
     useEffect(() => {
         console.log("[UserProfileDropdown] User updated:", user);
     }, [user]);
@@ -38,11 +43,23 @@ export default function UserProfileDropdown() {
                 aria-label="User menu"
             >
                 {user && user.anh_dai_dien_url ? (
-                    <img
-                        src={user.anh_dai_dien_url}
-                        alt={user.username}
-                        className="h-8 w-8 rounded-full object-cover ring-2 ring-white/10"
-                    />
+                    <div className="relative h-8 w-8 flex items-center justify-center">
+                        {isPremium(user) && (
+                            <div
+                                className="absolute -inset-[3px] rounded-full"
+                                style={{
+                                    background: "conic-gradient(from 0deg, #ff0000, #ffffff, #000000, #ff0000)",
+                                    animation: "spin 4s linear infinite",
+                                    zIndex: 0
+                                }}
+                            />
+                        )}
+                        <img
+                            src={user.anh_dai_dien_url}
+                            alt={user.username}
+                            className={`relative h-full w-full rounded-full object-cover z-10 ${isPremium(user) ? "border-2 border-[#1a1c22]" : "ring-2 ring-white/10"}`}
+                        />
+                    </div>
                 ) : (
                     <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center ring-2 ring-white/10">
                         <UserIcon />
@@ -55,12 +72,17 @@ export default function UserProfileDropdown() {
                     <div className="px-4 py-3">
                         {user ? (
                             <>
-                                <p className="text-sm text-white">Xin chào,</p>
-                                <p className="truncate text-sm font-medium text-white">{user.username}</p>
+                                <p className="text-sm text-white">Xin chào, {user.username}</p>
                                 <div className="flex items-center gap-1 mt-1 text-xs text-yellow-400">
-                                    <span>🪙</span>
-                                    <span>{user.points} Đậu</span>
+                                    {isPremium(user) ? (
+                                        <span className="font-bold bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-600 text-transparent bg-clip-text drop-shadow-sm tracking-wider">
+                                            PREMIUM
+                                        </span>
+                                    ) : (
+                                        <span></span>
+                                    )}
                                 </div>
+                                <p className="text-xs text-gray-400">🪙 <b>{user.points} Đậu</b></p>
                             </>
                         ) : (
                             <p className="text-sm text-gray-400">Khách</p>
@@ -69,13 +91,26 @@ export default function UserProfileDropdown() {
 
                     <div className="py-1">
                         {user && (
-                            <a
-                                href="/tai-khoan"
-                                className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
-                            >
-                                <UserIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-300" aria-hidden="true" />
-                                Thông tin tài khoản
-                            </a>
+                            <>
+                                <a
+                                    href="/tai-khoan"
+                                    className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
+                                >
+                                    <UserIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-300" aria-hidden="true" />
+                                    Thông tin tài khoản
+                                </a>
+                                <a
+                                    href="/mua-premium"
+                                    className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
+                                >
+                                    <div className="mr-3 h-5 w-5 flex items-center justify-center text-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                                        </svg>
+                                    </div>
+                                    Mua tài khoản Youtube Premium
+                                </a>
+                            </>
                         )}
                         <a
                             href="/tai-khoan/yeu-thich"
@@ -129,4 +164,22 @@ export default function UserProfileDropdown() {
             )}
         </div>
     );
+}
+
+const styles = `
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+`;
+
+// Inject styles
+if (typeof document !== 'undefined') {
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = styles;
+    document.head.appendChild(styleSheet);
 }
