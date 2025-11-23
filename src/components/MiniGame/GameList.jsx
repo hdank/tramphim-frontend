@@ -176,7 +176,7 @@ export default function GameList() {
                         </h3>
 
                         <p className="text-gray-400 text-center mb-6">
-                            Bạn cần ít nhất <span className="text-yellow-400 font-bold">15,000 Đậu</span> để chơi game này.
+                            Bạn cần ít nhất <span className="text-yellow-400 font-bold">1,500 Đậu</span> để chơi game này.
                         </p>
 
                         <div className="bg-gray-900/50 p-4 rounded-xl border border-gray-700 mb-6 text-center">
@@ -185,7 +185,7 @@ export default function GameList() {
                                 {(user.points || 0).toLocaleString('vi-VN')} Đậu
                             </div>
                             <div className="text-sm text-red-400 mt-2">
-                                Thiếu {(15000 - (user.points || 0)).toLocaleString('vi-VN')} Đậu
+                                Thiếu {(1500 - (user.points || 0)).toLocaleString('vi-VN')} Đậu
                             </div>
                         </div>
 
