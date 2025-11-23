@@ -1,0 +1,360 @@
+---
+import Layout from '../layouts/Layout.astro';
+import qrBank from '../assets/qrbank.png';
+---
+
+<Layout title="Mua Đậu - Trạm Phim">
+    <div class="min-h-screen bg-[#1a1c22] pt-20 pb-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 via-white to-yellow-500 mb-4 animate-gradient">
+                    Mua Đậu
+                </h1>
+                <p class="text-gray-400 text-lg">Nâng cao điểm Đậu để tham gia minigame và trao đổi quà.</p>
+                <div class="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-lg mt-4 inline-block">
+                    <p class="text-yellow-400 font-bold">💡 Tỷ giá: 1.000đ = 100 Đậu</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <!-- QR Code Section -->
+                <div class="bg-[#23252b] p-6 rounded-2xl border border-white/10 shadow-2xl flex flex-col items-center">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative bg-white p-2 rounded-lg">
+                            <img src={qrBank.src} alt="QR Chuyển khoản" class="w-full max-w-[280px] h-auto rounded-md" />
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center space-y-2">
+                        <p class="text-gray-300">Ngân hàng: <span class="font-bold text-white">Techcombank</span></p>
+                        <div class="bg-yellow-500/20 border border-yellow-500/30 p-3 rounded-lg">
+                            <p class="text-yellow-300 text-sm">Các mức mua:</p>
+                            <div class="grid grid-cols-2 gap-2 mt-2 text-sm text-white">
+                                <div>• 10.000đ = 1.000 Đậu</div>
+                                <div>• 50.000đ = 5.000 Đậu</div>
+                                <div>• 100.000đ = 10.000 Đậu</div>
+                                <div>• 500.000đ = 50.000 Đậu</div>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-500/10 border border-yellow-500/20 p-3 rounded-lg mt-4">
+                            <p class="text-yellow-400 text-sm font-medium">
+                                ⚠️ Nội dung chuyển khoản: <br/>
+                                <span class="text-white font-bold select-all">MUA DAU [email đã đăng ký Trạm Phim]</span>
+                            </p>
+                        </div>
+                        <p class="text-gray-300">Sau khi chuyển khoản, vui lòng gửi ảnh chụp màn hình</p>
+                    </div>
+                </div>
+
+                <!-- Upload Section -->
+                <div class="bg-[#23252b] p-6 rounded-2xl border border-white/10 shadow-2xl">
+                    <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Xác nhận thanh toán
+                    </h2>
+                    
+                    <form id="uploadForm" class="space-y-6">
+                        <!-- Amount Selection -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-3">
+                                Chọn mức mua
+                            </label>
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <label class="flex items-center p-3 border-2 border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-500/10">
+                                    <input type="radio" name="amount" value="10000|VIP1" class="w-4 h-4 text-yellow-500" required />
+                                    <span class="ml-3 text-sm text-white font-medium">10.000đ → 1.000 Đậu</span>
+                                </label>
+                                <label class="flex items-center p-3 border-2 border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-500/10">
+                                    <input type="radio" name="amount" value="50000|VIP2" class="w-4 h-4 text-yellow-500" />
+                                    <span class="ml-3 text-sm text-white font-medium">50.000đ → 5.000 Đậu</span>
+                                </label>
+                                <label class="flex items-center p-3 border-2 border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-500/10">
+                                    <input type="radio" name="amount" value="100000|VIP3" class="w-4 h-4 text-yellow-500" />
+                                    <span class="ml-3 text-sm text-white font-medium">100.000đ → 10.000 Đậu</span>
+                                </label>
+                                <label class="flex items-center p-3 border-2 border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-500/10">
+                                    <input type="radio" name="amount" value="500000|VIP4" class="w-4 h-4 text-yellow-500" />
+                                    <span class="ml-3 text-sm text-white font-medium">500.000đ → 50.000 Đậu</span>
+                                </label>
+                                <label class="flex items-center col-span-2 p-3 border-2 border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition-colors has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-500/10">
+                                    <input type="radio" name="amount" value="custom" class="w-4 h-4 text-yellow-500" />
+                                    <span class="ml-3 text-sm text-white font-medium">🎯 Nhập mức tùy chỉnh</span>
+                                </label>
+                            </div>
+
+                            <!-- Custom Amount Input -->
+                            <div id="customAmountDiv" class="hidden space-y-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-2">Mức nạp (VNĐ)</label>
+                                    <div class="flex gap-2">
+                                        <input 
+                                            type="number" 
+                                            id="customAmount" 
+                                            placeholder="Nhập số tiền (tối thiểu 10.000đ)" 
+                                            min="10000" 
+                                            step="1000"
+                                            class="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 rounded text-white focus:border-yellow-500 outline-none"
+                                        />
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">💡 Tỷ giá: 1.000đ = 100 Đậu</p>
+                                </div>
+                                <div class="bg-yellow-500/10 border border-yellow-500/30 p-3 rounded">
+                                    <p class="text-xs text-gray-400">Bạn sẽ nhận được:</p>
+                                    <p class="text-lg font-bold text-yellow-400"><span id="customPointsDisplay">0</span> Đậu</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Tải lên ảnh chụp màn hình chuyển khoản thành công
+                            </label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-lg hover:border-gray-500 transition-colors cursor-pointer" id="dropZone">
+                                <div class="space-y-1 text-center">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <div class="flex text-sm text-gray-400">
+                                        <label for="file-upload" class="relative cursor-pointer rounded-md font-medium text-sky-500 hover:text-sky-400 focus-within:outline-none">
+                                            <span>Tải ảnh lên</span>
+                                            <input id="file-upload" name="file-upload" type="file" class="sr-only" accept="image/*" required />
+                                        </label>
+                                        <p class="pl-1">hoặc kéo thả vào đây</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF tối đa 5MB</p>
+                                </div>
+                            </div>
+                            <div id="previewContainer" class="mt-4 hidden">
+                                <p class="text-sm text-gray-300 mb-2">Ảnh đã chọn:</p>
+                                <img id="previewImage" src="" alt="Preview" class="max-h-48 rounded-lg border border-gray-600" />
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]">
+                            Gửi xác nhận
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center text-gray-500 text-sm">
+                <p>Sau khi gửi xác nhận, vui lòng chờ 5-10 phút để nhân viên kiểm tra và cộng Đậu vào tài khoản của bạn.</p>
+                <p>Nếu quá lâu chưa nhận được, vui lòng liên hệ Fanpage để được hỗ trợ.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Success/Error Modal -->
+    <div id="notificationModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-[#23252b] rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-white/10">
+                <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div id="modalIcon" class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-900/50 sm:mx-0 sm:h-10 sm:w-10">
+                            <!-- Icon injected by JS -->
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-white" id="modalTitle">
+                                Thông báo
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-300" id="modalMessage">
+                                    Nội dung thông báo
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#1a1c22] px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="closeModalBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    const form = document.getElementById('uploadForm');
+    const fileInput = document.getElementById('file-upload');
+    const dropZone = document.getElementById('dropZone');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const submitBtn = document.getElementById('submitBtn');
+    const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
+    const customAmountDiv = document.getElementById('customAmountDiv');
+    const customAmount = document.getElementById('customAmount');
+    const customPointsDisplay = document.getElementById('customPointsDisplay');
+    const amountRadios = document.querySelectorAll('input[name="amount"]');
+
+    // Modal elements
+    const modal = document.getElementById('notificationModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalIcon = document.getElementById('modalIcon');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    // Exchange rate: 1000 VND = 100 Đậu (minimum: 10,000 VND)
+    const MIN_AMOUNT = 10000;
+    const EXCHANGE_RATE = 0.1; // 100 Đậu per 1000 VND
+
+    function showModal(title, message, type = 'success') {
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        
+        if (type === 'success') {
+            modalIcon.className = "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-900/50 sm:mx-0 sm:h-10 sm:w-10";
+            modalIcon.innerHTML = `<svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>`;
+        } else {
+            modalIcon.className = "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-900/50 sm:mx-0 sm:h-10 sm:w-10";
+            modalIcon.innerHTML = `<svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`;
+        }
+        
+        modal.classList.remove('hidden');
+    }
+
+    function hideModal() {
+        modal.classList.add('hidden');
+    }
+
+    function updateCustomPoints() {
+        const value = parseInt(customAmount.value) || 0;
+        const points = Math.floor(value * EXCHANGE_RATE);
+        customPointsDisplay.textContent = points.toLocaleString();
+    }
+
+    // Handle custom amount selection
+    amountRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            if (e.target.value === 'custom') {
+                customAmountDiv.classList.remove('hidden');
+                customAmount.focus();
+            } else {
+                customAmountDiv.classList.add('hidden');
+            }
+        });
+    });
+
+    customAmount.addEventListener('input', updateCustomPoints);
+
+    closeModalBtn.addEventListener('click', hideModal);
+
+    // Handle file selection
+    fileInput.addEventListener('change', handleFileSelect);
+
+    function handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
+            showPreview(file);
+        }
+    }
+
+    function showPreview(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const file = fileInput.files[0];
+        if (!file) {
+            showModal('Lỗi', 'Vui lòng chọn ảnh minh chứng chuyển khoản', 'error');
+            return;
+        }
+
+        let amountVnd = null;
+        let packageName = null;
+        const selectedOption = document.querySelector('input[name="amount"]:checked')?.value;
+        
+        if (!selectedOption) {
+            showModal('Lỗi', 'Vui lòng chọn mức mua', 'error');
+            return;
+        }
+
+        if (selectedOption === 'custom') {
+            amountVnd = parseInt(customAmount.value);
+            packageName = 'CUSTOM';
+            if (!amountVnd || amountVnd < MIN_AMOUNT) {
+                showModal('Lỗi', `Vui lòng nhập mức nạp tối thiểu ${MIN_AMOUNT.toLocaleString()} VNĐ`, 'error');
+                return;
+            }
+        } else {
+            // Parse "10000|VIP1" format
+            const [vnd, pkg] = selectedOption.split('|');
+            amountVnd = parseInt(vnd);
+            packageName = pkg;
+        }
+
+        const amountPoints = Math.floor(amountVnd * EXCHANGE_RATE); // Exchange rate: 1000 VND = 100 Đậu
+
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            showModal('Yêu cầu đăng nhập', 'Vui lòng đăng nhập để thực hiện chức năng này', 'error');
+            setTimeout(() => {
+                window.location.href = '/dang-nhap';
+            }, 2000);
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Đang gửi...';
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('amount_vnd', parseInt(amountVnd).toString());
+        formData.append('amount_points', parseInt(amountPoints).toString());
+        formData.append('package_name', packageName);
+
+        try {
+            const response = await fetch(`${BASE_URL}/api/points/request`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('API Error:', errorData);
+                throw new Error(errorData.detail || JSON.stringify(errorData) || 'Gửi yêu cầu thất bại');
+            }
+
+            const result = await response.json();
+            showModal('Thành công', result.message, 'success');
+            form.reset();
+            previewContainer.classList.add('hidden');
+            customAmountDiv.classList.add('hidden');
+            
+        } catch (error) {
+            console.error('Error:', error);
+            showModal('Lỗi', error.message || 'Có lỗi xảy ra. Vui lòng thử lại sau.', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Gửi xác nhận';
+        }
+    });
+</script>
+
+<style>
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .animate-gradient {
+        background-size: 200% auto;
+        animation: gradient 3s linear infinite;
+    }
+</style>

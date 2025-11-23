@@ -1,0 +1,325 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Hỏi - Đáp - Trạm Phim">
+    <div class="min-h-screen bg-[#1a1c22] pt-20 pb-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+                    Hỏi - Đáp
+                </h1>
+                <p class="text-gray-400 text-lg">Tất cả những gì bạn cần biết về Trạm Phim và hệ thống Đậu</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Website Info Section -->
+                <div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-6 rounded-xl border border-blue-500/20">
+                    <h2 class="text-2xl font-bold text-white mb-4">Trạm Phim là gì?</h2>
+                    <p class="text-gray-300 mb-4">
+                        <span class="font-bold text-blue-400">Trạm Phim</span> là một nền tảng xem phim <span class="font-bold">hoàn toàn không lợi nhuận</span> dành cho những người yêu thích phim ảnh. Chúng tôi cam kết cung cấp trải nghiệm tốt nhất cho người dùng mà không phải xem quảng cáo hay bị quấy rối.
+                    </p>
+                    <div class="space-y-3 mt-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl">✨</span>
+                            <div>
+                                <p class="text-white font-bold">Không có quảng cáo</p>
+                                <p class="text-gray-400 text-sm">Xem phim thoải mái mà không bị quảng cáo xen kẽ</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl">🔓</span>
+                            <div>
+                                <p class="text-white font-bold">Không cần tạo tài khoản</p>
+                                <p class="text-gray-400 text-sm">Xem phim bất kì khi nào mà không cần đăng ký (nhưng tạo tài khoản để có thêm lợi ích)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl">🎮</span>
+                            <div>
+                                <p class="text-white font-bold">Chơi game và kiếm phần thưởng</p>
+                                <p class="text-gray-400 text-sm">Tham gia minigame để thắng Đậu, sau đó dùng để trao đổi quà</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl">🎁</span>
+                            <div>
+                                <p class="text-white font-bold">Nhận quà miễn phí</p>
+                                <p class="text-gray-400 text-sm">Tham gia sự kiện, hoạt động trên nền tảng để nhận quà và Đậu</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl">❤️</span>
+                            <div>
+                                <p class="text-white font-bold">Xây dựng bởi người yêu phim</p>
+                                <p class="text-gray-400 text-sm">Được phát triển vì tình yêu với phim, không phải vì lợi nhuận</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q1 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-yellow-400">🪙</span>
+                        <span>Đậu là gì?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Đậu là điểm tích lũy trên Trạm Phim. Bạn có thể kiếm Đậu bằng cách tham gia các minigame, hoạt động trên nền tảng, hoặc mua trực tiếp. Đậu có thể được dùng để trao đổi quà hoặc mua các dịch vụ trên trang.
+                    </p>
+                </details>
+
+                <!-- Q2 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-yellow-400">🎮</span>
+                        <span>Cách kiếm Đậu?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Có nhiều cách để kiếm Đậu:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>✅ Tham gia minigame và thắng: +100-1000 Đậu/game <b>(Sắp ra mắt)</b></li>
+                        <li>✅ Hoạt động đều đặn: +10-50 Đậu/ngày</li>
+                        <li>✅ Tham gia sự kiện: +50-500 Đậu</li>
+                        <li>✅ Mua trực tiếp: 1000 VNĐ = 100 Đậu</li>
+                        <li>✅ Quà từ admin: Thay đổi theo sự kiện</li>
+                    </ul>
+                </details>
+
+                <!-- Q3 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-yellow-400">💳</span>
+                        <span>Tỷ giá mua Đậu là bao nhiêu?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Tỷ giá mua Đậu là <span class="font-bold text-yellow-400">1:10</span> (1000 VNĐ = 100 Đậu).
+                    </p>
+                    <p class="text-gray-300 mt-2">
+                        Các mức mua phổ biến:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-1">
+                        <li>• 10.000 VNĐ = 1.000 Đậu</li>
+                        <li>• 50.000 VNĐ = 5.000 Đậu</li>
+                        <li>• 100.000 VNĐ = 10.000 Đậu</li>
+                        <li>• 500.000 VNĐ = 50.000 Đậu</li>
+                    </ul>
+                </details>
+
+                <!-- Q4 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-yellow-400">💰</span>
+                        <span>Có thể đổi Đậu ra tiền không?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        <span class="font-bold text-red-400">Không,</span> Đậu không thể đổi ra tiền mặt. Đậu chỉ có thể được sử dụng để:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>🎁 Trao đổi quà có giá trị trên nền tảng</li>
+                        <li>🎮 Tham gia các minigame có yêu cầu Đậu tối thiểu</li>
+                        <li>📱 Mua Premium hoặc dịch vụ khác</li>
+                        <li>🎫 Tham gia các sự kiện đặc biệt</li>
+                    </ul>
+                    <p class="text-gray-300 mt-4 text-sm bg-yellow-500/10 p-3 rounded border border-yellow-500/20">
+                        💡 Mục đích của Đậu là khuyến khích người dùng tham gia hoạt động trên nền tảng, không phải kiếm tiền.
+                    </p>
+                </details>
+
+                <!-- Q5 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-yellow-400">🏆</span>
+                        <span>Cách dùng Đậu để trao đổi quà?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Để trao đổi Đậu lấy quà:
+                    </p>
+                    <ol class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>1️⃣ Truy cập phần "Trao đổi quà" trên tài khoản</li>
+                        <li>2️⃣ Chọn quà bạn muốn đổi (xem giá Đậu cần)</li>
+                        <li>3️⃣ Kiểm tra số Đậu hiện có của bạn</li>
+                        <li>4️⃣ Nhấn "Trao đổi" nếu đủ Đậu</li>
+                        <li>5️⃣ Quà sẽ được gửi vào email đăng ký của bạn</li>
+                    </ol>
+                </details>
+
+                <!-- Q6 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-yellow-400">⏱️</span>
+                        <span>Bao lâu sẽ nhận được Đậu sau khi mua?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Thông thường, bạn sẽ nhận được Đậu trong vòng <span class="font-bold">5-10 phút</span> sau khi gửi xác nhận thanh toán.
+                    </p>
+                    <p class="text-gray-300 mt-2">
+                        Nếu quá lâu chưa nhận, vui lòng:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>✓ Kiểm tra lại email đã đăng ký</li>
+                        <li>✓ Refresh trang web</li>
+                        <li>✓ Liên hệ Fanpage Trạm Phim để được hỗ trợ</li>
+                    </ul>
+                </details>
+
+                <!-- Q7 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-yellow-400">🎯</span>
+                        <span>Minigame có phạt Đậu không?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Có, khi chơi minigame:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>✅ <span class="text-green-400">Thắng</span>: Nhận +Đậu thưởng</li>
+                        <li>❌ <span class="text-red-400">Thua hoặc hết giờ</span>: Bị trừ -Đậu phạt</li>
+                    </ul>
+                    <p class="text-gray-300 mt-4 text-sm bg-red-500/10 p-3 rounded border border-red-500/20">
+                        ⚠️ Đảm bảo bạn có đủ Đậu trước khi chơi. Nếu không đủ, bạn sẽ không thể vào game!
+                    </p>
+                </details>
+
+                <!-- Q8 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-blue-400">🎬</span>
+                        <span>Tại sao Trạm Phim không có quảng cáo?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Trạm Phim là một nền tảng xem phim <span class="font-bold">phi lợi nhuận</span>. Chúng tôi không cần kiếm tiền từ quảng cáo vì chúng tôi xây dựng trang này vì tình yêu với phim, không phải vì lợi nhuận. 
+                    </p>
+                    <p class="text-gray-300 mt-4">
+                        Mục tiêu của chúng tôi là cung cấp trải nghiệm xem phim thoải mái nhất, nơi bạn có thể:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>🎬 Xem phim chất lượng cao không quảng cáo</li>
+                        <li>🚫 Không bị spam hoặc quấy rối</li>
+                        <li>🤝 Tham gia một cộng đồng yêu thích phim</li>
+                    </ul>
+                </details>
+
+                <!-- Q9 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-green-400">🔓</span>
+                        <span>Phải tạo tài khoản để xem phim không?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        <span class="font-bold text-green-400">Không cần!</span> Bạn có thể xem phim mà không cần tạo tài khoản. Tuy nhiên, tạo tài khoản sẽ giúp bạn:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>❤️ Lưu danh sách yêu thích</li>
+                        <li>📝 Theo dõi tiến độ xem phim</li>
+                        <li>🎮 Chơi minigame và kiếm Đậu</li>
+                        <li>🎁 Tham gia sự kiện và nhận quà</li>
+                        <li>💬 Bình luận và tương tác với cộng đồng</li>
+                    </ul>
+                    <p class="text-gray-300 mt-4 text-sm bg-blue-500/10 p-3 rounded border border-blue-500/20">
+                        💡 Hãy tạo tài khoản để có trải nghiệm đầy đủ trên Trạm Phim!
+                    </p>
+                </details>
+
+                <!-- Q10 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-purple-400">🎁</span>
+                        <span>Làm sao để nhận quà miễn phí?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Có nhiều cách để nhận quà miễn phí trên Trạm Phim:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>🎮 <span class="font-bold">Chơi Minigame</span>: Thắng game để kiếm Đậu</li>
+                        <li>🎯 <span class="font-bold">Hoạt động hàng ngày</span>: Login, xem phim để nhận Đậu (Sắp ra mắt)</li>
+                        <li>🎪 <span class="font-bold">Tham gia sự kiện</span>: Những sự kiện đặc biệt thường có quà</li>
+                        <li>📅 <span class="font-bold">Trao đổi Đậu</span>: Sử dụng Đậu bạn kiếm được để trao đổi quà</li>
+                        <li>👑 <span class="font-bold">Nâng cấp thành viên</span>: Thành viên cao cấp nhận được quà độc quyền</li>
+                    </ul>
+                    <p class="text-gray-300 mt-4 text-sm bg-purple-500/10 p-3 rounded border border-purple-500/20">
+                        💡 Các sự kiện mới được công bố trên Fanpage Trạm Phim. Theo dõi để không bỏ lỡ!
+                    </p>
+                </details>
+
+                <!-- Q11 -->
+                <details class="bg-[#23252b] p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-yellow-500/30 transition-colors">
+                    <summary class="flex items-start justify-between font-bold text-lg text-white">
+                        <span class="text-orange-400">💪</span>
+                        <span>Làm sao để hỗ trợ Trạm Phim phát triển?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </summary>
+                    <p class="text-gray-300 mt-4">
+                        Mặc dù Trạm Phim không lợi nhuận, bạn vẫn có thể hỗ trợ chúng tôi phát triển:
+                    </p>
+                    <ul class="text-gray-300 mt-2 ml-4 space-y-2">
+                        <li>⭐ <span class="font-bold">Chia sẻ trang</span>: Giới thiệu Trạm Phim với bạn bè</li>
+                        <li>💬 <span class="font-bold">Phản hồi ý kiến</span>: Giúp chúng tôi cải thiện trải nghiệm</li>
+                        <li>📱 <span class="font-bold">Tham gia cộng đồng</span>: Follow Fanpage và tương tác</li>
+                        <li>🎮 <span class="font-bold">Tham gia sự kiện</span>: Hoạt động trên nền tảng</li>
+                    </ul>
+                    <p class="text-gray-300 mt-4">
+                        Nếu bạn muốn đóng góp tài chính để hỗ trợ máy chủ và phát triển:
+                    </p>
+                    <p class="text-gray-300 mt-2 ml-4">
+                        📧 Liên hệ: <span class="text-yellow-400">tramphim2610@gmail.com</span>
+                    </p>
+                </details>
+            </div>
+
+            <div class="mt-12 p-6 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl">
+                <h3 class="text-xl font-bold text-white mb-4">❓ Còn câu hỏi khác?</h3>
+                <p class="text-gray-300 mb-4">
+                    Nếu bạn có câu hỏi khác không được trả lời ở đây, vui lòng liên hệ chúng tôi:
+                </p>
+                <div class="space-y-2">
+                    <p class="text-gray-300">📞 <span class="text-yellow-400">Fanpage Trạm Phim</span>: <a href="https://www.facebook.com/profile.php?id=61581940541481"><b><u>Trạm Phim Official</u></b></a></p>
+                    <p class="text-gray-300">📧 <span class="text-yellow-400">Email</span>: tramphim2610@gmail.com</p>
+                    <p class="text-gray-300">⏰ <span class="text-yellow-400">Thời gian hỗ trợ</span>: 9:00 - 22:00 (Hàng ngày)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    details summary {
+        list-style: none;
+    }
+    details summary::-webkit-details-marker {
+        display: none;
+    }
+</style>

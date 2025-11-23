@@ -82,7 +82,18 @@ export default function UserProfileDropdown() {
                                         <span></span>
                                     )}
                                 </div>
-                                <p className="text-xs text-gray-400">🪙 <b>{user.points} Đậu</b></p>
+                                <p className="text-xs text-gray-400">
+                                    🪙 <b>{user.points} Đậu</b>
+                                    <a 
+                                        href="/hoi-dap" 
+                                        className="ml-2 text-gray-500 hover:text-gray-300 transition-colors inline-block"
+                                        title="Hỏi - Đáp về Đậu"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                                        </svg>
+                                    </a>
+                                </p>
                             </>
                         ) : (
                             <p className="text-sm text-gray-400">Khách</p>
@@ -99,8 +110,30 @@ export default function UserProfileDropdown() {
                                     <UserIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-300" aria-hidden="true" />
                                     Thông tin tài khoản
                                 </a>
+                                <a
+                                    href="/mini-game"
+                                    className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
+                                >
+                                    <div className="mr-3 h-5 w-5 flex items-center justify-center text-purple-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                        </svg>
+                                    </div>
+                                    🎮 Mini Games
+                                </a>
                             </>
                         )}
+                        <a
+                            href={user ? "/mua-dau" : "/dang-nhap"}
+                            className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
+                        >
+                            <div className="mr-3 h-5 w-5 flex items-center justify-center text-yellow-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.04-1.34-.87-2.57-2.49-2.97V5h-2v.98c-1.53.37-2.98 1.46-2.98 3.12 0 1.77 1.02 2.29 2.64 2.72 1.88.45 2.42.97 2.42 1.81 0 .99-.72 1.55-2.05 1.55-1.42 0-2.28-.72-2.3-1.67h-1.74c.05 1.47 1.12 2.84 2.98 3.21v1.42h2v-1.41c1.63-.41 2.7-1.51 2.7-3.157 0-1.865-1.22-2.734-2.6-3.144z" />
+                                </svg>
+                            </div>
+                            💰 Kiếm Đậu
+                        </a>
                         <a
                             href={user ? "/mua-premium" : "/dang-nhap"}
                             className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
@@ -110,7 +143,7 @@ export default function UserProfileDropdown() {
                                     <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
                                 </svg>
                             </div>
-                            Mua tài khoản Youtube Premium
+                            Mua tài khoản Youtube Premium - 15k/tháng
                         </a>
                         <a
                             href="/tai-khoan/yeu-thich"
