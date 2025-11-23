@@ -34,13 +34,13 @@ export default function GameList() {
             window.location.href = '/dang-nhap';
             return;
         }
-        
+
         // Check if user has minimum points (15000)
-        if ((user.points || 0) < 15000) {
+        if ((user.points || 0) < 1500) {
             setShowInsufficientPointsModal(true);
             return;
         }
-        
+
         setShowLevelModal(true);
     };
 
@@ -170,15 +170,15 @@ export default function GameList() {
                                 <span className="text-4xl">⚠️</span>
                             </div>
                         </div>
-                        
+
                         <h3 className="text-2xl font-bold text-white text-center mb-3">
                             Điểm không đủ
                         </h3>
-                        
+
                         <p className="text-gray-400 text-center mb-6">
                             Bạn cần ít nhất <span className="text-yellow-400 font-bold">15,000 Đậu</span> để chơi game này.
                         </p>
-                        
+
                         <div className="bg-gray-900/50 p-4 rounded-xl border border-gray-700 mb-6 text-center">
                             <div className="text-sm text-gray-400 mb-1">Số đậu hiện tại</div>
                             <div className="text-3xl font-bold text-yellow-400">
