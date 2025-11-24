@@ -68,9 +68,15 @@ export default function GameList() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {/* Memory Card Game Card */}
                     <div className="group relative bg-[#1e293b] rounded-2xl overflow-hidden border border-gray-700 hover:border-sky-500 transition-all duration-300 shadow-xl hover:shadow-sky-500/20">
-                        <div className="aspect-video bg-gradient-to-br from-indigo-900 to-purple-900 flex items-center justify-center relative overflow-hidden">
-                            <div className="absolute inset-0 opacity-30 bg-[url('https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center"></div>
-                            <span className="text-6xl transform group-hover:scale-110 transition-transform duration-300">🎴</span>
+                        <div className="aspect-video relative overflow-hidden bg-gray-900 flex items-center justify-center">
+                            <img
+                                src="/mini-game-card.png"
+                                alt="Memory Card Game"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
                         </div>
 
                         <div className="p-6">
