@@ -9,7 +9,8 @@ const { linkUrlLeft } = Astro.props;
 
 <div
   id="floating-ad-wrapper"
-  class="fixed bottom-0 left-0 right-0 z-20 flex justify-center pointer-events-none"
+  class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none"
+  style="padding-bottom: 0; margin: 0;"
 >
   <div
     class="relative w-full flex justify-center pointer-events-auto px-8 2xl:px-0"
@@ -21,8 +22,6 @@ const { linkUrlLeft } = Astro.props;
       <div class="relative group w-full lg:w-auto">
         <a
           href={linkUrlLeft}
-          target="_blank"
-          rel="noopener noreferrer"
           class="block relative"
         >
           <img
@@ -30,7 +29,7 @@ const { linkUrlLeft } = Astro.props;
             width={bannerImageLeft.width}
             height={bannerImageLeft.height}
             alt="Quảng cáo YouTube Premium"
-            class="block w-full h-auto max-h-[70px] object-cover rounded-t-lg"
+            class="block w-full h-auto max-h-[70px] object-cover rounded-t-lg cursor-pointer hover:opacity-90 transition-opacity"
           />
         </a>
         <button
