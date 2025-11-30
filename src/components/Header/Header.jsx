@@ -246,9 +246,8 @@ export default function Header() {
 
     const handler = setTimeout(async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/api/search?q=${encodeURIComponent(desktopSearchQuery.trim())}`,
-        );
+        const searchUrl = `${BASE_URL}/api/search/?q=${encodeURIComponent(desktopSearchQuery.trim())}`;
+        const response = await fetch(searchUrl);
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
