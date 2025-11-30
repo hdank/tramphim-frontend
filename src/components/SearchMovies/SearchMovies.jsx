@@ -1,13 +1,24 @@
 import React, { useState, useCallback, useEffect } from "react";
 
+// Ensure HTTPS in production and provide fallback
+const getBaseUrl = (url) => {
+  let baseUrl = url || import.meta.env.PUBLIC_API_BASE_URL || 'https://api.tramphim.com';
+  // Force HTTPS in production (when not localhost)
+  if (baseUrl && !baseUrl.includes('localhost') && baseUrl.startsWith('http://')) {
+    baseUrl = baseUrl.replace('http://', 'https://');
+  }
+  return baseUrl;
+};
+
 export default function SearchResultsWithFilter({
   initialSearchMovies = [],
   searchKeyword = "",
   initialData,
-  baseUrl,
+  baseUrl: baseUrlProp,
   initialLimit,
   tittle,
 }) {
+  const baseUrl = getBaseUrl(baseUrlProp);
   const isSearchPage = !!searchKeyword;
 
   const [movies, setMovies] = useState(

@@ -11,6 +11,7 @@ import SeoComponent from "../../seometas/SeoTimKiem.astro";
 import { searchMovies, getTopMovies } from "../../utils/getTimKiem";
 
 const keyword = Astro.url.searchParams.get("q") ?? "";
+const baseUrl = import.meta.env.PUBLIC_API_BASE_URL;
 
 const movies = await searchMovies(keyword);
 const topmovies = await getTopMovies();
@@ -38,6 +39,7 @@ if (!topmovies) {
         <SearchResultsWithFilter
           initialSearchMovies={movies}
           searchKeyword={keyword}
+          baseUrl={baseUrl}
           initialLimit={10}
           tittle="Tìm kiếm"
           client:load

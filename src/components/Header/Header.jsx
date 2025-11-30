@@ -5,7 +5,16 @@ import UserProfileDropdown from "../User/UserProfileDropdown";
 import NotificationDropdown from "../Notifications/NotificationDropdown";
 import { AuthProvider } from "../../context/AuthProvider";
 
-const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
+// Ensure HTTPS in production and provide fallback
+const getBaseUrl = () => {
+  let url = import.meta.env.PUBLIC_API_BASE_URL || 'https://api.tramphim.com';
+  // Force HTTPS in production (when not localhost)
+  if (url && !url.includes('localhost') && url.startsWith('http://')) {
+    url = url.replace('http://', 'https://');
+  }
+  return url;
+};
+const BASE_URL = getBaseUrl();
 
 const SearchIcon = () => (
   <svg
