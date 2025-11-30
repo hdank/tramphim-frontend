@@ -1,0 +1,302 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Đổi Quà - Trạm Phim">
+    <div class="min-h-screen bg-[#1a1c22] pt-20 pb-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-full mb-4">
+                    <span class="text-yellow-400 text-sm font-medium">🎁 Chương trình đổi quà</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 mb-4 animate-gradient">
+                    Đổi Đậu Lấy Quà
+                </h1>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Tích lũy Đậu từ minigame và hoạt động trên Trạm Phim để đổi những phần quà hấp dẫn!
+                </p>
+            </div>
+
+            <!-- User Points Display -->
+            <div class="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 rounded-2xl p-6 mb-10 max-w-md mx-auto">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-gray-400 text-sm">Số Đậu hiện có</p>
+                            <p class="text-2xl font-bold text-yellow-400" id="userPoints">---</p>
+                        </div>
+                    </div>
+                    <a href="/mua-dau" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black text-sm font-bold rounded-lg transition-colors">
+                        + Nạp thêm
+                    </a>
+                </div>
+            </div>
+
+            <!-- Rewards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                
+                <!-- Reward 1: Thẻ cào -->
+                <div class="group bg-[#23252b] rounded-2xl border border-white/10 overflow-hidden hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10">
+                    <div class="relative h-48 overflow-hidden bg-gradient-to-br from-green-500/20 to-emerald-500/20">
+                        <img 
+                            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop" 
+                            alt="Thẻ cào điện thoại" 
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div class="absolute top-3 right-3 px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">
+                            Phổ biến
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-white mb-2">Thẻ Cào Điện Thoại</h3>
+                        <p class="text-gray-400 text-sm mb-4">Thẻ cào Viettel, Mobifone, Vinaphone mệnh giá 100.000đ</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="text-yellow-400 font-bold">10.000 Đậu</span>
+                            </div>
+                            <span class="text-green-400 text-xs font-medium">Còn hàng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reward 2: Chuột Logitech G102 -->
+                <div class="group bg-[#23252b] rounded-2xl border border-white/10 overflow-hidden hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10">
+                    <div class="relative h-48 overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20">
+                        <img 
+                            src="https://m.media-amazon.com/images/I/61UxfXTUyvL._AC_SL1500_.jpg" 
+                            alt="Chuột Logitech G102" 
+                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 p-4"
+                        />
+                        <div class="absolute top-3 right-3 px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-full">
+                            Gaming
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-white mb-2">Chuột Logitech G102</h3>
+                        <p class="text-gray-400 text-sm mb-4">Chuột gaming RGB 8000 DPI, 6 nút lập trình, thiết kế thoải mái</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="text-yellow-400 font-bold">60.000 Đậu</span>
+                            </div>
+                            <span class="text-green-400 text-xs font-medium">Còn hàng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reward 3: Bàn phím cơ -->
+                <div class="group bg-[#23252b] rounded-2xl border border-white/10 overflow-hidden hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10">
+                    <div class="relative h-48 overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-500/20">
+                        <img 
+                            src="https://m.media-amazon.com/images/I/71Qi6i7PgcL._AC_SL1500_.jpg" 
+                            alt="Bàn phím cơ" 
+                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 p-4"
+                        />
+                        <div class="absolute top-3 right-3 px-3 py-1 bg-purple-500 text-white text-xs font-bold rounded-full">
+                            Hot
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-white mb-2">Bàn Phím Cơ RGB</h3>
+                        <p class="text-gray-400 text-sm mb-4">Bàn phím cơ gaming RGB, switch Blue/Red/Brown, full-size hoặc TKL</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="text-yellow-400 font-bold">100.000 Đậu</span>
+                            </div>
+                            <span class="text-green-400 text-xs font-medium">Còn hàng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reward 4: iPhone 17 Pro Max -->
+                <div class="group bg-[#23252b] rounded-2xl border border-white/10 overflow-hidden hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-orange-500/5 animate-pulse"></div>
+                    <div class="relative h-48 overflow-hidden bg-gradient-to-br from-gray-500/20 to-slate-500/20">
+                        <img 
+                            src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-naturaltitanium?wid=400&hei=400&fmt=jpeg&qlt=90&.v=1725567214383" 
+                            alt="iPhone 17 Pro Max" 
+                            class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 p-2"
+                        />
+                        <div class="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold rounded-full">
+                            ⭐ Premium
+                        </div>
+                    </div>
+                    <div class="p-5 relative">
+                        <h3 class="text-lg font-bold text-white mb-2">iPhone 17 Pro Max</h3>
+                        <p class="text-gray-400 text-sm mb-4">Flagship mới nhất từ Apple, chip A19, camera 48MP, màn hình ProMotion</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="text-yellow-400 font-bold">4.000.000 Đậu</span>
+                            </div>
+                            <span class="text-yellow-400 text-xs font-medium">Giới hạn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reward 5: Honda SH 160i -->
+                <div class="group bg-[#23252b] rounded-2xl border border-white/10 overflow-hidden hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 sm:col-span-2 lg:col-span-2 relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-red-500/5 to-orange-500/5 animate-pulse"></div>
+                    <div class="flex flex-col md:flex-row">
+                        <div class="relative h-48 md:h-auto md:w-1/2 overflow-hidden bg-gradient-to-br from-red-500/20 to-orange-500/20">
+                            <img 
+                                src="https://phattien.com/wp-content/uploads/2019/10/sh-cum-den-truoc.jpeg" 
+                                alt="Honda SH 160i" 
+                                class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 p-4"
+                            />
+                            <div class="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold rounded-full">
+                                🏆 Grand Prize
+                            </div>
+                        </div>
+                        <div class="p-6 md:w-1/2 flex flex-col justify-center relative">
+                            <h3 class="text-xl font-bold text-white mb-2">Honda SH 160i ABS</h3>
+                            <p class="text-gray-400 text-sm mb-4">Xe tay ga cao cấp Honda SH 160i phiên bản ABS, động cơ eSP+ 157cc, Smart Key thế hệ mới</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="text-yellow-400 font-bold text-xl">10.000.000 Đậu</span>
+                                </div>
+                                <span class="text-red-400 text-xs font-medium">Giới hạn 1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How to Redeem Section -->
+            <div class="bg-[#23252b] rounded-2xl border border-white/10 p-6 lg:p-8 mb-10">
+                <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
+                    Hướng dẫn đổi quà
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 font-bold shrink-0">1</div>
+                        <div>
+                            <h3 class="text-white font-medium mb-1">Kiểm tra số Đậu</h3>
+                            <p class="text-gray-400 text-sm">Đảm bảo bạn có đủ số Đậu cần thiết để đổi phần quà mong muốn</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 font-bold shrink-0">2</div>
+                        <div>
+                            <h3 class="text-white font-medium mb-1">Liên hệ Fanpage</h3>
+                            <p class="text-gray-400 text-sm">Nhắn tin cho Fanpage Trạm Phim với thông tin tài khoản và quà muốn đổi</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 font-bold shrink-0">3</div>
+                        <div>
+                            <h3 class="text-white font-medium mb-1">Nhận quà</h3>
+                            <p class="text-gray-400 text-sm">Xác nhận thông tin và nhận quà qua đường bưu điện hoặc chuyển khoản</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-2xl p-6 lg:p-8 text-center">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold text-white mb-3">Sẵn sàng đổi quà?</h2>
+                    <p class="text-gray-300 mb-6">
+                        Liên hệ ngay Fanpage Trạm Phim để được hỗ trợ đổi quà nhanh chóng. Đội ngũ chúng tôi sẽ phản hồi trong vòng 24 giờ!
+                    </p>
+                    <a 
+                        href="https://www.facebook.com/profile.php?id=61581940541481" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all transform hover:scale-105"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Nhắn tin Fanpage
+                    </a>
+                </div>
+            </div>
+
+            <!-- Notice -->
+            <div class="mt-8 text-center">
+                <div class="inline-flex items-start gap-2 px-4 py-3 bg-orange-500/10 border border-orange-500/30 rounded-lg max-w-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <p class="text-orange-300 text-sm text-left">
+                        <strong>Lưu ý:</strong> Trong trường hợp quà vật lý hết hàng, chúng tôi sẽ quy đổi thành tiền mặt với giá trị tương đương và chuyển khoản cho bạn. Số lượng quà có hạn, đổi ngay để không bỏ lỡ!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
+    const userPointsEl = document.getElementById('userPoints');
+
+    async function fetchUserPoints() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            userPointsEl.textContent = 'Chưa đăng nhập';
+            userPointsEl.classList.add('text-gray-500', 'text-base');
+            userPointsEl.classList.remove('text-yellow-400', 'text-2xl');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${BASE_URL}/api/auth/profile/`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            if (response.ok) {
+                const userData = await response.json();
+                const points = userData.points || 0;
+                userPointsEl.textContent = points.toLocaleString('vi-VN') + ' Đậu';
+            } else {
+                userPointsEl.textContent = 'Chưa đăng nhập';
+                userPointsEl.classList.add('text-gray-500', 'text-base');
+                userPointsEl.classList.remove('text-yellow-400', 'text-2xl');
+            }
+        } catch (error) {
+            console.error('Failed to fetch user points:', error);
+            userPointsEl.textContent = 'Lỗi tải dữ liệu';
+        }
+    }
+
+    fetchUserPoints();
+</script>
+
+<style>
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .animate-gradient {
+        background-size: 200% auto;
+        animation: gradient 3s linear infinite;
+    }
+</style>
