@@ -121,7 +121,7 @@ import Layout from '../layouts/Layout.astro';
                     <div class="mt-5 text-center space-y-2 w-full">
                         <p class="text-gray-400 text-sm">Ngân hàng: <span class="font-bold text-white">Techcombank</span></p>
                         <p class="text-gray-400 text-sm">STK: <span class="font-bold text-white font-mono">4088880000</span></p>
-                        <p class="text-gray-400 text-sm">Chủ TK: <span class="font-bold text-white">TRAM PHIM</span></p>
+                        <p class="text-gray-400 text-sm">Chủ TK: <span class="font-bold text-white">DU DUC HIEN GIANG</span></p>
                         
                         <div class="bg-green-500/10 border border-green-500/30 p-3 rounded-lg mt-4">
                             <p class="text-green-400 text-xs font-medium">
@@ -132,7 +132,14 @@ import Layout from '../layouts/Layout.astro';
                         <div class="bg-red-500/10 border border-red-500/20 p-3 rounded-lg">
                             <p class="text-red-400 text-xs font-medium">
                                 ⚠️ Nội dung CK: <br/>
-                                <span class="text-white font-bold select-all text-sm break-all" id="transferContent">PREMIUM</span>
+                                <span class="text-white font-bold select-all text-sm break-all" id="transferContent">Đang tải...</span>
+                            </p>
+                        </div>
+
+                        <!-- Login reminder -->
+                        <div id="loginReminder" class="hidden bg-yellow-500/10 border border-yellow-500/30 p-2 rounded-lg">
+                            <p class="text-yellow-400 text-xs">
+                                ⚠️ Vui lòng <a href="/dang-nhap" class="underline font-bold hover:text-yellow-300">đăng nhập</a> để hiển thị email
                             </p>
                         </div>
                         
@@ -278,7 +285,7 @@ import Layout from '../layouts/Layout.astro';
     const BANK_CONFIG = {
         bankId: 'TCB',
         accountNumber: '4088880000',
-        accountName: 'TRAM PHIM'
+        accountName: 'DU DUC HIEN GIANG'
     };
 
     const BASE_PRICE = 40000;
@@ -288,6 +295,7 @@ import Layout from '../layouts/Layout.astro';
     // ============================================
     let appliedCoupons = [];
     let currentFinalPrice = BASE_PRICE;
+    let userEmail = ''; // Will be fetched from user profile
 
     // ============================================
     // DOM ELEMENTS
@@ -503,7 +511,15 @@ import Layout from '../layouts/Layout.astro';
     function updateQRCode() {
         const { finalPrice } = calculateDiscount();
         const codes = appliedCoupons.join(' ');
-        const transferContent = codes ? `PREMIUM ${codes}` : 'PREMIUM';
+        
+        // Build transfer content: PREMIUM [email] [codes]
+        let transferContent = 'PREMIUM';
+        if (userEmail) {
+            transferContent += ` ${userEmail}`;
+        }
+        if (codes) {
+            transferContent += ` ${codes}`;
+        }
         
         // Update transfer content display
         transferContentEl.textContent = transferContent;
@@ -668,9 +684,50 @@ import Layout from '../layouts/Layout.astro';
     window.copyCode = copyCode;
 
     // ============================================
+    // FETCH USER PROFILE
+    // ============================================
+    const loginReminder = document.getElementById('loginReminder');
+
+    async function fetchUserProfile() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            console.log('No token found, user not logged in');
+            // Show login reminder
+            if (loginReminder) loginReminder.classList.remove('hidden');
+            updateQRCode(); // Still update QR without email
+            return;
+        }
+
+        try {
+            const response = await fetch(`${BASE_URL}/api/auth/profile/`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            if (response.ok) {
+                const userData = await response.json();
+                userEmail = userData.email || '';
+                console.log('User email loaded:', userEmail);
+                // Hide login reminder if logged in
+                if (loginReminder) loginReminder.classList.add('hidden');
+                // Update QR with user email
+                updateQRCode();
+            } else {
+                // Token invalid, show login reminder
+                if (loginReminder) loginReminder.classList.remove('hidden');
+                updateQRCode();
+            }
+        } catch (error) {
+            console.error('Failed to fetch user profile:', error);
+            if (loginReminder) loginReminder.classList.remove('hidden');
+            updateQRCode();
+        }
+    }
+
+    // ============================================
     // INITIALIZE
     // ============================================
     renderAvailableCoupons();
+    fetchUserProfile(); // Fetch user email first
     updateQRCode();
 </script>
 
