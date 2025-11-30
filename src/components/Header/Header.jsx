@@ -226,38 +226,37 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   useEffect(() => {
-    if (desktopSearchQuery.trim().length < 2) {
+    if (desktopSearchQuery.trim().length < 1) {
       setDesktopSearchResults([]);
       setShowDesktopSearchResults(false);
       return;
     }
 
     setIsDesktopSearching(true);
+    setShowDesktopSearchResults(true); // Show dropdown immediately when typing
 
     const handler = setTimeout(async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/api/search?q=${encodeURIComponent(desktopSearchQuery)}`,
+          `${BASE_URL}/api/search?q=${encodeURIComponent(desktopSearchQuery.trim())}`,
         );
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
 
-        const resultsArray =
-          data && data.data && data.data.items ? data.data.items : data;
-        const hasResults = resultsArray.length > 0;
+        const resultsArray = Array.isArray(data) ? data : 
+          (data && data.data && data.data.items ? data.data.items : []);
 
         setDesktopSearchResults(resultsArray);
-        setShowDesktopSearchResults(
-          hasResults && desktopSearchQuery.trim().length >= 2,
-        );
+        setShowDesktopSearchResults(true); // Keep dropdown open
       } catch (error) {
+        console.error("Search error:", error);
         setDesktopSearchResults([]);
-        setShowDesktopSearchResults(false);
+        setShowDesktopSearchResults(true); // Show "no results" message
       } finally {
         setIsDesktopSearching(false);
       }
-    }, 200);
+    }, 150); // Reduced debounce for faster response
 
     return () => {
       clearTimeout(handler);
@@ -266,39 +265,37 @@ export default function Header() {
   }, [desktopSearchQuery]);
 
   useEffect(() => {
-    if (mobileSearchQuery.trim().length < 2) {
+    if (mobileSearchQuery.trim().length < 1) {
       setMobileSearchResults([]);
       setShowMobileSearchResults(false);
       return;
     }
 
     setIsMobileSearching(true);
+    setShowMobileSearchResults(true); // Show dropdown immediately when typing
 
     const handler = setTimeout(async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/api/search?q=${encodeURIComponent(mobileSearchQuery)}`,
+          `${BASE_URL}/api/search?q=${encodeURIComponent(mobileSearchQuery.trim())}`,
         );
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
 
-        const resultsArray =
-          data && data.data && data.data.items ? data.data.items : data;
-        const hasResults = resultsArray.length > 0;
+        const resultsArray = Array.isArray(data) ? data : 
+          (data && data.data && data.data.items ? data.data.items : []);
 
         setMobileSearchResults(resultsArray);
-        setShowMobileSearchResults(
-          hasResults && mobileSearchQuery.trim().length >= 2,
-        );
+        setShowMobileSearchResults(true); // Keep dropdown open
       } catch (error) {
         console.error("Lỗi khi tìm kiếm trên mobile:", error);
         setMobileSearchResults([]);
-        setShowMobileSearchResults(false);
+        setShowMobileSearchResults(true); // Show "no results" message
       } finally {
         setIsMobileSearching(false);
       }
-    }, 200);
+    }, 150); // Reduced debounce for faster response
 
     return () => {
       clearTimeout(handler);
@@ -478,9 +475,7 @@ export default function Header() {
           role="status"
           aria-live="polite"
         >
-          {searchQueryLength < 2
-            ? "Nhập ít nhất 2 ký tự để tìm kiếm."
-            : "Không tìm thấy kết quả."}
+          Không tìm thấy kết quả.
         </div>
       )}
     </div>
@@ -496,7 +491,7 @@ export default function Header() {
 
   return (
     <AuthProvider>
-      {(showMobileSearchResults && mobileSearchQuery.length >= 2) ||
+      {(showMobileSearchResults && mobileSearchQuery.trim().length >= 1) ||
         mobileMenuOpen ? (
         <div
           onClick={closeAllPopups}
@@ -637,7 +632,7 @@ export default function Header() {
                   onChange={(e) => setMobileSearchQuery(e.target.value)}
                   onFocus={() => {
                     if (
-                      mobileSearchQuery.trim().length >= 2 ||
+                      mobileSearchQuery.trim().length >= 1 ||
                       mobileSearchResults.length > 0
                     ) {
                       setShowMobileSearchResults(true);
@@ -698,7 +693,7 @@ export default function Header() {
                   onChange={(e) => setDesktopSearchQuery(e.target.value)}
                   onFocus={() => {
                     if (
-                      desktopSearchQuery.trim().length >= 2 ||
+                      desktopSearchQuery.trim().length >= 1 ||
                       desktopSearchResults.length > 0
                     ) {
                       setShowDesktopSearchResults(true);
@@ -722,7 +717,7 @@ export default function Header() {
                   <SearchIcon />
                 </button>
               </form>
-              {showDesktopSearchResults && desktopSearchQuery.length > 1 && (
+              {showDesktopSearchResults && desktopSearchQuery.trim().length >= 1 && (
                 <div
                   className="absolute right-0 top-full z-50 mt-2 max-h-[60vh] w-full overflow-y-auto rounded-md bg-[#1a1c22] shadow-2xl backdrop-blur-xl"
                   id="search-results"
@@ -730,7 +725,7 @@ export default function Header() {
                   <SearchResultsDropdown
                     results={desktopSearchResults}
                     isSearching={isDesktopSearching}
-                    searchQueryLength={desktopSearchQuery.length}
+                    searchQueryLength={desktopSearchQuery.trim().length}
                     onResultClick={handleDesktopSearchResultClick}
                     searchType="desktop"
                   />
@@ -744,7 +739,7 @@ export default function Header() {
         </div>
       </header>
       {
-        showMobileSearchResults && mobileSearchQuery.length > 1 && (
+        showMobileSearchResults && mobileSearchQuery.trim().length >= 1 && (
           <div
             className="mobile-search-results-dropdown absolute left-0 right-0 top-16 z-[51] max-h-[100vh] overflow-y-auto rounded-md bg-[#0F111AF2] shadow-2xl lg:hidden"
             onClick={(e) => e.stopPropagation()}
@@ -754,7 +749,7 @@ export default function Header() {
             <SearchResultsDropdown
               results={mobileSearchResults}
               isSearching={isMobileSearching}
-              searchQueryLength={mobileSearchQuery.length}
+              searchQueryLength={mobileSearchQuery.trim().length}
               onResultClick={handleMobileSearchResultClick}
               searchType="mobile"
             />
