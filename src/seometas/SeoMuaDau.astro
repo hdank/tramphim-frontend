@@ -1,0 +1,179 @@
+---
+const siteUrl = Astro.url.origin;
+const pageUrl = `${siteUrl}/mua-dau`;
+const SEO = {
+  siteName: "Trạm Phim",
+  siteUrl,
+  pageTitle: "Mua Đậu - Tích Điểm Chơi Minigame & Đổi Quà | Trạm Phim",
+  description:
+    "Mua Đậu tại Trạm Phim với tỷ giá hấp dẫn 1.000đ = 100 Đậu. Sử dụng Đậu để tham gia minigame, đổi quà và nhận nhiều ưu đãi độc quyền. Thanh toán nhanh, cộng điểm trong 5-10 phút.",
+  logoUrl: "/logo.png",
+  ogImage: "/thumb_web.png",
+  robotsIndex: true,
+  robotsFollow: true,
+};
+
+const {
+  siteName,
+  pageTitle,
+  description,
+  logoUrl,
+  ogImage,
+  robotsIndex,
+  robotsFollow,
+} = SEO;
+
+const seoJsonLD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}#organization`,
+      name: siteName,
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}${logoUrl}`,
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}#website`,
+      url: siteUrl,
+      name: siteName,
+      inLanguage: "vi",
+      publisher: { "@id": `${siteUrl}#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteUrl}/tim-kiem?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: pageTitle,
+      isPartOf: { "@id": `${siteUrl}#website` },
+      about: { "@id": `${siteUrl}#organization` },
+      description,
+      inLanguage: "vi",
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: `${siteUrl}${ogImage}`,
+      },
+      breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Trang chủ",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Mua Đậu",
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      "@type": "Product",
+      "@id": `${pageUrl}#product`,
+      name: "Đậu Trạm Phim",
+      description: "Điểm Đậu dùng để tham gia minigame, đổi quà và nhận ưu đãi tại Trạm Phim.",
+      brand: {
+        "@type": "Brand",
+        name: "Trạm Phim",
+      },
+      offers: [
+        {
+          "@type": "Offer",
+          name: "Gói 1.000 Đậu",
+          url: pageUrl,
+          priceCurrency: "VND",
+          price: "10000",
+          availability: "https://schema.org/InStock",
+          seller: {
+            "@type": "Organization",
+            name: siteName,
+          },
+        },
+        {
+          "@type": "Offer",
+          name: "Gói 5.000 Đậu",
+          url: pageUrl,
+          priceCurrency: "VND",
+          price: "50000",
+          availability: "https://schema.org/InStock",
+          seller: {
+            "@type": "Organization",
+            name: siteName,
+          },
+        },
+        {
+          "@type": "Offer",
+          name: "Gói 10.000 Đậu",
+          url: pageUrl,
+          priceCurrency: "VND",
+          price: "100000",
+          availability: "https://schema.org/InStock",
+          seller: {
+            "@type": "Organization",
+            name: siteName,
+          },
+        },
+        {
+          "@type": "Offer",
+          name: "Gói 50.000 Đậu",
+          url: pageUrl,
+          priceCurrency: "VND",
+          price: "500000",
+          availability: "https://schema.org/InStock",
+          seller: {
+            "@type": "Organization",
+            name: siteName,
+          },
+        },
+      ],
+    },
+  ],
+};
+---
+
+<Fragment slot="head">
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <meta
+    name="robots"
+    content={`${robotsIndex ? "index" : "noindex"}, ${robotsFollow ? "follow" : "nofollow"}`}
+  />
+  <meta name="author" content={siteName} />
+  <link rel="canonical" href={pageUrl} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:site_name" content={siteName} />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+  <!-- Additional Keywords -->
+  <meta name="keywords" content="mua đậu trạm phim, nạp đậu, điểm đậu, minigame trạm phim, đổi quà trạm phim, tích điểm xem phim" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(seoJsonLD)} />
+</Fragment>

@@ -1,0 +1,141 @@
+---
+const siteUrl = Astro.url.origin;
+const pageUrl = `${siteUrl}/mua-premium`;
+const SEO = {
+  siteName: "Trạm Phim",
+  siteUrl,
+  pageTitle: "Mua Youtube Premium - Trải Nghiệm Không Quảng Cáo | Trạm Phim",
+  description:
+    "Nâng cấp Youtube Premium với giá chỉ 40.000đ/tháng tại Trạm Phim. Trải nghiệm xem video không quảng cáo, phát nền và tải xuống video. Thanh toán nhanh chóng, kích hoạt trong 5-10 phút.",
+  logoUrl: "/logo.png",
+  ogImage: "/thumb_web.png",
+  robotsIndex: true,
+  robotsFollow: true,
+};
+
+const {
+  siteName,
+  pageTitle,
+  description,
+  logoUrl,
+  ogImage,
+  robotsIndex,
+  robotsFollow,
+} = SEO;
+
+const seoJsonLD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}#organization`,
+      name: siteName,
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}${logoUrl}`,
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}#website`,
+      url: siteUrl,
+      name: siteName,
+      inLanguage: "vi",
+      publisher: { "@id": `${siteUrl}#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteUrl}/tim-kiem?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: pageTitle,
+      isPartOf: { "@id": `${siteUrl}#website` },
+      about: { "@id": `${siteUrl}#organization` },
+      description,
+      inLanguage: "vi",
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: `${siteUrl}${ogImage}`,
+      },
+      breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Trang chủ",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Mua Youtube Premium",
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      "@type": "Product",
+      "@id": `${pageUrl}#product`,
+      name: "Youtube Premium",
+      description: "Gói dịch vụ Youtube Premium - Xem video không quảng cáo, phát nền và tải xuống video.",
+      brand: {
+        "@type": "Brand",
+        name: "Trạm Phim",
+      },
+      offers: {
+        "@type": "Offer",
+        url: pageUrl,
+        priceCurrency: "VND",
+        price: "40000",
+        priceValidUntil: "2025-12-31",
+        availability: "https://schema.org/InStock",
+        seller: {
+          "@type": "Organization",
+          name: siteName,
+        },
+      },
+    },
+  ],
+};
+---
+
+<Fragment slot="head">
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <meta
+    name="robots"
+    content={`${robotsIndex ? "index" : "noindex"}, ${robotsFollow ? "follow" : "nofollow"}`}
+  />
+  <meta name="author" content={siteName} />
+  <link rel="canonical" href={pageUrl} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:site_name" content={siteName} />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+  <!-- Additional Keywords -->
+  <meta name="keywords" content="mua youtube premium, youtube premium giá rẻ, youtube không quảng cáo, youtube premium việt nam, xem video không quảng cáo, trạm phim premium" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(seoJsonLD)} />
+</Fragment>
