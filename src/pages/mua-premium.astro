@@ -1,11 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import qrBank from '../assets/qrbank.png';
 ---
 
 <Layout title="Mua Youtube Premium - Trạm Phim">
     <div class="min-h-screen bg-[#1a1c22] pt-20 pb-10 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-5xl mx-auto">
             <div class="text-center mb-10">
                 <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-white to-red-500 mb-4 animate-gradient">
                     Nâng Cấp Youtube Premium
@@ -13,80 +12,149 @@ import qrBank from '../assets/qrbank.png';
                 <p class="text-gray-400 text-lg">Trải nghiệm không quảng cáo, phát nền và tải xuống video.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                <!-- QR Code Section -->
-                <div class="bg-[#23252b] p-6 rounded-2xl border border-white/10 shadow-2xl flex flex-col items-center">
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-violet-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                        <div class="relative bg-white p-2 rounded-lg">
-                            <img src={qrBank.src} alt="QR Chuyển khoản" class="w-full max-w-[280px] h-auto rounded-md" />
-                        </div>
-                    </div>
-                    <div class="mt-6 text-center space-y-2">
-                        <p class="text-gray-300">Ngân hàng: <span class="font-bold text-white">Techcombank</span></p>
-                        <p class="text-gray-300">Chỉ với: <span class="font-bold text-yellow-400 text-xl">40.000đ</span> / tháng</p>
-                        <div class="bg-red-500/10 border border-red-500/20 p-3 rounded-lg mt-4">
-                            <p class="text-red-400 text-sm font-medium">
-                                ⚠️ Nội dung chuyển khoản: <br/>
-                                <span class="text-white font-bold select-all">PREMIUM [email đã đăng ký Trạm Phim] [CODE giảm giá nếu có]</span>
-                            </p>
-                        </div>
-                        <p class="text-gray-300">Sau khi chuyển khoản, vui lòng gửi ảnh chụp màn hình chuyển khoản thành công</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                <!-- Step 1: Apply Coupon -->
+                <div class="bg-[#23252b] p-6 rounded-2xl border border-white/10 shadow-2xl">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm">1</div>
+                        <h2 class="text-lg font-bold text-white">Nhập mã giảm giá</h2>
                     </div>
 
-                    <!-- Discount Code Section -->
-                    <div class="mt-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 p-4 rounded-lg">
-                        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-yellow-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 14.25l6-6m4.5-3.494V5.25A2.25 2.25 0 0019.5 3h-15a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 004.5 21h15a2.25 2.25 0 002.25-2.25V6.756m0 0h-15m15 0A2.25 2.25 0 0015 5.25m0 0H9m0 0A2.25 2.25 0 004.5 5.25m0 0h15m-15 6h15m-15 6h15" />
-                            </svg>
-                            Mã giảm giá sẵn có hiện tại
-                        </h3>
+                    <!-- Coupon Input -->
+                    <div class="space-y-3 mb-5">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="couponInput1" 
+                                placeholder="Nhập mã giảm giá thứ 1"
+                                class="w-full px-4 py-3 bg-[#1a1c22] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all uppercase"
+                            />
+                            <button 
+                                id="applyCoupon1" 
+                                class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-bold rounded transition-colors"
+                            >
+                                Áp dụng
+                            </button>
+                        </div>
+                        <div id="coupon1Status" class="hidden text-sm"></div>
                         
-                        <div class="bg-[#1a1c22] rounded-lg p-4 mb-3 border border-blue-500/20">
-                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                                <div>
-                                    <p class="text-gray-400 text-sm mb-1">Mã:</p>
-                                    <p class="text-white font-bold text-lg select-all font-mono">YTPRE2025</p>
-                                </div>
-                                <div class="h-px bg-blue-500/20 sm:h-12 sm:w-px"></div>
-                                <div>
-                                    <p class="text-gray-400 text-sm mb-1">Giảm giá:</p>
-                                    <p class="text-yellow-400 font-bold text-lg">10%</p>
-                                </div>
-                                <div class="h-px bg-blue-500/20 sm:h-12 sm:w-px"></div>
-                                <div>
-                                    <p class="text-gray-400 text-sm mb-1">Số lượng:</p>
-                                    <p class="text-white font-bold text-lg">Giới hạn 100 mã đầu tiên</p>
-                                </div>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="couponInput2" 
+                                placeholder="Nhập mã giảm giá thứ 2 (tuỳ chọn)"
+                                class="w-full px-4 py-3 bg-[#1a1c22] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all uppercase"
+                            />
+                            <button 
+                                id="applyCoupon2" 
+                                class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-bold rounded transition-colors"
+                            >
+                                Áp dụng
+                            </button>
+                        </div>
+                        <div id="coupon2Status" class="hidden text-sm"></div>
+                    </div>
+
+                    <!-- Applied Coupons -->
+                    <div id="appliedCouponsContainer" class="hidden mb-5">
+                        <p class="text-gray-400 text-xs mb-2">Mã đã áp dụng:</p>
+                        <div id="appliedCouponsList" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Price Calculation -->
+                    <div class="bg-[#1a1c22] rounded-xl p-4 border border-white/5">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-gray-400">
+                                <span>Giá gốc:</span>
+                                <span class="line-through" id="originalPrice">40.000đ</span>
+                            </div>
+                            <div id="discountRow" class="hidden flex justify-between items-center text-green-400">
+                                <span>Giảm giá:</span>
+                                <span id="discountAmount">-0đ</span>
+                            </div>
+                            <div class="h-px bg-gray-700 my-2"></div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-white font-medium">Thành tiền:</span>
+                                <span class="text-2xl font-bold text-yellow-400 transition-all" id="finalPrice">40.000đ</span>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="bg-blue-500/10 border border-blue-500/30 rounded p-2.5 text-center">
-                            <p class="text-blue-300 text-xs sm:text-sm font-medium">
-                                💡 Có thể cộng dồn tối đa 2 mã giảm giá
+                    <!-- Available Coupons Info -->
+                    <div class="mt-5 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 p-3 rounded-lg">
+                        <p class="text-blue-300 text-xs font-medium mb-2">🎁 Mã giảm giá công khai:</p>
+                        <div id="availableCouponsList" class="space-y-1 text-xs">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="h-px bg-blue-500/20 my-3"></div>
+                        <div class="space-y-1.5">
+                            <p class="text-purple-300 text-xs flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span>Bạn có mã từ người giới thiệu? Nhập ở trên!</span>
                             </p>
+                            <p class="text-gray-500 text-xs italic">💡 Tối đa 2 mã (1 mã công khai + 1 mã giới thiệu)</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Upload Section -->
+                <!-- Step 2: QR Code -->
+                <div class="bg-[#23252b] p-6 rounded-2xl border border-white/10 shadow-2xl flex flex-col items-center">
+                    <div class="flex items-center gap-3 mb-5 self-start">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm">2</div>
+                        <h2 class="text-lg font-bold text-white">Quét mã thanh toán</h2>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-violet-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative bg-white p-2 rounded-lg">
+                            <img 
+                                id="dynamicQR" 
+                                src="https://img.vietqr.io/image/TCB-4088880000-compact.png?amount=40000&addInfo=PREMIUM" 
+                                alt="QR Chuyển khoản" 
+                                class="w-full max-w-[220px] h-auto rounded-md"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="mt-5 text-center space-y-2 w-full">
+                        <p class="text-gray-400 text-sm">Ngân hàng: <span class="font-bold text-white">Techcombank</span></p>
+                        <p class="text-gray-400 text-sm">STK: <span class="font-bold text-white font-mono">4088880000</span></p>
+                        <p class="text-gray-400 text-sm">Chủ TK: <span class="font-bold text-white">TRAM PHIM</span></p>
+                        
+                        <div class="bg-green-500/10 border border-green-500/30 p-3 rounded-lg mt-4">
+                            <p class="text-green-400 text-xs font-medium">
+                                ✅ Số tiền: <span class="text-white font-bold text-base" id="qrAmount">40.000đ</span>
+                            </p>
+                        </div>
+
+                        <div class="bg-red-500/10 border border-red-500/20 p-3 rounded-lg">
+                            <p class="text-red-400 text-xs font-medium">
+                                ⚠️ Nội dung CK: <br/>
+                                <span class="text-white font-bold select-all text-sm break-all" id="transferContent">PREMIUM</span>
+                            </p>
+                        </div>
+                        
+                        <p class="text-gray-500 text-xs">QR đã bao gồm số tiền & nội dung CK</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Upload Proof -->
                 <div class="bg-[#23252b] p-6 rounded-2xl border border-white/10 shadow-2xl">
-                    <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-500">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Xác nhận thanh toán
-                    </h2>
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-sm">3</div>
+                        <h2 class="text-lg font-bold text-white">Xác nhận thanh toán</h2>
+                    </div>
                     
-                    <form id="uploadForm" class="space-y-6">
+                    <form id="uploadForm" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-300 mb-2">
-                                Tải lên ảnh chụp màn hình chuyển khoản thành công
+                                Tải ảnh chụp màn hình chuyển khoản
                             </label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-lg hover:border-gray-500 transition-colors cursor-pointer" id="dropZone">
+                            <div class="flex justify-center px-4 pt-4 pb-4 border-2 border-gray-600 border-dashed rounded-lg hover:border-green-500/50 transition-colors cursor-pointer" id="dropZone">
                                 <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                    <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                     <div class="flex text-sm text-gray-400">
@@ -94,27 +162,34 @@ import qrBank from '../assets/qrbank.png';
                                             <span>Tải ảnh lên</span>
                                             <input id="file-upload" name="file-upload" type="file" class="sr-only" accept="image/*" required />
                                         </label>
-                                        <p class="pl-1">hoặc kéo thả vào đây</p>
+                                        <p class="pl-1">hoặc kéo thả</p>
                                     </div>
-                                    <p class="text-xs text-gray-500">PNG, JPG, GIF tối đa 5MB</p>
+                                    <p class="text-xs text-gray-500">PNG, JPG tối đa 5MB</p>
                                 </div>
                             </div>
-                            <div id="previewContainer" class="mt-4 hidden">
-                                <p class="text-sm text-gray-300 mb-2">Ảnh đã chọn:</p>
-                                <img id="previewImage" src="" alt="Preview" class="max-h-48 rounded-lg border border-gray-600" />
+                            <div id="previewContainer" class="mt-3 hidden">
+                                <p class="text-xs text-gray-400 mb-1">Ảnh đã chọn:</p>
+                                <img id="previewImage" src="" alt="Preview" class="max-h-32 rounded-lg border border-gray-600" />
                             </div>
                         </div>
 
-                        <button type="submit" id="submitBtn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]">
+                        <button type="submit" id="submitBtn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                             Gửi xác nhận
                         </button>
                     </form>
+
+                    <div class="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                        <p class="text-yellow-300 text-xs">
+                            ⏱️ Sau khi gửi, vui lòng chờ <strong>5-10 phút</strong> để kích hoạt.
+                        </p>
+                        <p class="text-gray-500 text-xs mt-1">
+                            Liên hệ Fanpage nếu quá lâu chưa được kích hoạt.
+                        </p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="mt-12 text-center text-gray-500 text-sm">
-                <p>Sau khi gửi xác nhận, vui lòng chờ 5-10 phút để nhân viên kiểm tra và kích hoạt tài khoản Premium cho bạn.</p>
-                <p>Nếu quá lâu chưa được kích hoạt, vui lòng liên hệ Fanpage để được hỗ trợ.</p>
             </div>
         </div>
     </div>
@@ -152,6 +227,88 @@ import qrBank from '../assets/qrbank.png';
 </Layout>
 
 <script>
+    // ============================================
+    // COUPON CONFIGURATION - Easy to add new codes
+    // ============================================
+    
+    // PUBLIC COUPONS - Shown to all users
+    const PUBLIC_COUPONS = {
+        'YTPRE2025': { 
+            discount: 10, // percentage
+            type: 'percent',
+            description: 'Giảm 10%',
+            maxUses: 100,
+            expiry: '2025-12-31'
+        },
+        'TRAMPHIM': { 
+            discount: 5, 
+            type: 'percent',
+            description: 'Giảm 5%',
+            maxUses: 50,
+            expiry: '2025-12-31'
+        },
+        // Add more public coupons here
+    };
+
+    // HIDDEN/AFFILIATE COUPONS - Not shown, but valid when entered
+    const AFFILIATE_COUPONS = {
+        'SEPHOANG93': { 
+            discount: 25, 
+            type: 'percent',
+            description: 'Giảm 25%',
+            maxUses: 10000,
+            expiry: '2026-12-31',
+            affiliate: 'Garen 93'
+        },
+        'DARIUSVP': { 
+            discount: 20, 
+            type: 'percent',
+            description: 'Giảm 20%',
+            maxUses: 50000,
+            expiry: '2026-12-31',
+            affiliate: 'Darius Vĩnh Phúc'
+        },
+        // Add more affiliate codes here - these won't be displayed to users
+        // 'YOUTUBER01': { discount: 15, type: 'percent', description: 'Giảm 15%', maxUses: 100, expiry: '2025-12-31', affiliate: 'YouTuber Name' },
+    };
+
+    // Combine all coupons for validation (but only PUBLIC shown in UI)
+    const ALL_COUPONS = { ...PUBLIC_COUPONS, ...AFFILIATE_COUPONS };
+
+    const BANK_CONFIG = {
+        bankId: 'TCB',
+        accountNumber: '4088880000',
+        accountName: 'TRAM PHIM'
+    };
+
+    const BASE_PRICE = 40000;
+
+    // ============================================
+    // STATE
+    // ============================================
+    let appliedCoupons = [];
+    let currentFinalPrice = BASE_PRICE;
+
+    // ============================================
+    // DOM ELEMENTS
+    // ============================================
+    const couponInput1 = document.getElementById('couponInput1');
+    const couponInput2 = document.getElementById('couponInput2');
+    const applyCoupon1Btn = document.getElementById('applyCoupon1');
+    const applyCoupon2Btn = document.getElementById('applyCoupon2');
+    const coupon1Status = document.getElementById('coupon1Status');
+    const coupon2Status = document.getElementById('coupon2Status');
+    const appliedCouponsContainer = document.getElementById('appliedCouponsContainer');
+    const appliedCouponsList = document.getElementById('appliedCouponsList');
+    const availableCouponsList = document.getElementById('availableCouponsList');
+    const originalPriceEl = document.getElementById('originalPrice');
+    const discountRow = document.getElementById('discountRow');
+    const discountAmountEl = document.getElementById('discountAmount');
+    const finalPriceEl = document.getElementById('finalPrice');
+    const dynamicQR = document.getElementById('dynamicQR');
+    const qrAmountEl = document.getElementById('qrAmount');
+    const transferContentEl = document.getElementById('transferContent');
+
     const form = document.getElementById('uploadForm');
     const fileInput = document.getElementById('file-upload');
     const dropZone = document.getElementById('dropZone');
@@ -167,6 +324,230 @@ import qrBank from '../assets/qrbank.png';
     const modalIcon = document.getElementById('modalIcon');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+    function formatPrice(price) {
+        return price.toLocaleString('vi-VN') + 'đ';
+    }
+
+    function showStatus(element, message, type) {
+        element.classList.remove('hidden', 'text-green-400', 'text-red-400', 'text-yellow-400');
+        element.classList.add(type === 'success' ? 'text-green-400' : type === 'error' ? 'text-red-400' : 'text-yellow-400');
+        element.textContent = message;
+    }
+
+    function hideStatus(element) {
+        element.classList.add('hidden');
+    }
+
+    // ============================================
+    // COUPON FUNCTIONS
+    // ============================================
+    function isAffiliateCoupon(code) {
+        return AFFILIATE_COUPONS.hasOwnProperty(code.toUpperCase().trim());
+    }
+
+    function hasAffiliateApplied() {
+        return appliedCoupons.some(code => isAffiliateCoupon(code));
+    }
+
+    function validateCoupon(code) {
+        const upperCode = code.toUpperCase().trim();
+        
+        if (!upperCode) {
+            return { valid: false, message: 'Vui lòng nhập mã giảm giá' };
+        }
+
+        if (!ALL_COUPONS[upperCode]) {
+            return { valid: false, message: 'Mã giảm giá không tồn tại' };
+        }
+
+        if (appliedCoupons.includes(upperCode)) {
+            return { valid: false, message: 'Mã này đã được áp dụng' };
+        }
+
+        if (appliedCoupons.length >= 2) {
+            return { valid: false, message: 'Chỉ được áp dụng tối đa 2 mã' };
+        }
+
+        // Check if trying to apply affiliate code when one is already applied
+        if (isAffiliateCoupon(upperCode) && hasAffiliateApplied()) {
+            return { valid: false, message: 'Chỉ được áp dụng 1 mã giới thiệu' };
+        }
+
+        const coupon = ALL_COUPONS[upperCode];
+        const now = new Date();
+        const expiry = new Date(coupon.expiry);
+        
+        if (now > expiry) {
+            return { valid: false, message: 'Mã giảm giá đã hết hạn' };
+        }
+
+        return { valid: true, code: upperCode, coupon };
+    }
+
+    function calculateDiscount() {
+        let totalDiscount = 0;
+        let price = BASE_PRICE;
+
+        appliedCoupons.forEach(code => {
+            const coupon = ALL_COUPONS[code];
+            if (coupon.type === 'percent') {
+                const discount = Math.floor(price * coupon.discount / 100);
+                totalDiscount += discount;
+                price -= discount;
+            } else if (coupon.type === 'fixed') {
+                totalDiscount += coupon.discount;
+                price -= coupon.discount;
+            }
+        });
+
+        // Ensure price doesn't go below 0
+        price = Math.max(price, 0);
+        
+        return { totalDiscount, finalPrice: price };
+    }
+
+    function applyCoupon(inputElement, statusElement) {
+        const code = inputElement.value.toUpperCase().trim();
+        const result = validateCoupon(code);
+
+        if (!result.valid) {
+            showStatus(statusElement, '❌ ' + result.message, 'error');
+            return;
+        }
+
+        // Add coupon
+        appliedCoupons.push(result.code);
+        inputElement.value = result.code;
+        inputElement.disabled = true;
+        showStatus(statusElement, '✅ Áp dụng thành công: ' + result.coupon.description, 'success');
+
+        // Update UI
+        updatePriceDisplay();
+        updateAppliedCouponsUI();
+        updateQRCode();
+    }
+
+    function removeCoupon(code) {
+        appliedCoupons = appliedCoupons.filter(c => c !== code);
+        
+        // Re-enable inputs
+        if (appliedCoupons.length < 2) {
+            if (couponInput1.value.toUpperCase() === code) {
+                couponInput1.value = '';
+                couponInput1.disabled = false;
+                hideStatus(coupon1Status);
+            }
+            if (couponInput2.value.toUpperCase() === code) {
+                couponInput2.value = '';
+                couponInput2.disabled = false;
+                hideStatus(coupon2Status);
+            }
+        }
+
+        updatePriceDisplay();
+        updateAppliedCouponsUI();
+        updateQRCode();
+    }
+
+    function updatePriceDisplay() {
+        const { totalDiscount, finalPrice } = calculateDiscount();
+        currentFinalPrice = finalPrice;
+
+        // Update original price (with line-through if discounted)
+        if (totalDiscount > 0) {
+            originalPriceEl.classList.add('line-through');
+            discountRow.classList.remove('hidden');
+            discountRow.classList.add('flex');
+            discountAmountEl.textContent = '-' + formatPrice(totalDiscount);
+        } else {
+            originalPriceEl.classList.remove('line-through');
+            discountRow.classList.add('hidden');
+            discountRow.classList.remove('flex');
+        }
+
+        // Animate final price change
+        finalPriceEl.classList.add('scale-110');
+        finalPriceEl.textContent = formatPrice(finalPrice);
+        setTimeout(() => finalPriceEl.classList.remove('scale-110'), 200);
+
+        // Update QR amount display
+        qrAmountEl.textContent = formatPrice(finalPrice);
+    }
+
+    function updateAppliedCouponsUI() {
+        if (appliedCoupons.length === 0) {
+            appliedCouponsContainer.classList.add('hidden');
+            return;
+        }
+
+        appliedCouponsContainer.classList.remove('hidden');
+        appliedCouponsList.innerHTML = appliedCoupons.map(code => {
+            const coupon = ALL_COUPONS[code];
+            return `
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-green-400 text-xs">
+                    <span class="font-mono font-bold">${code}</span>
+                    <span class="text-green-300">(${coupon.description})</span>
+                    <button onclick="removeCoupon('${code}')" class="ml-1 hover:text-red-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </span>
+            `;
+        }).join('');
+    }
+
+    function updateQRCode() {
+        const { finalPrice } = calculateDiscount();
+        const codes = appliedCoupons.join(' ');
+        const transferContent = codes ? `PREMIUM ${codes}` : 'PREMIUM';
+        
+        // Update transfer content display
+        transferContentEl.textContent = transferContent;
+
+        // Generate VietQR URL
+        const encodedContent = encodeURIComponent(transferContent);
+        const qrUrl = `https://img.vietqr.io/image/${BANK_CONFIG.bankId}-${BANK_CONFIG.accountNumber}-compact.png?amount=${finalPrice}&addInfo=${encodedContent}`;
+        
+        // Update QR image with loading effect
+        dynamicQR.style.opacity = '0.5';
+        dynamicQR.src = qrUrl;
+        dynamicQR.onload = () => {
+            dynamicQR.style.opacity = '1';
+        };
+    }
+
+    function renderAvailableCoupons() {
+        // Only show PUBLIC_COUPONS, not affiliate codes
+        availableCouponsList.innerHTML = Object.entries(PUBLIC_COUPONS).map(([code, coupon]) => {
+            return `
+                <div class="flex justify-between items-center text-gray-400">
+                    <span class="font-mono text-yellow-400 cursor-pointer hover:text-yellow-300" onclick="copyCode('${code}')" title="Click để copy">${code}</span>
+                    <span>${coupon.description}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function copyCode(code) {
+        navigator.clipboard.writeText(code);
+        // Quick visual feedback
+        const el = event.target;
+        const original = el.textContent;
+        el.textContent = 'Đã copy!';
+        el.classList.add('text-green-400');
+        setTimeout(() => {
+            el.textContent = original;
+            el.classList.remove('text-green-400');
+        }, 1000);
+    }
+
+    // ============================================
+    // MODAL FUNCTIONS
+    // ============================================
     function showModal(title, message, type = 'success') {
         modalTitle.textContent = title;
         modalMessage.textContent = message;
@@ -186,11 +567,9 @@ import qrBank from '../assets/qrbank.png';
         modal.classList.add('hidden');
     }
 
-    closeModalBtn.addEventListener('click', hideModal);
-
-    // Handle file selection
-    fileInput.addEventListener('change', handleFileSelect);
-
+    // ============================================
+    // FILE UPLOAD FUNCTIONS
+    // ============================================
     function handleFileSelect(e) {
         const file = e.target.files[0];
         if (file) {
@@ -206,6 +585,29 @@ import qrBank from '../assets/qrbank.png';
         }
         reader.readAsDataURL(file);
     }
+
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
+    applyCoupon1Btn.addEventListener('click', () => applyCoupon(couponInput1, coupon1Status));
+    applyCoupon2Btn.addEventListener('click', () => applyCoupon(couponInput2, coupon2Status));
+
+    // Enter key to apply coupon
+    couponInput1.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            applyCoupon(couponInput1, coupon1Status);
+        }
+    });
+    couponInput2.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            applyCoupon(couponInput2, coupon2Status);
+        }
+    });
+
+    closeModalBtn.addEventListener('click', hideModal);
+    fileInput.addEventListener('change', handleFileSelect);
 
     // Handle form submission
     form.addEventListener('submit', async (e) => {
@@ -227,10 +629,12 @@ import qrBank from '../assets/qrbank.png';
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Đang gửi...';
+        submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang gửi...';
 
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('amount', currentFinalPrice.toString());
+        formData.append('coupons', appliedCoupons.join(','));
 
         try {
             const response = await fetch(`${BASE_URL}/api/premium/request`, {
@@ -246,7 +650,7 @@ import qrBank from '../assets/qrbank.png';
             }
 
             const result = await response.json();
-            showModal('Thành công', result.message, 'success');
+            showModal('Thành công', result.message || 'Yêu cầu đã được gửi. Vui lòng chờ 5-10 phút để kích hoạt.', 'success');
             form.reset();
             previewContainer.classList.add('hidden');
             
@@ -255,9 +659,19 @@ import qrBank from '../assets/qrbank.png';
             showModal('Lỗi', 'Có lỗi xảy ra. Vui lòng thử lại sau.', 'error');
         } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Gửi xác nhận';
+            submitBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Gửi xác nhận';
         }
     });
+
+    // Make removeCoupon and copyCode global for onclick
+    window.removeCoupon = removeCoupon;
+    window.copyCode = copyCode;
+
+    // ============================================
+    // INITIALIZE
+    // ============================================
+    renderAvailableCoupons();
+    updateQRCode();
 </script>
 
 <style>
