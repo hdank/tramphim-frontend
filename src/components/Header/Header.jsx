@@ -285,7 +285,7 @@ export default function Header() {
     const handler = setTimeout(async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/api/search?q=${encodeURIComponent(mobileSearchQuery.trim())}`,
+          `${BASE_URL}/api/search/?q=${encodeURIComponent(mobileSearchQuery.trim())}`,
         );
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
