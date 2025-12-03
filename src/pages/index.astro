@@ -28,15 +28,20 @@ const error = null;
 
 // Get first hero movie's banner for preloading (critical for LCP)
 const heroImageUrl = moviehots?.[0]?.banner_url || moviehots?.[0]?.poster_url;
+// Get first TOP 10 poster for preloading
+const top10PosterUrl = moviehots?.[0]?.poster_url;
 ---
 
 <BaseLayout>
-  {/* Preload hero image for better LCP */}
-  {heroImageUrl && (
-    <Fragment slot="preload">
+  {/* Preload critical images for better LCP */}
+  <Fragment slot="preload">
+    {heroImageUrl && (
       <link rel="preload" as="image" href={heroImageUrl} fetchpriority="high" />
-    </Fragment>
-  )}
+    )}
+    {top10PosterUrl && top10PosterUrl !== heroImageUrl && (
+      <link rel="preload" as="image" href={top10PosterUrl} />
+    )}
+  </Fragment>
 
   <Fragment slot="head">
     <SeoHome />

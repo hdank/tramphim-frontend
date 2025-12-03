@@ -263,8 +263,7 @@ export default function MovieCard({ movies = [], title, loading, error }) {
         </div>
 
         <div className="relative py-4">
-          {isMounted && (
-            <Swiper {...commonSwiperProps} className="movie-card-swiper">
+          <Swiper {...commonSwiperProps} className="movie-card-swiper">
               {movies.map((movie, index) => {
                 const {
                   id,
@@ -280,20 +279,14 @@ export default function MovieCard({ movies = [], title, loading, error }) {
 
                 return (
                   <SwiperSlide key={movieKey}>
-                    <motion.a 
+                    <a 
                       href={`/phim/${slug}`} 
                       className="top10-card-link group"
-                      custom={index}
-                      initial="hidden"
-                      animate="visible"
-                      variants={cardVariants}
-                      whileHover="hover"
                     >
                       <div className="top10-card-wrapper">
                         <div className="top10-poster-container" style={{ clipPath: clipPath }}>
-                          <motion.div
+                          <div
                             className="top10-poster-inner"
-                            variants={imageHoverVariants}
                           >
                             <img
                               src={poster_url}
@@ -301,9 +294,11 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                                 ten_phim || ten_khac
                               } Vietsub Thuyết Minh Full HD`}
                               className="top10-poster-image"
-                              loading="lazy"
+                              loading={index < 6 ? "eager" : "lazy"}
+                              fetchPriority={index < 3 ? "high" : "auto"}
+                              decoding="async"
                             />
-                          </motion.div>
+                          </div>
                           
                           {/* Hover overlay */}
                           <div className="top10-hover-overlay">
@@ -327,15 +322,11 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                         
                         {/* Ranking row */}
                         <div className="movie-ranking-row">
-                          <motion.span 
+                          <span 
                             className="movie-ranking-number"
-                            custom={index}
-                            initial="hidden"
-                            animate="visible"
-                            variants={numberVariants}
                           >
                             {index + 1}
-                          </motion.span>
+                          </span>
                           <div className="movie-details-text">
                             <h3 className="movie-title-main" title={ten_phim}>
                               {ten_phim}
@@ -347,12 +338,11 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                           </div>
                         </div>
                       </div>
-                    </motion.a>
+                    </a>
                   </SwiperSlide>
                 );
               })}
             </Swiper>
-          )}
         </div>
       </section>
     </>
