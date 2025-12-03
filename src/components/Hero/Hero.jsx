@@ -154,10 +154,10 @@ export default function MovieCard({ movies = [], loading }) {
               </motion.div>
             )}
 
-            {/* Description */}
+            {/* Description - hidden on mobile */}
             <motion.p 
               variants={fadeInUp}
-              className="hero-featured-desc"
+              className="hero-featured-desc hidden md:block"
             >
               {mo_ta ? (mo_ta.length > 200 ? mo_ta.substring(0, 200) + '...' : mo_ta) : ''}
             </motion.p>
