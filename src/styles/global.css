@@ -865,7 +865,7 @@
   }
   
   .hero-thumbnail-active {
-    @apply ring-2 ring-white ring-offset-2 ring-offset-transparent;
+    @apply ring-1 ring-white/80;
   }
   
   .hero-thumbnail-img {
@@ -873,7 +873,7 @@
   }
   
   .hero-thumbnail-border {
-    @apply absolute inset-0 rounded-lg border-2 border-white;
+    @apply absolute inset-0 rounded-lg border border-white/60;
   }
   
   /* Keep old hero styles for backward compatibility */

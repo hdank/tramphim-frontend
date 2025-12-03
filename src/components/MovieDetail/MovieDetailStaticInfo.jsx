@@ -95,6 +95,7 @@ const MovieDetail = ({
   initialIsFavorite,
 }) => {
   const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [likeCount, setLikeCount] = useState(movie.luot_like || 0);
   const [dislikeCount, setDislikeCount] = useState(movie.luot_dislike || 0);
   const [isLiked, setIsLiked] = useState(false);
@@ -357,14 +358,23 @@ const MovieDetail = ({
             )}
 
             {movie.mo_ta && (
-              <div className="hidden flex-row gap-2 py-1 text-xs sm:flex lg:text-sm">
-                <h2 className="whitespace-nowrap font-medium text-gray-300 lg:text-sm">
-                  Nội Dung:
-                </h2>
-
-                <span className="line-clamp-2 font-normal text-[#ECECEC]">
-                  {movie.mo_ta}
-                </span>
+              <div className="hidden flex-col gap-1 py-1 text-xs sm:flex lg:text-sm">
+                <div className="flex flex-row gap-2">
+                  <h2 className="whitespace-nowrap font-medium text-gray-300 lg:text-sm">
+                    Nội Dung:
+                  </h2>
+                  <span className={`${isDescriptionExpanded ? '' : 'line-clamp-2'} font-normal text-[#ECECEC]`}>
+                    {movie.mo_ta}
+                  </span>
+                </div>
+                {movie.mo_ta.length > 150 && (
+                  <button
+                    onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                    className="ml-auto text-xs text-sky-400 hover:text-sky-300 transition-colors"
+                  >
+                    {isDescriptionExpanded ? 'Thu gọn' : 'Đọc thêm'}
+                  </button>
+                )}
               </div>
             )}
           </div>
