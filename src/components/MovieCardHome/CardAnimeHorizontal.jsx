@@ -45,11 +45,6 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     if (swiperRef.current && prevRef.current && nextRef.current) {
@@ -59,7 +54,7 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
       swiperInstance.navigation.init();
       swiperInstance.navigation.update();
     }
-  }, [isMounted, movies.length]);
+  }, [movies.length]);
 
   const commonSwiperProps = {
     spaceBetween: 16,
@@ -233,8 +228,7 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
         </div>
 
         <div className="relative py-4">
-          {isMounted && (
-            <Swiper {...commonSwiperProps} className="anime-card-swiper">
+          <Swiper {...commonSwiperProps} className="anime-card-swiper">
               {movies.map((movie, index) => {
                 const {
                   id,
@@ -255,13 +249,9 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
 
                 return (
                   <SwiperSlide key={movieKey}>
-                    <motion.a 
+                    <a 
                       href={`/phim/${slug}`} 
                       className="anime-card-link group block"
-                      custom={index}
-                      initial="hidden"
-                      animate="visible"
-                      variants={cardVariants}
                     >
                       <div className="anime-card-wrapper">
                         {/* Main landscape image */}
@@ -331,12 +321,11 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
                           </div>
                         </div>
                       </div>
-                    </motion.a>
+                    </a>
                   </SwiperSlide>
                 );
               })}
             </Swiper>
-          )}
         </div>
       </section>
     </>
