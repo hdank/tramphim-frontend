@@ -106,6 +106,9 @@ export default function MovieCard({ movies = [], loading }) {
             src={banner_url || poster_url}
             alt={ten_phim}
             className="hero-featured-bg-img"
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
           />
           <div className="hero-featured-gradient" />
           <div className="hero-featured-gradient-left" />

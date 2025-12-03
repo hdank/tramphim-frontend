@@ -8,6 +8,25 @@ export default defineConfig({
   output: "server",
   adapter: node({ mode: "standalone" }),
 
+  image: {
+    // Enable image optimization
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        limitInputPixels: false,
+      },
+    },
+    // Allow external image domains for optimization
+    remotePatterns: [
+      {
+        protocol: 'https',
+      },
+      {
+        protocol: 'http',
+      },
+    ],
+  },
+
   integrations: [
     
     tailwind(),

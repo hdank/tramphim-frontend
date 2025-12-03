@@ -33,12 +33,15 @@ const mode = import.meta.env.MODE;
       href="/rss.xml"
     />
 
+    <!-- Preload slot for critical images like hero -->
+    <slot name="preload" />
+
     <!-- Google tag (gtag.js) -->
     {mode === 'production' && (
       <>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CH1D6CE2KV"></script>
         <script>
-          {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', ''G-CH1D6CE2KV');`}
+          {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-CH1D6CE2KV');`}
         </script>
       </>
     )}
