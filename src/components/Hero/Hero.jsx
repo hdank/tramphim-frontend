@@ -1,202 +1,211 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
-import "swiper/css/effect-fade";
-import "swiper/css/thumbs";
-import { Pagination, Navigation, EffectFade, Autoplay } from "swiper/modules";
 
 import { rutGonTinhTrangPhim, cleanhtml } from "../../utils/movieUtils";
 
-const MovieCardSkeleton = () => {
+// Skeleton with shimmer effect
+const HeroSkeleton = () => {
   return (
-    <div className="movie-card-item movie-hero-width group animate-pulse">
-      <div className="relative aspect-[16/7] w-full overflow-hidden bg-gray-700"></div>
+    <div className="hero-featured-container">
+      <div className="hero-featured-bg">
+        <div className="skeleton-shimmer absolute inset-0" />
+      </div>
+      <div className="hero-featured-content">
+        <div className="hero-featured-left">
+          <div className="skeleton-shimmer mb-4 h-12 w-3/4 rounded-lg lg:h-16" />
+          <div className="skeleton-shimmer mb-2 h-4 w-1/2 rounded" />
+          <div className="flex gap-2 mb-4">
+            <div className="skeleton-shimmer h-6 w-16 rounded-full" />
+            <div className="skeleton-shimmer h-6 w-16 rounded-full" />
+            <div className="skeleton-shimmer h-6 w-16 rounded-full" />
+          </div>
+          <div className="skeleton-shimmer mb-4 h-16 w-full rounded" />
+          <div className="flex gap-3">
+            <div className="skeleton-shimmer h-12 w-12 rounded-full" />
+            <div className="skeleton-shimmer h-12 w-12 rounded-full" />
+          </div>
+        </div>
+        <div className="hero-featured-right">
+          <div className="flex gap-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="skeleton-shimmer h-16 w-12 rounded-lg" />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
+
+const staggerChildren = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
 export default function MovieCard({ movies = [], loading }) {
-  const swiperMovies = movies.slice(0, 6);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const heroMovies = movies.slice(0, 8);
+  const activeMovie = heroMovies[activeIndex];
 
-  // --- Logic hiển thị Skeleton khi đang tải hoặc không có phim ---
-  if (loading || !swiperMovies || swiperMovies.length === 0) {
-    return (
-      <div className="relative">
-        <Swiper
-          slidesPerView={1}
-          navigation={{
-            nextEl: ".swiper-button-next-custom",
-            prevEl: ".swiper-button-prev-custom",
-          }}
-          modules={[Navigation, EffectFade, Autoplay, Pagination]}
-          effect="fade"
-          speed={300}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
-          pagination={{ clickable: true }}
-          className="mySwiper"
-          grabCursor={true}
-        >
-          {Array.from({ length: 3 }).map((_, index) => (
-            <SwiperSlide key={index}>
-              <MovieCardSkeleton />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+  // Auto-rotate every 8 seconds
+  useEffect(() => {
+    if (heroMovies.length === 0) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % heroMovies.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [heroMovies.length]);
 
-        <div className="swiper-button-prev-custom swiper-nav-btn-skeleton">
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </div>
-        <div className="swiper-button-next-custom swiper-nav-btn-skeleton-right">
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </div>
-      </div>
-    );
+  if (loading || !heroMovies || heroMovies.length === 0) {
+    return <HeroSkeleton />;
   }
 
-  // --- Logic hiển thị Swiper với dữ liệu phim ---
+  const { 
+    id, 
+    slug, 
+    ten_phim, 
+    banner_url, 
+    poster_url,
+    tinh_trang, 
+    ten_khac,
+    mo_ta
+  } = activeMovie;
+
+  const movieLink = `/phim/${slug}`;
+
   return (
-    <section className="z-1 relative h-auto">
-      <Swiper
-        spaceBetween={8}
-        loop={true}
-        navigation={{
-          nextEl: ".swiper-button-next-custom",
-          prevEl: ".swiper-button-prev-custom",
-        }}
-        modules={[Navigation, Autoplay, Pagination]}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        pagination={{ clickable: true }}
-        className="mySwiper"
-        grabCursor={true}
-        breakpoints={{
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 8,
-          },
-          1028: {
-            slidesPerView: 2,
-            spaceBetween: 0,
-          },
-        }}
-      >
-        {swiperMovies.map((movie, index) => {
-          const { id, slug, ten_phim, banner_url, tinh_trang, ten_khac } =
-            movie;
-          const movieKey = id || slug;
-          const name = ten_phim;
-          const movieLink = `/phim/${slug}`; // URL chi tiết phim
+    <section className="hero-featured-section">
+      {/* Background Image with transition */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="hero-featured-bg"
+        >
+          <img
+            src={banner_url || poster_url}
+            alt={ten_phim}
+            className="hero-featured-bg-img"
+          />
+          <div className="hero-featured-gradient" />
+          <div className="hero-featured-gradient-left" />
+        </motion.div>
+      </AnimatePresence>
 
-          return (
-            <SwiperSlide key={movieKey}>
-              {/* BỌC TOÀN BỘ CARD BẰNG THẺ <a> */}
-              <a
-                href={movieLink}
-                aria-label={`Xem chi tiết phim ${ten_phim}`}
-                title={ten_phim}
-                className="movie-slide-container group block h-full w-full" // Thêm 'block w-full h-full' để thẻ a chiếm hết không gian
+      {/* Content */}
+      <div className="hero-featured-content">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeIndex}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={staggerChildren}
+            className="hero-featured-left"
+          >
+            {/* Title */}
+            <motion.h1 
+              variants={fadeInUp}
+              className="hero-featured-title"
+            >
+              {ten_phim}
+            </motion.h1>
+
+            {/* Alt name */}
+            <motion.p 
+              variants={fadeInUp}
+              className="hero-featured-alt-name"
+            >
+              {cleanhtml(ten_khac)}
+            </motion.p>
+
+            {/* Status badge */}
+            {tinh_trang && (
+              <motion.div 
+                variants={fadeInUp}
+                className="hero-featured-meta"
               >
-                <div className="movie-poster-wrapper">
-                  <img
-                    src={banner_url}
-                    alt={`Poster phim ${name}`}
-                    className="movie-poster-img"
-                    fetchPriority="high"
-                  />
-                </div>
+                <span className="hero-meta-badge">
+                  {tinh_trang}
+                </span>
+              </motion.div>
+            )}
 
-                <div className="movie-info-overlay">
-                  <div className="w-full">
-                    {/* BỎ THẺ <a> BỌC TIÊU ĐỀ, CHỈ GIỮ THẺ <h2> */}
-                    <h2 className="movie-title">{ten_phim}</h2>
+            {/* Description */}
+            <motion.p 
+              variants={fadeInUp}
+              className="hero-featured-desc"
+            >
+              {mo_ta ? (mo_ta.length > 200 ? mo_ta.substring(0, 200) + '...' : mo_ta) : ''}
+            </motion.p>
 
-                    <div className="movie-tags-group">
-                      <div className="movie-tags-row">
-                        <span
-                          className="movie-status-tag"
-                          aria-label={`Thứ tự: ${index + 1}`}
-                        >
-                          {rutGonTinhTrangPhim(tinh_trang)}
-                        </span>
-
-                        <p
-                          className="movie-alt-name-tag"
-                          aria-label={`Tên khác: ${cleanhtml(ten_khac)}`}
-                        >
-                          {cleanhtml(ten_khac)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Action buttons */}
+            <motion.div 
+              variants={fadeInUp}
+              className="hero-featured-actions"
+            >
+              <a 
+                href={movieLink}
+                className="hero-play-btn"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                </svg>
               </a>
-              {/* KẾT THÚC THẺ <a> */}
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+              <a 
+                href={movieLink}
+                className="hero-info-btn"
+                title="Xem chi tiết"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </a>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
 
-      {/* Các nút điều hướng Swiper */}
-      <div className="swiper-button-prev-custom swiper-nav-btn-left">
-        <svg
-          className="h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </div>
-      <div className="swiper-button-next-custom swiper-nav-btn-right">
-        <svg
-          className="h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        {/* Right side - Movie thumbnails */}
+        <div className="hero-featured-right">
+          <div className="hero-thumbnails-container">
+            {heroMovies.map((movie, index) => (
+              <button
+                key={movie.id || movie.slug}
+                onClick={() => setActiveIndex(index)}
+                className={`hero-thumbnail ${index === activeIndex ? 'hero-thumbnail-active' : ''}`}
+              >
+                <img
+                  src={movie.poster_url}
+                  alt={movie.ten_phim}
+                  className="hero-thumbnail-img"
+                />
+                {index === activeIndex && (
+                  <div className="hero-thumbnail-border" />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

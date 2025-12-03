@@ -8,7 +8,8 @@ export async function getHomePageData() {
     { key: "movieheros", url: `${BASE_URL}/api/filter/?page=1&limit=18&sort=moi-cap-nhat` },
     { key: "movieupdates", url: `${BASE_URL}/api/filter/?page=1&limit=24&loai_phim=phim-bo&sort=moi-cap-nhat` },
     { key: "moviephimbos", url: `${BASE_URL}/api/filter/?page=1&limit=18&loai_phim=phim-bo&sort=ngay-tao` },
-    { key: "moviephimles", url: `${BASE_URL}/api/filter/?page=1&limit=18&loai_phim=phim-le&sort=ngay-tao` }
+    { key: "moviephimles", url: `${BASE_URL}/api/filter/?page=1&limit=18&loai_phim=phim-le&sort=ngay-tao` },
+    { key: "movieanimes", url: `${BASE_URL}/api/filter/?page=1&limit=12&loai_phim=hoat-hinh&quoc_gia=nhat-ban&nam_phat_hanh=2025&sort=ngay-tao` }
   ];
 
   try {

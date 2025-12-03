@@ -1,12 +1,69 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 import {
   rutGonTinhTrangPhim,
   rutGonTinhTrangNgonNgu,
 } from "../../utils/movieUtils";
+
+// Skeleton component with shimmer
+const MovieCardTopSkeleton = ({ index = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.3, delay: index * 0.05 }}
+    className="flex flex-col"
+  >
+    <div className="skeleton-shimmer aspect-[2/3] w-full rounded-xl" />
+    <div className="flex items-center gap-x-4 py-4">
+      <div className="skeleton-shimmer h-12 w-12 rounded" />
+      <div className="flex-1 space-y-2">
+        <div className="skeleton-shimmer h-4 w-3/4 rounded" />
+        <div className="skeleton-shimmer h-3 w-1/2 rounded" />
+      </div>
+    </div>
+  </motion.div>
+);
+
+// Animation variants
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.4,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  }),
+  hover: {}
+};
+
+const imageHoverVariants = {
+  initial: { scale: 1 },
+  hover: { 
+    scale: 1,
+    transition: { duration: 0.3, ease: "easeOut" }
+  }
+};
+
+const numberVariants = {
+  hidden: { opacity: 0, scale: 0.5 },
+  visible: (i) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: i * 0.08 + 0.2,
+      duration: 0.3,
+      type: "spring",
+      stiffness: 200
+    }
+  })
+};
 
 export default function MovieCard({ movies = [], title, loading, error }) {
   const prevRef = useRef(null);
@@ -51,10 +108,11 @@ export default function MovieCard({ movies = [], title, loading, error }) {
     },
     breakpoints: {
       0: { slidesPerView: 2, spaceBetween: 8 },
-      640: { slidesPerView: 4, spaceBetween: 10 },
-      768: { slidesPerView: 5, spaceBetween: 12 },
-      1024: { slidesPerView: 5, spaceBetween: 15 },
-      1280: { slidesPerView: 6, spaceBetween: 16 },
+      640: { slidesPerView: 3, spaceBetween: 10 },
+      768: { slidesPerView: 4, spaceBetween: 12 },
+      1024: { slidesPerView: 4, spaceBetween: 16 },
+      1280: { slidesPerView: 5, spaceBetween: 18 },
+      1536: { slidesPerView: 6, spaceBetween: 20 },
     },
   };
 
@@ -120,8 +178,12 @@ export default function MovieCard({ movies = [], title, loading, error }) {
           </div>
           <div className="header-divider-line"></div>
         </div>
-        <div className="loading-container">
-          <p className="text-gray-400">Đang tải...</p>
+        <div className="py-4">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 lg:gap-4 xl:grid-cols-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <MovieCardTopSkeleton key={index} index={index} />
+            ))}
+          </div>
         </div>
       </section>
     );
@@ -218,35 +280,62 @@ export default function MovieCard({ movies = [], title, loading, error }) {
 
                 return (
                   <SwiperSlide key={movieKey}>
-                    <a href={`/phim/${slug}`} className="movie-card-link group">
-                      <div className="movie-card-main">
-                        <div
-                          className="movie-poster-clip"
-                          style={{
-                            clipPath: clipPath,
-                          }}
-                        >
-                          <img
-                            src={poster_url}
-                            alt={`Xem ${
-                              ten_phim || ten_khac
-                            } Vietsub Thuyết Minh Full HD`}
-                            className="movie-poster-img"
-                            loading="lazy"
-                          />
-                          <div className="movie-info-bottom">
-                            <span className="movie-lang-tag">
+                    <motion.a 
+                      href={`/phim/${slug}`} 
+                      className="top10-card-link group"
+                      custom={index}
+                      initial="hidden"
+                      animate="visible"
+                      variants={cardVariants}
+                      whileHover="hover"
+                    >
+                      <div className="top10-card-wrapper">
+                        <div className="top10-poster-container" style={{ clipPath: clipPath }}>
+                          <motion.div
+                            className="top10-poster-inner"
+                            variants={imageHoverVariants}
+                          >
+                            <img
+                              src={poster_url}
+                              alt={`Xem ${
+                                ten_phim || ten_khac
+                              } Vietsub Thuyết Minh Full HD`}
+                              className="top10-poster-image"
+                              loading="lazy"
+                            />
+                          </motion.div>
+                          
+                          {/* Hover overlay */}
+                          <div className="top10-hover-overlay">
+                            <div className="movie-play-icon">
+                              <svg className="h-8 w-8 lg:h-12 lg:w-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                          </div>
+                          
+                          {/* Tags */}
+                          <div className="movie-tags-container">
+                            <span className="movie-lang-badge">
                               {rutGonTinhTrangNgonNgu(ngon_ngu)}
                             </span>
-                            <span className="movie-status-tag-alt">
+                            <span className="movie-status-badge">
                               {rutGonTinhTrangPhim(tinh_trang)}
                             </span>
                           </div>
                         </div>
+                        
+                        {/* Ranking row */}
                         <div className="movie-ranking-row">
-                          <span className="movie-ranking-number">
+                          <motion.span 
+                            className="movie-ranking-number"
+                            custom={index}
+                            initial="hidden"
+                            animate="visible"
+                            variants={numberVariants}
+                          >
                             {index + 1}
-                          </span>
+                          </motion.span>
                           <div className="movie-details-text">
                             <h3 className="movie-title-main" title={ten_phim}>
                               {ten_phim}
@@ -258,7 +347,7 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                           </div>
                         </div>
                       </div>
-                    </a>
+                    </motion.a>
                   </SwiperSlide>
                 );
               })}

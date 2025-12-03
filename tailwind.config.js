@@ -12,6 +12,22 @@ export default {
         seogoe: ['"Segoe UI"', "sans-serif"],
         montserrat: ["Montserrat", "Arial", "sans-serif"],
       },
+      colors: {
+        // Primary brand colors
+        brand: {
+          primary: '#38bdf8',
+          secondary: '#06b6d4',
+          accent: '#f97316',
+        },
+        // Background colors
+        surface: {
+          primary: '#0f0f0f',
+          secondary: '#1a1a1a',
+          tertiary: '#252525',
+          card: '#1e1e1e',
+          elevated: '#2a2a2a',
+        },
+      },
       gridTemplateColumns: {
         10: "repeat(10, minmax(0, 1fr))",
         15: "repeat(15, minmax(0, 1fr))",
@@ -38,6 +54,50 @@ export default {
       },
       screens: {
         "3xl": "1692px",
+      },
+      animation: {
+        'shimmer': 'shimmer 1.5s infinite linear',
+        'fade-in': 'fadeIn 0.5s ease-out',
+        'fade-up': 'fadeUp 0.5s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'slide-up': 'slideUp 0.4s ease-out',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.6' },
+          '50%': { opacity: '1' },
+        },
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      boxShadow: {
+        'glow-sm': '0 0 10px rgba(56, 189, 248, 0.2)',
+        'glow-md': '0 0 20px rgba(56, 189, 248, 0.3)',
+        'glow-lg': '0 0 30px rgba(56, 189, 248, 0.4)',
+        'card': '0 4px 20px rgba(0, 0, 0, 0.3)',
+        'card-hover': '0 8px 30px rgba(0, 0, 0, 0.4)',
       },
     },
   },

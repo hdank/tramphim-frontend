@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const getHref = (slug) => `chu-de/${slug}`;
 
@@ -17,6 +18,35 @@ const defaultColors = [
   "from-[#7F4E4E] to-[#996363]",
   "from-[#574E7F] to-[#736399]",
 ];
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 20,
+    scale: 0.95
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  }
+};
 
 const ThemeSection = ({ themesData }) => {
   if (!Array.isArray(themesData)) {
@@ -49,64 +79,77 @@ const ThemeSection = ({ themesData }) => {
         <div className="theme-header-divider-line"></div>
       </div>
 
-      <div
+      <motion.div
         className="themes-container"
         role="navigation"
         aria-label="Các chủ đề phim"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
-        {themesToMap.map(({ ten, slug, color }) => ( // ten là tên từ API
-          <a
+        {themesToMap.map(({ ten, slug, color }, index) => (
+          <motion.a
             key={slug || ten}
             href={getHref(slug)}
-            className={`theme-card ${color}`}
+            className={`theme-card-new ${color}`}
+            variants={cardVariants}
+            whileHover={{ 
+              y: -6,
+              transition: { duration: 0.3 }
+            }}
+            whileTap={{ scale: 0.98 }}
           >
-            <div className="theme-content">
-              <h3 className="theme-title">
+            {/* Gradient overlay for depth */}
+            <div className="theme-card-overlay" />
+            
+            {/* Content */}
+            <div className="theme-content-new">
+              <h3 className="theme-title-new">
                 {ten || viewAllTheme.name}
               </h3>
 
-              {(ten || viewAllTheme.name) !== viewAllTheme.name && (
-                <div className="theme-link">
-                  <span className="mt-2">Xem chủ đề</span>
-                </div>
-              )}
-              {(ten || viewAllTheme.name) === viewAllTheme.name && (
-                <div className="theme-link">
-                  <span className="mt-2">
-                    Xem tất cả ({fetchedThemes.length} chủ đề)
+              <div className="theme-link-new">
+                {(ten || viewAllTheme.name) !== viewAllTheme.name ? (
+                  <span className="flex items-center gap-1">
+                    Xem chủ đề
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </span>
-                </div>
-              )}
+                ) : (
+                  <span>Xem tất cả ({fetchedThemes.length} chủ đề)</span>
+                )}
+              </div>
             </div>
+            
+            {/* Decorative wave pattern */}
             <svg
-              className="theme-svg"
+              className="theme-svg-new"
               xmlns="http://www.w3.org/2000/svg"
               preserveAspectRatio="none"
               viewBox="0 0 1440 200"
             >
-              {Array.from({ length: 40 }, (_, i) => {
-                const y =50 + i * 12;  // khoảng cách giữa các wave
-                const amp = 40;         // độ cong nhẹ như hình
+              {Array.from({ length: 8 }, (_, i) => {
+                const y = 80 + i * 15;
+                const amp = 30;
                 return (
                   <path
                     key={i}
                     d={`
-          M0,${y}
-          C 360,${y - amp} 720,${y + amp} 1080,${y}
-          C 1260,${y - amp} 1440,${y + amp} 1440,${y}
-        `}
-                    stroke="#ccc"
+                      M0,${y}
+                      C 360,${y - amp} 720,${y + amp} 1080,${y}
+                      C 1260,${y - amp} 1440,${y + amp} 1440,${y}
+                    `}
+                    stroke="rgba(255,255,255,0.15)"
                     fill="none"
-                    strokeWidth="2"
-                    opacity="0.5"
+                    strokeWidth="1.5"
                   />
                 );
               })}
             </svg>
-
-          </a>
+          </motion.a>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };

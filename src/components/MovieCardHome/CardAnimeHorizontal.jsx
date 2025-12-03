@@ -10,17 +10,17 @@ import {
 } from "../../utils/movieUtils";
 
 // Skeleton component with shimmer effect
-const MovieCardSkeleton = ({ index = 0 }) => (
+const AnimeCardSkeleton = ({ index = 0 }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 0.3, delay: index * 0.05 }}
-    className="flex flex-col"
+    className="relative"
   >
-    <div className="skeleton-shimmer aspect-[2/3] w-full rounded-xl" />
-    <div className="mt-3 space-y-2">
-      <div className="skeleton-shimmer h-4 w-3/4 rounded" />
-      <div className="skeleton-shimmer h-3 w-1/2 rounded" />
+    <div className="skeleton-shimmer aspect-[16/9] w-full rounded-xl" />
+    <div className="absolute bottom-4 left-4 right-4 space-y-2">
+      <div className="skeleton-shimmer h-5 w-3/4 rounded" />
+      <div className="skeleton-shimmer h-4 w-1/2 rounded" />
     </div>
   </motion.div>
 );
@@ -39,22 +39,13 @@ const cardVariants = {
   })
 };
 
-const imageHoverVariants = {
-  initial: { scale: 1 },
-  hover: { 
-    scale: 1,
-    transition: { duration: 0.3, ease: "easeOut" }
-  }
-};
-
-export default function MovieCard({ movies = [], title, loading, error }) {
+export default function AnimeCardHorizontal({ movies = [], title, loading, error }) {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -71,7 +62,7 @@ export default function MovieCard({ movies = [], title, loading, error }) {
   }, [isMounted, movies.length]);
 
   const commonSwiperProps = {
-    spaceBetween: 10,
+    spaceBetween: 16,
     modules: [Navigation],
     navigation: {
       prevEl: prevRef.current,
@@ -85,12 +76,13 @@ export default function MovieCard({ movies = [], title, loading, error }) {
       });
     },
     breakpoints: {
-      0: { slidesPerView: 3, spaceBetween: 8 },
-      640: { slidesPerView: 4, spaceBetween: 10 },
-      768: { slidesPerView: 4, spaceBetween: 12 },
-      1024: { slidesPerView: 4, spaceBetween: 16 },
-      1280: { slidesPerView: 5, spaceBetween: 18 },
-      1536: { slidesPerView: 6, spaceBetween: 20 },
+      0: { slidesPerView: 1.2, spaceBetween: 12 },
+      480: { slidesPerView: 1.5, spaceBetween: 14 },
+      640: { slidesPerView: 2, spaceBetween: 16 },
+      768: { slidesPerView: 2.5, spaceBetween: 16 },
+      1024: { slidesPerView: 3, spaceBetween: 18 },
+      1280: { slidesPerView: 4, spaceBetween: 20 },
+      1536: { slidesPerView: 4, spaceBetween: 20 },
     },
   };
 
@@ -157,9 +149,9 @@ export default function MovieCard({ movies = [], title, loading, error }) {
           <div className="header-divider-line"></div>
         </div>
         <div className="py-4">
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 lg:gap-4 xl:grid-cols-6">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <MovieCardSkeleton key={index} index={index} />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <AnimeCardSkeleton key={index} index={index} />
             ))}
           </div>
         </div>
@@ -242,72 +234,101 @@ export default function MovieCard({ movies = [], title, loading, error }) {
 
         <div className="relative py-4">
           {isMounted && (
-            <Swiper {...commonSwiperProps} className="movie-card-swiper">
+            <Swiper {...commonSwiperProps} className="anime-card-swiper">
               {movies.map((movie, index) => {
                 const {
                   id,
                   slug,
                   ten_phim,
                   poster_url,
+                  thumb_url,
                   tinh_trang,
                   ngon_ngu,
                   ten_khac,
+                  nam_phat_hanh,
+                  thoi_luong,
+                  do_tuoi,
                 } = movie;
                 const movieKey = id || slug || `movie-${index}`;
+                // Use thumb_url as main image (landscape), poster_url as small thumbnail
+                const mainImage = thumb_url || poster_url;
 
                 return (
                   <SwiperSlide key={movieKey}>
                     <motion.a 
                       href={`/phim/${slug}`} 
-                      className="movie-card-link group"
+                      className="anime-card-link group block"
                       custom={index}
                       initial="hidden"
                       animate="visible"
                       variants={cardVariants}
-                      whileHover="hover"
                     >
-                      <div className="movie-card-wrapper">
-                        <div className="movie-poster-container">
-                          <motion.div
-                            className="movie-poster-inner"
-                            variants={imageHoverVariants}
-                          >
-                            <img
-                              src={poster_url}
-                              alt={`Xem ${
-                                ten_phim || ten_khac
-                              } Vietsub Thuyết Minh Full HD`}
-                              className="movie-poster-image"
-                              loading="lazy"
-                            />
-                          </motion.div>
+                      <div className="anime-card-wrapper">
+                        {/* Main landscape image */}
+                        <div className="anime-card-image-container">
+                          <img
+                            src={mainImage}
+                            alt={`Xem ${ten_phim || ten_khac} Vietsub Thuyết Minh Full HD`}
+                            className="anime-card-main-image"
+                            loading="lazy"
+                          />
                           
-                          {/* Hover overlay */}
-                          <div className="movie-hover-overlay">
-                            <div className="movie-play-icon">
-                              <svg className="h-8 w-8 lg:h-12 lg:w-12" fill="currentColor" viewBox="0 0 20 20">
+                          {/* Gradient overlay */}
+                          <div className="anime-card-gradient"></div>
+                          
+                          {/* Hover play overlay */}
+                          <div className="anime-card-hover-overlay">
+                            <div className="anime-play-icon">
+                              <svg className="h-12 w-12 lg:h-16 lg:w-16" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                               </svg>
                             </div>
                           </div>
-                          
-                          {/* Tags */}
-                          <div className="movie-tags-container">
-                            <span className="movie-lang-badge">
-                              {rutGonTinhTrangNgonNgu(ngon_ngu)}
-                            </span>
-                            <span className="movie-status-badge">
-                              {rutGonTinhTrangPhim(tinh_trang)}
-                            </span>
-                          </div>
                         </div>
                         
-                        {/* Movie info */}
-                        <div className="movie-info-container">
-                          <h3 className="movie-card-title" title={ten_phim}>
-                            {ten_phim}
-                          </h3>
-                          <p className="movie-card-subtitle">{ten_khac}</p>
+                        {/* Small poster thumbnail + Movie info */}
+                        <div className="anime-card-info-row">
+                          {/* Small poster thumbnail */}
+                          <div className="anime-card-thumbnail">
+                            <img
+                              src={poster_url}
+                              alt={ten_phim}
+                              className="anime-card-thumbnail-img"
+                              loading="lazy"
+                            />
+                            {/* Language badge on thumbnail */}
+                            <span className="anime-thumb-badge">
+                              {rutGonTinhTrangNgonNgu(ngon_ngu)}
+                            </span>
+                          </div>
+                          
+                          {/* Movie info */}
+                          <div className="anime-card-info">
+                            <h3 className="anime-card-title" title={ten_phim}>
+                              {ten_phim}
+                            </h3>
+                            <p className="anime-card-subtitle">{ten_khac}</p>
+                            
+                            {/* Meta info row */}
+                            <div className="anime-card-meta">
+                              {do_tuoi && (
+                                <span className="anime-meta-badge anime-age-badge">
+                                  {do_tuoi}
+                                </span>
+                              )}
+                              {nam_phat_hanh && (
+                                <span className="anime-meta-item">{nam_phat_hanh}</span>
+                              )}
+                              {thoi_luong && (
+                                <span className="anime-meta-item">{thoi_luong}</span>
+                              )}
+                              {tinh_trang && (
+                                <span className="anime-meta-item anime-status">
+                                  {rutGonTinhTrangPhim(tinh_trang)}
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </motion.a>

@@ -8,6 +8,7 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/index";
 import MovieCardColumn from "../components/MovieCardHome/CardColumn.jsx";
 import MovieCardTop from "../components/MovieCardHome/CardColumnTop.jsx";
+import AnimeCardHorizontal from "../components/MovieCardHome/CardAnimeHorizontal.jsx";
 import MovieCardCategory from "../components/MovieCardHome/CardPhimCategory.jsx";
 import SeoHome from "../seometas/SeoHome.astro";
 import ChuDe from "../components/ToPics/ToPics.jsx";
@@ -20,6 +21,7 @@ const {
   moviechieuraps,
   moviephimbos,
   moviephimles,
+  movieanimes,
 } = homePageData;
 const loading = false;
 const error = null;
@@ -38,11 +40,21 @@ const error = null;
       Trạm Phim - Phim hay tại Trạm
     </h1>
     <div class="main-content-wrapper">
-      <main id="main-content">
-        <Hero client:load movies={moviehots} loading={loading} />
-        <ChuDe client:idle themesData={themes} />
+      <main id="main-content" class="home-main">
+        <!-- Hero Section -->
+        <section class="hero-wrapper">
+          <Hero client:load movies={moviehots} loading={loading} />
+        </section>
+        
+        <!-- Topics Section -->
+        <section class="section-wrapper animate-section">
+          <ChuDe client:idle themesData={themes} />
+        </section>
+        
+        <!-- Movie Sections -->
         <div class="card-column-gap">
-          <section>
+          <!-- Top 10 Section with special styling -->
+          <section class="section-wrapper animate-section top-section">
             <MovieCardTop
               client:idle
               movies={moviehots}
@@ -51,7 +63,20 @@ const error = null;
               error={error}
             />
           </section>
-          <section>
+          
+          <!-- Anime Section - Japanese Animation -->
+          <section class="section-wrapper animate-section anime-section">
+            <AnimeCardHorizontal
+              client:idle
+              title="Anime"
+              movies={movieanimes}
+              loading={loading}
+              error={error}
+            />
+          </section>
+          
+          <!-- New Episodes -->
+          <section class="section-wrapper animate-section">
             <MovieCardColumn
               client:idle
               title="Phim Có Tập Mới"
@@ -60,7 +85,9 @@ const error = null;
               error={error}
             />
           </section>
-          <section class="fade-in-on-visible">
+          
+          <!-- Cinema Movies -->
+          <section class="section-wrapper animate-section">
             <MovieCardColumn
               client:idle
               title="Phim Chiếu Rạp Hot Nhất 2025"
@@ -69,7 +96,9 @@ const error = null;
               error={error}
             />
           </section>
-          <section class="fade-in-on-visible">
+          
+          <!-- Single Movies -->
+          <section class="section-wrapper animate-section">
             <MovieCardColumn
               client:visible
               title="Phim Lẻ"
@@ -78,7 +107,9 @@ const error = null;
               error={error}
             />
           </section>
-          <section class="fade-in-on-visible">
+          
+          <!-- Series -->
+          <section class="section-wrapper animate-section">
             <MovieCardColumn
               client:visible
               title="Phim Bộ"
@@ -87,20 +118,6 @@ const error = null;
               error={error}
             />
           </section>
-          <!-- <section class="fade-in-on-visible">
-            <MovieCardCategory
-              client:visible
-              title="Phim Lẻ "
-              category="phim-le"
-            />
-          </section>
-          <section class="fade-in-on-visible">
-            <MovieCardCategory
-              client:visible
-              title="Phim Bộ"
-              category="phim-bo"
-            />
-          </section> -->
         </div>
       </main>
     </div>
@@ -109,27 +126,88 @@ const error = null;
     <Footer />
   </footer>
 </BaseLayout>
+
+<style>
+  .home-main {
+    @apply space-y-6 lg:space-y-10;
+  }
+  
+  .hero-wrapper {
+    @apply relative;
+  }
+  
+  .section-wrapper {
+    @apply relative;
+  }
+  
+  .top-section {
+    @apply relative;
+  }
+  
+  .top-section::before {
+    content: '';
+    @apply absolute -inset-4 rounded-2xl opacity-30 -z-10;
+    background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+  }
+  
+  /* Anime Section Special Styling */
+  .anime-section {
+    @apply relative;
+  }
+  
+  .anime-section::before {
+    content: '';
+    @apply absolute -inset-4 rounded-2xl opacity-25 -z-10;
+    background: radial-gradient(ellipse at center, rgba(255, 107, 157, 0.15) 0%, transparent 70%);
+  }
+  
+  .animate-section {
+    @apply opacity-0 translate-y-8;
+    animation: fadeUpSection 0.6s ease-out forwards;
+  }
+  
+  .animate-section:nth-child(1) { animation-delay: 0.1s; }
+  .animate-section:nth-child(2) { animation-delay: 0.2s; }
+  .animate-section:nth-child(3) { animation-delay: 0.3s; }
+  .animate-section:nth-child(4) { animation-delay: 0.4s; }
+  .animate-section:nth-child(5) { animation-delay: 0.5s; }
+  .animate-section:nth-child(6) { animation-delay: 0.6s; }
+  .animate-section:nth-child(7) { animation-delay: 0.7s; }
+  
+  @keyframes fadeUpSection {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
 <script>
+  // Enhanced scroll-triggered animations
   document.addEventListener("DOMContentLoaded", () => {
-    const sections = document.querySelectorAll(".fade-in-on-visible");
+    const sections = document.querySelectorAll(".animate-section");
 
     const observerOptions = {
       root: null,
-      rootMargin: "0px",
-      threshold: 0.2,
+      rootMargin: "0px 0px -50px 0px",
+      threshold: 0.1,
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
+          entry.target.style.animationPlayState = 'running';
           observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
     sections.forEach((section) => {
+      section.style.animationPlayState = 'paused';
       observer.observe(section);
     });
+    
+    // Smooth scroll behavior
+    document.documentElement.style.scrollBehavior = 'smooth';
   });
 </script>

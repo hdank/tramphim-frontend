@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/logo.png";
 
 import UserProfileDropdown from "../User/UserProfileDropdown";
@@ -501,22 +502,27 @@ export default function Header() {
     <AuthProvider>
       {(showMobileSearchResults && mobileSearchQuery.trim().length >= 1) ||
         mobileMenuOpen ? (
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           onClick={closeAllPopups}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
               closeAllPopups();
             }
           }}
-          className="fixed inset-0 z-40 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
           role="button"
           tabIndex={0}
           aria-label="Đóng overlay"
-        ></div>
+        ></motion.div>
       ) : null}
       <header
         ref={headerRef}
-        className="z-50 mx-auto max-w-screen-xl px-4 py-0 transition-colors duration-700 ease-in-out lg:px-10 lg:py-2 2xl:px-0"
+        className={`header-wrapper-main z-50 mx-auto max-w-screen-xl px-4 py-0 transition-all duration-500 ease-out lg:px-10 lg:py-2 2xl:px-0 ${
+          scrolled ? 'header-scrolled' : ''
+        }`}
         role="banner"
       >
         <div className="md:h-18 relative flex h-16 w-full items-center justify-between">
@@ -726,8 +732,12 @@ export default function Header() {
                 </button>
               </form>
               {showDesktopSearchResults && desktopSearchQuery.trim().length >= 1 && (
-                <div
-                  className="absolute right-0 top-full z-50 mt-2 max-h-[60vh] w-full overflow-y-auto rounded-md bg-[#1a1c22] shadow-2xl backdrop-blur-xl"
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 top-full z-50 mt-2 max-h-[60vh] w-full overflow-y-auto rounded-xl bg-[#1a1c22]/95 shadow-2xl backdrop-blur-xl border border-white/10"
                   id="search-results"
                 >
                   <SearchResultsDropdown
@@ -737,7 +747,7 @@ export default function Header() {
                     onResultClick={handleDesktopSearchResultClick}
                     searchType="desktop"
                   />
-                </div>
+                </motion.div>
               )}
             </div>
 
@@ -748,8 +758,11 @@ export default function Header() {
       </header>
       {
         showMobileSearchResults && mobileSearchQuery.trim().length >= 1 && (
-          <div
-            className="mobile-search-results-dropdown absolute left-0 right-0 top-16 z-[51] max-h-[100vh] overflow-y-auto rounded-md bg-[#0F111AF2] shadow-2xl lg:hidden"
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mobile-search-results-dropdown absolute left-0 right-0 top-16 z-[51] max-h-[100vh] overflow-y-auto rounded-xl bg-[#0F111A]/95 shadow-2xl backdrop-blur-xl border border-white/10 lg:hidden"
             onClick={(e) => e.stopPropagation()}
             onTouchEnd={(e) => e.stopPropagation()}
             id="mobile-search-results"
@@ -761,14 +774,18 @@ export default function Header() {
               onResultClick={handleMobileSearchResultClick}
               searchType="mobile"
             />
-          </div>
+          </motion.div>
         )
       }
       {
         mobileMenuOpen && (
-          <div
+          <motion.div
             ref={mobileMenuPanelRef}
-            className="absolute left-0 right-0 top-16 z-[51] w-full border-t border-white/10 bg-[#2d2d2d] text-sm font-medium shadow-lg lg:m-8 lg:w-[30%] xl:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="absolute left-0 right-0 top-16 z-[51] w-full border-t border-white/10 bg-[#1a1a1a]/95 backdrop-blur-xl text-sm font-medium shadow-2xl lg:m-8 lg:w-[30%] xl:hidden"
             id="mobile-menu"
             role="navigation"
             aria-label="Menu di động"
@@ -831,7 +848,7 @@ export default function Header() {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         )
       }
     </AuthProvider >
