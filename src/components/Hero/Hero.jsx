@@ -83,6 +83,7 @@ export default function MovieCard({ movies = [], loading }) {
     ten_phim, 
     banner_url, 
     poster_url,
+    title_image_url,
     tinh_trang, 
     ten_khac,
     mo_ta
@@ -126,13 +127,29 @@ export default function MovieCard({ movies = [], loading }) {
             variants={staggerChildren}
             className="hero-featured-left"
           >
-            {/* Title */}
-            <motion.h1 
-              variants={fadeInUp}
-              className="hero-featured-title"
-            >
-              {ten_phim}
-            </motion.h1>
+            {/* Title Image - Display if available */}
+            {title_image_url && (
+              <motion.div 
+                variants={fadeInUp}
+                className="hero-title-image-wrapper"
+              >
+                <img 
+                  src={title_image_url} 
+                  alt={ten_phim}
+                  className="hero-title-image"
+                />
+              </motion.div>
+            )}
+
+            {/* Title - Hide if title image is displayed */}
+            {!title_image_url && (
+              <motion.h1 
+                variants={fadeInUp}
+                className="hero-featured-title"
+              >
+                {ten_phim}
+              </motion.h1>
+            )}
 
             {/* Alt name */}
             <motion.p 
