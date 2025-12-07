@@ -1799,3 +1799,21 @@
     @apply absolute bottom-0 left-0 h-1/2 w-full opacity-30 pointer-events-none;
   }
 }
+
+/* ========================================
+   TV & MOBILE APP STYLES
+   ======================================== */
+
+/* TV Remote Focus Indicators */
+:focus-visible {
+  outline: 4px solid #fbbf24; /* Bright yellow outline */
+  outline-offset: 2px;
+  z-index: 50;
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+
+/* Remove default tap highlight on mobile to look more native */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
