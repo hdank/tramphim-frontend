@@ -16,10 +16,7 @@ export default function UpdateChecker() {
   const [isNativeApp, setIsNativeApp] = useState(false);
   const [isAndroidTV, setIsAndroidTV] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-
-  // Current app version - this should match your build.gradle versionCode
-  // Update this value when you release a new version
-  const CURRENT_VERSION_CODE = 1;
+  const [currentVersionCode, setCurrentVersionCode] = useState(null);
 
   useEffect(() => {
     checkIfNativeApp();
@@ -33,12 +30,26 @@ export default function UpdateChecker() {
       if (Capacitor.isNativePlatform()) {
         setIsNativeApp(true);
 
+        // Get the actual app version from native
+        let versionCode = 1; // fallback
+        try {
+          const { App } = await import("@capacitor/app");
+          const appInfo = await App.getInfo();
+          // appInfo.build contains the versionCode (as string)
+          versionCode = parseInt(appInfo.build, 10) || 1;
+          setCurrentVersionCode(versionCode);
+          console.log("Current app version code:", versionCode);
+        } catch (e) {
+          console.warn("Could not get app version, using fallback:", e);
+          setCurrentVersionCode(1);
+        }
+
         // Detect if running on Android TV
         const isTV = detectAndroidTV();
         setIsAndroidTV(isTV);
 
-        // Check for updates
-        await checkForUpdates(isTV);
+        // Check for updates with actual version code
+        await checkForUpdates(isTV, versionCode);
       }
     } catch (error) {
       // Not running in Capacitor or module not available
@@ -62,11 +73,11 @@ export default function UpdateChecker() {
     return hasTVIndicator || (isLargeScreen && hasNoTouch);
   };
 
-  const checkForUpdates = async (isTV = false) => {
+  const checkForUpdates = async (isTV = false, versionCode = 1) => {
     try {
       const platform = isTV ? "android_tv" : "android_mobile";
       const response = await fetch(
-        `${API_BASE_URL}/api/app-version/check/${platform}/${CURRENT_VERSION_CODE}`
+        `${API_BASE_URL}/api/app-version/check/${platform}/${versionCode}`
       );
 
       if (!response.ok) {
