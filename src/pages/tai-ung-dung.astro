@@ -174,23 +174,19 @@ import Footer from "../components/Footer/index.jsx";
 </Layout>
 
 <script>
-  const API_BASE = import.meta.env.PUBLIC_API_URL || 'https://api.tramphim.com';
+  const API_BASE = import.meta.env.PUBLIC_API_BASE_URL || 'https://api.tramphim.com';
   
   async function fetchAppVersions() {
     try {
       // Fetch mobile version
-      const mobileRes = await fetch(`${API_BASE}/api/app-version/latest?platform=mobile`);
+      const mobileRes = await fetch(`${API_BASE}/api/app-version/latest/android_mobile`);
       if (mobileRes.ok) {
         const data = await mobileRes.json();
         const mobileBtn = document.getElementById('mobile-download-btn');
         const mobileVersion = document.getElementById('mobile-version');
         if (data.download_url) {
-          // Construct full URL - handle both relative and absolute URLs
-          const downloadUrl = data.download_url.startsWith('http') 
-            ? data.download_url 
-            : `${API_BASE}${data.download_url}`;
-          mobileBtn.href = downloadUrl;
-          mobileVersion.textContent = `Phiên bản ${data.version || '1.0.0'} • ${formatFileSize(data.file_size)}`;
+          mobileBtn.href = data.download_url;
+          mobileVersion.textContent = `Phiên bản ${data.version_name || '1.0.0'}${data.file_size ? ' • ' + data.file_size : ''}`;
         } else {
           mobileVersion.textContent = 'Chưa có bản cài đặt';
         }
@@ -203,18 +199,14 @@ import Footer from "../components/Footer/index.jsx";
 
     try {
       // Fetch TV version
-      const tvRes = await fetch(`${API_BASE}/api/app-version/latest?platform=tv`);
+      const tvRes = await fetch(`${API_BASE}/api/app-version/latest/android_tv`);
       if (tvRes.ok) {
         const data = await tvRes.json();
         const tvBtn = document.getElementById('tv-download-btn');
         const tvVersion = document.getElementById('tv-version');
         if (data.download_url) {
-          // Construct full URL - handle both relative and absolute URLs
-          const downloadUrl = data.download_url.startsWith('http') 
-            ? data.download_url 
-            : `${API_BASE}${data.download_url}`;
-          tvBtn.href = downloadUrl;
-          tvVersion.textContent = `Phiên bản ${data.version || '1.0.0'} • ${formatFileSize(data.file_size)}`;
+          tvBtn.href = data.download_url;
+          tvVersion.textContent = `Phiên bản ${data.version_name || '1.0.0'}${data.file_size ? ' • ' + data.file_size : ''}`;
         } else {
           tvVersion.textContent = 'Chưa có bản cài đặt';
         }
@@ -224,12 +216,6 @@ import Footer from "../components/Footer/index.jsx";
     } catch (e) {
       document.getElementById('tv-version').textContent = 'Chưa có bản cài đặt';
     }
-  }
-
-  function formatFileSize(bytes) {
-    if (!bytes) return '';
-    const mb = bytes / (1024 * 1024);
-    return `${mb.toFixed(1)} MB`;
   }
 
   fetchAppVersions();
