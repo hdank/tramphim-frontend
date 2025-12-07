@@ -8,6 +8,7 @@ const navLinksMobile = [
   },
   { href: "/loai-phim/phim-le", label: "Phim Lẻ" },
   { href: "/loai-phim/phim-bo", label: "Phim Bộ" },
+  { href: "/anime", label: "Anime" },
   { href: "/loai-phim/hoat-hinh", label: "Hoạt Hình" },
 ];
 

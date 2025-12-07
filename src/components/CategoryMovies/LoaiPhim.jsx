@@ -33,6 +33,7 @@ export default function CategoryMovies({
         sort: data?.filters?.sort || "ngay-tao",
         chieu_rap: data?.filters?.chieu_rap || "",
         loai_phim: data?.filters?.loai_phim || "",
+        quoc_gia: data?.filters?.quoc_gia || "",
       };
 
       if (LOAI_PHIM_SLUGS.includes(slug)) {
@@ -41,6 +42,10 @@ export default function CategoryMovies({
       } else if (slug === "phim-chieu-rap") {
         initialFilters.chieu_rap = "true";
         initialFilters.loai_phim = "";
+      } else if (slug === "anime") {
+        initialFilters.loai_phim = "hoat-hinh";
+        initialFilters.quoc_gia = "nhat-ban";
+        initialFilters.chieu_rap = "";
       } else if (slug) {
         initialFilters.the_loai = slug;
         initialFilters.loai_phim = "";

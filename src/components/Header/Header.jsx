@@ -495,6 +495,7 @@ export default function Header() {
     { href: "/loai-phim/phim-le", label: "Phim Lẻ" },
     { href: "/loai-phim/phim-bo", label: "Phim Bộ" },
     { href: "/loai-phim/hoat-hinh", label: "Hoạt Hình" },
+    { href: "/anime", label: "Anime" },
 
   ];
 
@@ -829,6 +830,7 @@ export default function Header() {
                   { href: "/loai-phim/phim-chieu-rap", label: "Phim Chiếu Rạp" },
                   { href: "/lich-chieu", label: "Lịch Chiếu" },
                   { href: "/loai-phim/hoat-hinh", label: "Phim Hoạt Hình" },
+                  { href: "/anime", label: "Anime" },
                   { href: "/loai-phim/phim-le", label: "Phim Lẻ" },
                   { href: "/loai-phim/phim-bo", label: "Phim Bộ" },
                 ].map((link) => (

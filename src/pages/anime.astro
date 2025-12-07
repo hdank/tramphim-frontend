@@ -1,0 +1,72 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/Layout.astro";
+import Header from "../components/Header/Header";
+import CategoryMovies from "../components/CategoryMovies/LoaiPhim";
+import Footer from "../components/Footer";
+import Seo from "../seometas/SeoLoaiPhim.astro";
+
+const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://api.tramphim.com';
+
+const initialPage = 1;
+const limit = 30;
+
+// Fetch anime with Japanese origin filter
+const fetchJson = async (url) => {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Lỗi khi fetch API: ${url}`);
+    return await res.json();
+  } catch (err) {
+    console.error(`Fetch error: ${url}`, err);
+    return null;
+  }
+};
+
+// Fetch anime data with filter for Japanese animation
+const animeData = await fetchJson(
+  `${BASE_URL}/api/filter/?page=${initialPage}&limit=${limit}&loai_phim=hoat-hinh&quoc_gia=nhat-ban&sort=ngay-tao`
+);
+
+const topResponse = await fetchJson(
+  `${BASE_URL}/api/filter/?page=1&limit=10&sort=luot-xem`
+);
+const topmovies = topResponse?.data || [];
+
+if (!animeData || !topmovies) {
+  return new Response("Không thể lấy dữ liệu. Vui lòng thử lại sau.", {
+    status: 500,
+  });
+}
+
+const currentCategoryName = "Anime";
+const slug = "anime";
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <Seo slug={slug} currentCategoryName={currentCategoryName} />
+  </Fragment>
+
+  <Header client:load />
+
+  <main class="main-type-layout">
+    <div class="type-content-flex">
+      <section class="type-main-section">
+        <CategoryMovies
+          initialData={animeData}
+          initialSlug={slug}
+          baseUrl={BASE_URL}
+          initialLimit={limit}
+          tittle={currentCategoryName}
+          client:load
+        />
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <Footer />
+  </footer>
+</BaseLayout>
