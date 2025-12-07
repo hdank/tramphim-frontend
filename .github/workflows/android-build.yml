@@ -19,7 +19,11 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          npm install
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -28,10 +32,17 @@ jobs:
           java-version: '17'
 
       - name: Sync Capacitor
-        run: npx cap sync android
+        run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          npm run cap:sync
 
       - name: Build Android APK
         run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
@@ -40,4 +51,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            tramphim-frontend/android/app/build/outputs/apk/debug/app-debug.apk

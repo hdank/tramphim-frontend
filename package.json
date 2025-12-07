@@ -6,13 +6,17 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "cap:sync": "cap sync android"
   },
   "dependencies": {
     "@astrojs/node": "^9.2.2",
     "@astrojs/react": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/tailwind": "^6.0.2",
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
     "@nanostores/react": "^1.0.0",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.1.8",
