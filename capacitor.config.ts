@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: {
     // TODO: Replace with your actual deployed URL
-    url: 'https://your-tramphim-website.com',
+    url: 'https://tramphim.com',
     cleartext: true
   },
   android: {
