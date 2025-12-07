@@ -6,16 +6,6 @@ const API_BASE_URL =
     ? import.meta.env.PUBLIC_API_BASE_URL
     : "https://api.tramphim.com";
 
-// Helper to safely check if we're on native platform
-const isNativePlatform = () => {
-  try {
-    // @ts-ignore
-    return window.Capacitor?.isNativePlatform?.() || false;
-  } catch {
-    return false;
-  }
-};
-
 /**
  * UpdateChecker component - Checks for app updates on Capacitor apps
  * This component detects if running in a native app context and checks for updates
@@ -26,40 +16,58 @@ export default function UpdateChecker() {
   const [isNativeApp, setIsNativeApp] = useState(false);
   const [isAndroidTV, setIsAndroidTV] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const [currentVersionCode, setCurrentVersionCode] = useState(null);
 
   useEffect(() => {
-    checkIfNativeApp();
+    initUpdateChecker();
   }, []);
 
-  const checkIfNativeApp = async () => {
-    // Quick check first using window.Capacitor (injected by native app)
-    if (!isNativePlatform()) {
-      return;
-    }
-
-    setIsNativeApp(true);
-
-    // Get the actual app version from native
-    let versionCode = 1; // fallback
+  const initUpdateChecker = async () => {
     try {
-      // Dynamic import to avoid issues on web
+      // Import Capacitor modules
+      const { Capacitor } = await import("@capacitor/core");
+      
+      // Only run on native platforms
+      if (!Capacitor.isNativePlatform()) {
+        return;
+      }
+      
+      setIsNativeApp(true);
+      
+      // Get app info to determine current version
       const { App } = await import("@capacitor/app");
       const appInfo = await App.getInfo();
       
-      // appInfo.build contains the versionCode (as string)
-      versionCode = parseInt(appInfo.build, 10) || 1;
-      setCurrentVersionCode(versionCode);
-    } catch (e) {
-      setCurrentVersionCode(1);
+      // appInfo.build = versionCode (string), appInfo.version = versionName
+      const currentVersionCode = parseInt(appInfo.build, 10);
+      
+      if (!currentVersionCode || isNaN(currentVersionCode)) {
+        // Can't determine version, don't show update prompt
+        return;
+      }
+      
+      // Detect platform type
+      const isTV = detectAndroidTV();
+      setIsAndroidTV(isTV);
+      
+      // Check for updates
+      const platform = isTV ? "android_tv" : "android_mobile";
+      const response = await fetch(
+        `${API_BASE_URL}/api/app-version/check/${platform}/${currentVersionCode}`
+      );
+
+      if (!response.ok) {
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.has_update || data.force_update) {
+        setUpdateInfo(data);
+        setShowModal(true);
+      }
+    } catch (error) {
+      // Silently fail - don't show update prompt if we can't check
     }
-
-    // Detect if running on Android TV
-    const isTV = detectAndroidTV();
-    setIsAndroidTV(isTV);
-
-    // Check for updates with actual version code
-    await checkForUpdates(isTV, versionCode);
   };
 
   const detectAndroidTV = () => {
@@ -76,33 +84,6 @@ export default function UpdateChecker() {
     );
 
     return hasTVIndicator || (isLargeScreen && hasNoTouch);
-  };
-
-  const checkForUpdates = async (isTV = false, versionCode = 1) => {
-    try {
-      const platform = isTV ? "android_tv" : "android_mobile";
-      const response = await fetch(
-        `${API_BASE_URL}/api/app-version/check/${platform}/${versionCode}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to check for updates");
-      }
-
-      const data = await response.json();
-
-      if (data.has_update || data.force_update) {
-        setUpdateInfo(data);
-        setShowModal(true);
-
-        // If force update, prevent dismissal
-        if (data.force_update) {
-          setDismissed(false);
-        }
-      }
-    } catch (error) {
-      console.error("Error checking for updates:", error);
-    }
   };
 
   const handleUpdate = () => {
