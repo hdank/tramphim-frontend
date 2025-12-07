@@ -6,6 +6,16 @@ const API_BASE_URL =
     ? import.meta.env.PUBLIC_API_BASE_URL
     : "https://api.tramphim.com";
 
+// Helper to safely check if we're on native platform
+const isNativePlatform = () => {
+  try {
+    // @ts-ignore
+    return window.Capacitor?.isNativePlatform?.() || false;
+  } catch {
+    return false;
+  }
+};
+
 /**
  * UpdateChecker component - Checks for app updates on Capacitor apps
  * This component detects if running in a native app context and checks for updates
@@ -23,38 +33,33 @@ export default function UpdateChecker() {
   }, []);
 
   const checkIfNativeApp = async () => {
-    try {
-      // Check if running in Capacitor native context
-      const { Capacitor } = await import("@capacitor/core");
-
-      if (Capacitor.isNativePlatform()) {
-        setIsNativeApp(true);
-
-        // Get the actual app version from native
-        let versionCode = 1; // fallback
-        try {
-          const { App } = await import("@capacitor/app");
-          const appInfo = await App.getInfo();
-          // appInfo.build contains the versionCode (as string)
-          versionCode = parseInt(appInfo.build, 10) || 1;
-          setCurrentVersionCode(versionCode);
-          console.log("Current app version code:", versionCode);
-        } catch (e) {
-          console.warn("Could not get app version, using fallback:", e);
-          setCurrentVersionCode(1);
-        }
-
-        // Detect if running on Android TV
-        const isTV = detectAndroidTV();
-        setIsAndroidTV(isTV);
-
-        // Check for updates with actual version code
-        await checkForUpdates(isTV, versionCode);
-      }
-    } catch (error) {
-      // Not running in Capacitor or module not available
-      console.log("Not running in native app context");
+    // Quick check first using window.Capacitor (injected by native app)
+    if (!isNativePlatform()) {
+      return;
     }
+
+    setIsNativeApp(true);
+
+    // Get the actual app version from native
+    let versionCode = 1; // fallback
+    try {
+      // Dynamic import to avoid issues on web
+      const { App } = await import("@capacitor/app");
+      const appInfo = await App.getInfo();
+      
+      // appInfo.build contains the versionCode (as string)
+      versionCode = parseInt(appInfo.build, 10) || 1;
+      setCurrentVersionCode(versionCode);
+    } catch (e) {
+      setCurrentVersionCode(1);
+    }
+
+    // Detect if running on Android TV
+    const isTV = detectAndroidTV();
+    setIsAndroidTV(isTV);
+
+    // Check for updates with actual version code
+    await checkForUpdates(isTV, versionCode);
   };
 
   const detectAndroidTV = () => {
