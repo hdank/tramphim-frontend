@@ -1,8 +1,7 @@
 ext {
     // App Version - Update these when releasing new versions
-    // IMPORTANT: Also update CURRENT_VERSION_CODE in UpdateChecker.jsx to match
-    appVersionCode = 1
-    appVersionName = "1.0.1"
+    appVersionCode = 2
+    appVersionName = "1.0.2"
     
     minSdkVersion = 23
     compileSdkVersion = 35
