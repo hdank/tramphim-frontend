@@ -520,7 +520,7 @@ export default function Header() {
       ) : null}
       <header
         ref={headerRef}
-        className={`header-wrapper-main z-50 mx-auto max-w-screen-xl px-4 py-0 transition-all duration-500 ease-out lg:px-10 lg:py-2 2xl:px-0 ${
+        className={`header-wrapper-main z-50 mx-auto max-w-screen-2xl px-4 py-0 transition-all duration-500 ease-out lg:px-6 lg:py-2 2xl:px-4 ${
           scrolled ? 'header-scrolled' : ''
         }`}
         role="banner"
@@ -689,7 +689,7 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="flex flex-shrink-0 items-center justify-center gap-2 px-0 md:gap-3 md:pl-4 lg:gap-6">
+          <div className="flex flex-shrink-0 items-center justify-center gap-2 px-0 md:gap-2 md:pl-2 lg:gap-3">
             <div ref={desktopSearchRef} className="relative hidden lg:block">
               <form
                 onSubmit={handleDesktopSearchSubmit}
@@ -751,6 +751,20 @@ export default function Header() {
               )}
             </div>
 
+            {/* Download App Button - Desktop Only */}
+            <a
+              href="/tai-ung-dung"
+              className="hidden lg:flex items-center gap-1.5 rounded-lg bg-sky-500 px-3 py-1.5 text-xs font-medium text-white transition-all hover:bg-sky-600"
+              title="Tải ứng dụng TrạmPhim"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" x2="12" y1="15" y2="3"/>
+              </svg>
+              <span>Tải App</span>
+            </a>
+
             <NotificationDropdown />
             <UserProfileDropdown />
           </div>
@@ -790,8 +804,26 @@ export default function Header() {
             role="navigation"
             aria-label="Menu di động"
           >
-            <div className="px-2 py-2">
-              <div className="grid grid-cols-1 gap-2">
+            <div className="px-3 py-3">
+              {/* Download App Button - Mobile */}
+              <a
+                href="/tai-ung-dung"
+                className="mb-3 flex items-center gap-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-3 text-white shadow-lg"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" x2="12" y1="15" y2="3"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs text-white/80">Tải ứng dụng</p>
+                  <p className="font-semibold">TrạmPhim</p>
+                </div>
+              </a>
+
+              <div className="grid grid-cols-1 gap-1">
                 {[
                   { href: "/", label: "Trang Chủ" },
                   { href: "/loai-phim/phim-chieu-rap", label: "Phim Chiếu Rạp" },

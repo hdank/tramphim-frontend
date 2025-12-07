@@ -3,6 +3,7 @@ import "../styles/global.css";
 import MobileNav from "../components/MobileNav.astro";
 import ToastProvider from "../components/Toast/ToastProvider";
 import BottomBanner from "../components/Banner/BottomBanner.astro";
+import DownloadApp from "../components/DownloadApp.jsx";
 const mode = import.meta.env.MODE;
 
 ---
@@ -51,6 +52,7 @@ const mode = import.meta.env.MODE;
   <body class="page-body">
     <ToastProvider client:load>
       <slot />
+      <DownloadApp client:idle />
     </ToastProvider>
 
     <MobileNav />
