@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TramPhim</string>
+    <string name="title_activity_main">TramPhim</string>
+    <string name="package_name">com.tramphim.app</string>
+    <string name="custom_url_scheme">com.tramphim.app</string>
+</resources>
