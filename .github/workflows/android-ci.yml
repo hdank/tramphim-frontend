@@ -55,7 +55,18 @@ jobs:
           fi
           cd capacitor-tv/android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          # Build the app module explicitly to ensure APKs are produced
+          ./gradlew :app:assembleDebug --no-daemon --console=plain
+
+      - name: Find any APKs produced (diagnostic)
+        run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          echo "Searching for APK files under capacitor-tv/android..."
+          find capacitor-tv/android -type f -name "*.apk" -print || true
+          echo "Also list app build outputs directory (if present):"
+          ls -la capacitor-tv/android/app/build/outputs || true
       - name: List built APKs (diagnostic)
         run: |
           if [ -d "tramphim-frontend" ]; then
