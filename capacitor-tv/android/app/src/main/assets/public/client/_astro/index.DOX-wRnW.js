@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["_astro/web.DLOajShB.js","_astro/index.QwYULZe3.js"])))=>i.map(i=>d[i]);
+import{_ as r}from"./UpdateChecker.CpeUUO5_.js";import{registerPlugin as o}from"./index.QwYULZe3.js";import"./jsx-runtime.D_zvdyIk.js";import"./index.Be8AcK8B.js";const m=o("App",{web:()=>r(()=>import("./web.DLOajShB.js"),__vite__mapDeps([0,1])).then(p=>new p.AppWeb)});export{m as App};

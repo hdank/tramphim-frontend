@@ -59,5 +59,22 @@ const mode = import.meta.env.MODE;
     <BottomBanner linkUrlLeft="/mua-premium" />
 
     <div id="fb-root"></div>
+    <!-- TV adaptive runtime detection: if running on Android TV / Capacitor TV, redirect to the TV entry route -->
+    <script>
+      (function () {
+        try {
+          var ua = navigator.userAgent || '';
+          var isAndroidTv = /Android TV|GoogleTV|ATV|Android.*TV/i.test(ua);
+          var isCapacitor = !!(window.Capacitor && typeof window.Capacitor.getPlatform === 'function');
+          if (isAndroidTv || (isCapacitor && /Android/i.test(ua))) {
+            if (location.pathname !== '/tv') {
+              location.replace('/tv');
+            }
+          }
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
   </body>
 </html>

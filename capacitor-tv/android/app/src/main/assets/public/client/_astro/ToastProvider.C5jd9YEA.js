@@ -1,0 +1,1 @@
+import{j as t}from"./jsx-runtime.D_zvdyIk.js";import"./index.Be8AcK8B.js";import{L as r}from"./index.ujdCixWl.js";const a=({children:o})=>t.jsxs(t.Fragment,{children:[o,t.jsx(r,{position:"bottom-right",autoClose:1500,theme:"dark"})]});export{a as default};

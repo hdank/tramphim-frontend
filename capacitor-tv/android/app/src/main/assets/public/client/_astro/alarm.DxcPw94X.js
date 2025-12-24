@@ -1,0 +1,1 @@
+const a={src:"/_astro/alarm.D274mdJn.gif"};export{a};

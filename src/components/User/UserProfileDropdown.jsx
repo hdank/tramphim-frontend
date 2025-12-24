@@ -110,7 +110,7 @@ export default function UserProfileDropdown() {
                                     <UserIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-300" aria-hidden="true" />
                                     Thông tin tài khoản
                                 </a>
-                                <a
+                                {/* <a
                                     href="/mini-game"
                                     className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
                                 >
@@ -120,10 +120,10 @@ export default function UserProfileDropdown() {
                                         </svg>
                                     </div>
                                     🎮 Mini Games
-                                </a>
+                                </a> */}
                             </>
                         )}
-                        <a
+                        {/* <a
                             href={user ? "/mua-dau" : "/dang-nhap"}
                             className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
                         >
@@ -144,8 +144,8 @@ export default function UserProfileDropdown() {
                                 </svg>
                             </div>
                             🎁 Đổi Quà
-                        </a>
-                        <a
+                        </a> */}
+                        {/* <a
                             href={user ? "/mua-premium" : "/dang-nhap"}
                             className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"
                         >
@@ -155,7 +155,7 @@ export default function UserProfileDropdown() {
                                 </svg>
                             </div>
                             Mua tài khoản Youtube Premium - 40k/tháng
-                        </a>
+                        </a> */}
                         <a
                             href="/tai-khoan/yeu-thich"
                             className="group flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white"

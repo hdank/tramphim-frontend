@@ -7,7 +7,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "cap:sync": "cap sync"
+    "cap:sync": "cap sync",
+    "tv:build": "npm run build",
+    "tv:cap-add-android": "cd capacitor-tv && npx cap add android",
+    "tv:cap-sync": "cd capacitor-tv && npx cap sync android"
   },
   "dependencies": {
     "@astrojs/node": "^9.2.2",

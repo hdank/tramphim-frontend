@@ -1,0 +1,12 @@
+{
+	"appId": "com.tramphim.tv",
+	"appName": "TramPhimTV",
+	"webDir": "../dist",
+	"server": {
+		"url": "https://tramphim.com",
+		"cleartext": true
+	},
+	"android": {
+		"allowMixedContent": true
+	}
+}

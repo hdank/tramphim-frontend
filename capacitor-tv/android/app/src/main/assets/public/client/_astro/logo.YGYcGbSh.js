@@ -1,0 +1,1 @@
+const o={src:"/_astro/logo.CijVfbQw.png",width:1080,height:487,format:"png"};export{o as l};
