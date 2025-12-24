@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "cap:sync": "cap sync"
   },
   "dependencies": {
     "@astrojs/node": "^9.2.2",
