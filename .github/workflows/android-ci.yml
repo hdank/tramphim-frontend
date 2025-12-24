@@ -98,7 +98,25 @@ jobs:
           if [ -d "tramphim-frontend" ]; then
             cd tramphim-frontend
           fi
-          cd capacitor-tv/android
+
+          echo "=== Diagnostic: current directory ==="
+          pwd
+          echo "=== Listing repo root ==="
+          ls -la
+          echo "=== Listing capacitor-tv folder ==="
+          ls -la capacitor-tv || true
+          echo "=== Listing capacitor-tv/android folder ==="
+          ls -la capacitor-tv/android || true
+
+          cd capacitor-tv/android || (echo "capacitor-tv/android missing" && exit 1)
+
+          if [ ! -f "./gradlew" ]; then
+            echo "gradlew not found — attempting to (re)create Android native project"
+            cd ..
+            npx @capacitor/cli@latest add android || true
+            cd android || (echo "android folder still missing after cap add" && exit 1)
+          fi
+
           chmod +x ./gradlew || true
           ./gradlew assembleDebug --no-daemon
 
