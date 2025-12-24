@@ -111,10 +111,21 @@ jobs:
           cd capacitor-tv/android || (echo "capacitor-tv/android missing" && exit 1)
 
           if [ ! -f "./gradlew" ]; then
-            echo "gradlew not found — attempting to (re)create Android native project"
-            cd ..
-            npx @capacitor/cli@latest add android || true
-            cd android || (echo "android folder still missing after cap add" && exit 1)
+            echo "gradlew not found — trying to copy gradle wrapper from root android project"
+            # try copying gradlew and gradle wrapper from repo root android if available
+            if [ -f "../../android/gradlew" ]; then
+              cp ../../android/gradlew . || true
+              cp ../../android/gradlew.bat . || true
+              if [ -d "../../android/gradle" ]; then
+                cp -r ../../android/gradle . || true
+              fi
+              echo "Copied gradle wrapper from ../../android"
+            else
+              echo "No gradlew in root android; attempting to (re)create Android native project with Capacitor CLI"
+              cd ..
+              npx @capacitor/cli@latest add android || true
+              cd android || (echo "android folder still missing after cap add" && exit 1)
+            fi
           fi
 
           chmod +x ./gradlew || true
