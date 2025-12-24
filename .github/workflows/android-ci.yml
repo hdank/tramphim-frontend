@@ -48,15 +48,35 @@ jobs:
             echo "Warning: android/gradle/wrapper/gradle-wrapper.jar not found in repo root"
           fi
 
+      - name: Decode Keystore
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          cd capacitor-tv/android/app
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+          echo "KEYSTORE_FILE=release.keystore" >> $GITHUB_ENV
+
       - name: Build Android APK
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           if [ -d "tramphim-frontend" ]; then
             cd tramphim-frontend
           fi
           cd capacitor-tv/android
           chmod +x gradlew
-          # Build the app module explicitly to ensure APKs are produced
-          ./gradlew :app:assembleDebug --no-daemon --console=plain
+          # Build Release if keystore is present, otherwise Debug
+          if [ -n "$KEYSTORE_FILE" ]; then
+            echo "Building Release APK..."
+            ./gradlew :app:assembleRelease --no-daemon --console=plain
+          else
+            echo "No keystore provided, building Debug APK..."
+            ./gradlew :app:assembleDebug --no-daemon --console=plain
+          fi
 
       - name: Find any APKs produced (diagnostic)
         run: |
@@ -78,16 +98,12 @@ jobs:
           ls -la capacitor-tv/android/app/build/outputs/apk/* || true
 
       - name: Upload APK
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tramphim-tv-apk
           path: |
-            capacitor-tv/android/app/build/outputs/apk/debug/app-debug.apk
-            capacitor-tv/android/app/build/outputs/apk/debug/*.apk
-            capacitor-tv/android/app/build/outputs/apk/*/app-debug.apk
-            capacitor-tv/android/app/build/outputs/apk/*/*.apk
-            capacitor-tv/android/build/outputs/apk/**/*.apk
-            android/app/build/outputs/apk/debug/app-debug.apk
-            android/app/build/outputs/apk/debug/*.apk
+            capacitor-tv/android/app/build/outputs/apk/**/*.apk
+            tramphim-frontend/capacitor-tv/android/app/build/outputs/apk/**/*.apk
 
 
