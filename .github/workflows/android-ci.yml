@@ -17,17 +17,28 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          npm ci
 
       - name: Build web assets for TV
-        run: npm run tv:build
+        run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          npm run tv:build
 
       - name: Copy Android mobile res -> capacitor-tv res
         run: |
           set -e
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
           SRC=android/app/src/main/res
           DST=capacitor-tv/android/app/src/main/res
           mkdir -p "$DST"
@@ -40,6 +51,9 @@ jobs:
       - name: Ensure launcher icons exist from provided logo
         run: |
           set -e
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
           LOGO=capacitor-tv/android/app/src/main/assets/public/client/logo.png
           DSTROOT=capacitor-tv/android/app/src/main/res
           for d in mipmap-anydpi-v26 mipmap-xxxhdpi mipmap-xxhdpi mipmap-xhdpi mipmap-hdpi mipmap-mdpi mipmap-ldpi; do
@@ -53,6 +67,9 @@ jobs:
       - name: Ensure Android native project exists
         run: |
           set -e
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
           # If gradlew doesn't exist, create the android project for capacitor-tv
           if [ ! -f "capacitor-tv/android/gradlew" ]; then
             cd capacitor-tv
@@ -64,6 +81,9 @@ jobs:
       - name: Sync Capacitor TV web assets into native project
         run: |
           set -e
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
           cd capacitor-tv
           npx @capacitor/cli@latest sync android
 
@@ -75,8 +95,12 @@ jobs:
 
       - name: Build Android (Gradle)
         run: |
-          chmod +x ./capacitor-tv/android/gradlew || true
-          ./capacitor-tv/android/gradlew assembleDebug --no-daemon
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          cd capacitor-tv/android
+          chmod +x ./gradlew || true
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
