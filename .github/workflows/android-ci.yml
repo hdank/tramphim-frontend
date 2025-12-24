@@ -128,6 +128,24 @@ jobs:
             fi
           fi
 
+          # Ensure Gradle build files exist in capacitor-tv/android by copying from root android if present
+          if [ ! -f "settings.gradle" ] && [ -f "../../android/settings.gradle" ]; then
+            echo "Copying settings.gradle and build files from root android into capacitor-tv/android"
+            cp ../../android/settings.gradle ./ || true
+          fi
+          if [ ! -f "settings.gradle.kts" ] && [ -f "../../android/settings.gradle.kts" ]; then
+            cp ../../android/settings.gradle.kts ./ || true
+          fi
+          if [ ! -f "build.gradle" ] && [ -f "../../android/build.gradle" ]; then
+            cp ../../android/build.gradle ./ || true
+          fi
+          if [ ! -f "gradle.properties" ] && [ -f "../../android/gradle.properties" ]; then
+            cp ../../android/gradle.properties ./ || true
+          fi
+          if [ ! -d "gradle" ] && [ -d "../../android/gradle" ]; then
+            cp -r ../../android/gradle ./ || true
+          fi
+
           chmod +x ./gradlew || true
           ./gradlew assembleDebug --no-daemon
 
