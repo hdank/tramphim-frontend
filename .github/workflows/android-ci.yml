@@ -1,158 +1,57 @@
-name: Android CI - Capacitor TV
+name: Build Android APK
 
 on:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build Capacitor TV Android
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '20'
 
       - name: Install Dependencies
         run: |
           if [ -d "tramphim-frontend" ]; then
             cd tramphim-frontend
           fi
-          npm ci
+          npm install
 
-      - name: Build web assets for TV
+      - name: Sync Capacitor (TV)
         run: |
           if [ -d "tramphim-frontend" ]; then
             cd tramphim-frontend
           fi
-          npm run tv:build
+          npm run tv:cap-sync || npx @capacitor/cli@latest sync android
 
-      - name: Copy Android mobile res -> capacitor-tv res
-        run: |
-          set -e
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          SRC=android/app/src/main/res
-          DST=capacitor-tv/android/app/src/main/res
-          mkdir -p "$DST"
-          if command -v rsync >/dev/null 2>&1; then
-            rsync -a "$SRC/" "$DST/" || true
-          else
-            cp -r "$SRC/"* "$DST/" || true
-          fi
-
-      - name: Ensure launcher icons exist from provided logo
-        run: |
-          set -e
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          LOGO=capacitor-tv/android/app/src/main/assets/public/client/logo.png
-          DSTROOT=capacitor-tv/android/app/src/main/res
-          for d in mipmap-anydpi-v26 mipmap-xxxhdpi mipmap-xxhdpi mipmap-xhdpi mipmap-hdpi mipmap-mdpi mipmap-ldpi; do
-            DIR="$DSTROOT/$d"
-            if [ -d "$DIR" ]; then
-              cp "$LOGO" "$DIR/ic_launcher.png" || true
-              cp "$LOGO" "$DIR/ic_launcher_round.png" || true
-            fi
-          done
-
-      - name: Ensure Android native project exists
-        run: |
-          set -e
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          # If gradlew doesn't exist, create the android project for capacitor-tv
-          if [ ! -f "capacitor-tv/android/gradlew" ]; then
-            cd capacitor-tv
-            npx @capacitor/cli@latest add android || true
-          else
-            echo "Android native project already exists."
-          fi
-
-      - name: Sync Capacitor TV web assets into native project
-        run: |
-          set -e
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          cd capacitor-tv
-          npx @capacitor/cli@latest sync android
-
-      - name: Set up Java 11
-        uses: actions/setup-java@v4
+      - name: Set up Java
+        uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          distribution: 'zulu'
+          java-version: '21'
 
-      - name: Build Android (Gradle)
+      - name: Build Android APK
         run: |
           if [ -d "tramphim-frontend" ]; then
             cd tramphim-frontend
           fi
+          cd capacitor-tv/android
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
-          echo "=== Diagnostic: current directory ==="
-          pwd
-          echo "=== Listing repo root ==="
-          ls -la
-          echo "=== Listing capacitor-tv folder ==="
-          ls -la capacitor-tv || true
-          echo "=== Listing capacitor-tv/android folder ==="
-          ls -la capacitor-tv/android || true
-
-          cd capacitor-tv/android || (echo "capacitor-tv/android missing" && exit 1)
-
-          if [ ! -f "./gradlew" ]; then
-            echo "gradlew not found — trying to copy gradle wrapper from root android project"
-            # try copying gradlew and gradle wrapper from repo root android if available
-            if [ -f "../../android/gradlew" ]; then
-              cp ../../android/gradlew . || true
-              cp ../../android/gradlew.bat . || true
-              if [ -d "../../android/gradle" ]; then
-                cp -r ../../android/gradle . || true
-              fi
-              echo "Copied gradle wrapper from ../../android"
-            else
-              echo "No gradlew in root android; attempting to (re)create Android native project with Capacitor CLI"
-              cd ..
-              npx @capacitor/cli@latest add android || true
-              cd android || (echo "android folder still missing after cap add" && exit 1)
-            fi
-          fi
-
-          # Ensure Gradle build files exist in capacitor-tv/android by copying from root android if present
-          if [ ! -f "settings.gradle" ] && [ -f "../../android/settings.gradle" ]; then
-            echo "Copying settings.gradle and build files from root android into capacitor-tv/android"
-            cp ../../android/settings.gradle ./ || true
-          fi
-          if [ ! -f "settings.gradle.kts" ] && [ -f "../../android/settings.gradle.kts" ]; then
-            cp ../../android/settings.gradle.kts ./ || true
-          fi
-          if [ ! -f "build.gradle" ] && [ -f "../../android/build.gradle" ]; then
-            cp ../../android/build.gradle ./ || true
-          fi
-          if [ ! -f "gradle.properties" ] && [ -f "../../android/gradle.properties" ]; then
-            cp ../../android/gradle.properties ./ || true
-          fi
-          if [ ! -d "gradle" ] && [ -d "../../android/gradle" ]; then
-            cp -r ../../android/gradle ./ || true
-          fi
-
-          chmod +x ./gradlew || true
-          ./gradlew assembleDebug --no-daemon
-
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: tramphim-tv-apk
-          path: capacitor-tv/android/app/build/outputs/apk/debug/*.apk
+          path: |
+            capacitor-tv/android/app/build/outputs/apk/debug/*.apk
 
 
