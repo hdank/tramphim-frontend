@@ -38,6 +38,16 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
 
+      - name: Ensure gradle wrapper jar present for TV project
+        run: |
+          # copy gradle wrapper jar from mobile android project into capacitor-tv if missing
+          if [ -f "android/gradle/wrapper/gradle-wrapper.jar" ]; then
+            mkdir -p capacitor-tv/android/gradle/wrapper
+            cp android/gradle/wrapper/gradle-wrapper.jar capacitor-tv/android/gradle/wrapper/gradle-wrapper.jar || true
+          else
+            echo "Warning: android/gradle/wrapper/gradle-wrapper.jar not found in repo root"
+          fi
+
       - name: Build Android APK
         run: |
           if [ -d "tramphim-frontend" ]; then
