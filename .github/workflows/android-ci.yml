@@ -56,12 +56,27 @@ jobs:
           cd capacitor-tv/android
           chmod +x gradlew
           ./gradlew assembleDebug
+      - name: List built APKs (diagnostic)
+        run: |
+          if [ -d "tramphim-frontend" ]; then
+            cd tramphim-frontend
+          fi
+          echo "Listing capacitor-tv android APK outputs"
+          ls -la capacitor-tv/android/app/build/outputs/apk || true
+          ls -la capacitor-tv/android/app/build/outputs/apk/debug || true
+          ls -la capacitor-tv/android/app/build/outputs/apk/* || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: tramphim-tv-apk
           path: |
+            capacitor-tv/android/app/build/outputs/apk/debug/app-debug.apk
             capacitor-tv/android/app/build/outputs/apk/debug/*.apk
+            capacitor-tv/android/app/build/outputs/apk/*/app-debug.apk
+            capacitor-tv/android/app/build/outputs/apk/*/*.apk
+            capacitor-tv/android/build/outputs/apk/**/*.apk
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/debug/*.apk
 
 
