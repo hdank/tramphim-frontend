@@ -2,7 +2,7 @@ name: Android CI - Capacitor TV
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -17,21 +17,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
-      - name: Install root dependencies
+      - name: Install Dependencies
         run: npm ci
-        working-directory: tramphim-frontend
 
       - name: Build web assets for TV
         run: npm run tv:build
-        working-directory: tramphim-frontend
 
       - name: Copy Android mobile res -> capacitor-tv res
         run: |
           set -e
-          SRC=tramphim-frontend/android/app/src/main/res
-          DST=tramphim-frontend/capacitor-tv/android/app/src/main/res
+          SRC=android/app/src/main/res
+          DST=capacitor-tv/android/app/src/main/res
           mkdir -p "$DST"
           if command -v rsync >/dev/null 2>&1; then
             rsync -a "$SRC/" "$DST/" || true
@@ -42,8 +40,8 @@ jobs:
       - name: Ensure launcher icons exist from provided logo
         run: |
           set -e
-          LOGO=tramphim-frontend/capacitor-tv/android/app/src/main/assets/public/client/logo.png
-          DSTROOT=tramphim-frontend/capacitor-tv/android/app/src/main/res
+          LOGO=capacitor-tv/android/app/src/main/assets/public/client/logo.png
+          DSTROOT=capacitor-tv/android/app/src/main/res
           for d in mipmap-anydpi-v26 mipmap-xxxhdpi mipmap-xxhdpi mipmap-xhdpi mipmap-hdpi mipmap-mdpi mipmap-ldpi; do
             DIR="$DSTROOT/$d"
             if [ -d "$DIR" ]; then
@@ -59,15 +57,14 @@ jobs:
           java-version: '11'
 
       - name: Build Android (Gradle)
-        working-directory: tramphim-frontend/capacitor-tv/android
         run: |
-          chmod +x ./gradlew || true
-          ./gradlew assembleDebug --no-daemon
+          chmod +x ./capacitor-tv/android/gradlew || true
+          ./capacitor-tv/android/gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: tramphim-tv-apk
-          path: tramphim-frontend/capacitor-tv/android/app/build/outputs/apk/debug/*.apk
+          path: capacitor-tv/android/app/build/outputs/apk/debug/*.apk
 
 
