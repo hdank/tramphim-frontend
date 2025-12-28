@@ -253,7 +253,7 @@ export default function Header() {
           throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
 
-        const resultsArray = Array.isArray(data) ? data : 
+        const resultsArray = Array.isArray(data) ? data :
           (data && data.data && data.data.items ? data.data.items : []);
 
         setDesktopSearchResults(resultsArray);
@@ -292,7 +292,7 @@ export default function Header() {
           throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
 
-        const resultsArray = Array.isArray(data) ? data : 
+        const resultsArray = Array.isArray(data) ? data :
           (data && data.data && data.data.items ? data.data.items : []);
 
         setMobileSearchResults(resultsArray);
@@ -521,9 +521,8 @@ export default function Header() {
       ) : null}
       <header
         ref={headerRef}
-        className={`header-wrapper-main z-50 mx-auto max-w-screen-2xl px-4 py-0 transition-all duration-500 ease-out lg:px-6 lg:py-2 2xl:px-4 ${
-          scrolled ? 'header-scrolled' : ''
-        }`}
+        className={`header-wrapper-main z-50 mx-auto max-w-screen-2xl px-4 py-0 transition-all duration-500 ease-out lg:px-6 lg:py-2 2xl:px-4 ${scrolled ? 'header-scrolled' : ''
+          }`}
         role="banner"
       >
         <div className="md:h-18 relative flex h-16 w-full items-center justify-between">
@@ -548,6 +547,10 @@ export default function Header() {
                   <img
                     src={typeof logo === "string" ? logo : logo.src}
                     alt="Logo trang web phim"
+                    width="96"
+                    height="96"
+                    fetchPriority="high"
+                    loading="eager"
                     className="h-12 w-auto sm:h-14 md:h-16 lg:h-20 xl:h-24"
                   />
                 </a>
@@ -759,9 +762,9 @@ export default function Header() {
               title="Tải ứng dụng TrạmPhim"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" x2="12" y1="15" y2="3"/>
+                <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" x2="12" y1="15" y2="3" />
               </svg>
               <span>Tải App</span>
             </a>
@@ -813,9 +816,9 @@ export default function Header() {
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" x2="12" y1="15" y2="3"/>
+                    <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" x2="12" y1="15" y2="3" />
                   </svg>
                 </div>
                 <div>

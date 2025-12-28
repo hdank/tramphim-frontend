@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import lozad from "lozad";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -65,6 +66,17 @@ export default function MovieCardPhimLe({ title, category = "category" }) {
     }
 
   }, [category]);
+
+  useEffect(() => {
+    if (movies.length > 0) {
+      const observer = lozad(".lozad", {
+        loaded: function (el) {
+          el.classList.add("loaded");
+        },
+      });
+      observer.observe();
+    }
+  }, [movies]);
 
   const commonSwiperProps = {
     spaceBetween: 10,
@@ -315,8 +327,8 @@ export default function MovieCardPhimLe({ title, category = "category" }) {
                   <button
                     ref={prevRef}
                     className={`slider-nav-btn ${isBeginning
-                        ? "pointer-events-none opacity-50"
-                        : "opacity-100"
+                      ? "pointer-events-none opacity-50"
+                      : "opacity-100"
                       }`}
                     aria-label="Cuộn trái"
                   >
@@ -383,11 +395,10 @@ export default function MovieCardPhimLe({ title, category = "category" }) {
                       <div className="movie-card-main">
                         <div className="movie-poster-clip">
                           <img
-                            src={poster_url}
+                            data-src={poster_url}
                             alt={`Xem ${ten_phim || ten_khac
                               } Vietsub Thuyết Minh Full HD`}
-                            className="movie-poster-img"
-                            loading="lazy"
+                            className="movie-poster-img lozad"
                           />
                           <div className="movie-info-bottom">
                             <span className="movie-lang-tag">

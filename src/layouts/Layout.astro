@@ -76,5 +76,14 @@ const mode = import.meta.env.MODE;
         }
       })();
     </script>
+    <script>
+      import lozad from "lozad";
+      const observer = lozad(".lozad", {
+        loaded: function (el) {
+          el.classList.add("loaded");
+        },
+      });
+      observer.observe();
+    </script>
   </body>
 </html>

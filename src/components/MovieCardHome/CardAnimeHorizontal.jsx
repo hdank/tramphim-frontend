@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import lozad from "lozad";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -54,6 +55,14 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
       swiperInstance.navigation.init();
       swiperInstance.navigation.update();
     }
+
+    // Initialize lozad
+    const observer = lozad(".lozad", {
+      loaded: function (el) {
+        el.classList.add("loaded");
+      },
+    });
+    observer.observe();
   }, [movies.length]);
 
   const commonSwiperProps = {
@@ -177,11 +186,10 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
                 <div className="slider-controls-group">
                   <button
                     ref={prevRef}
-                    className={`slider-nav-btn ${
-                      isBeginning
-                        ? "pointer-events-none opacity-50"
-                        : "opacity-100"
-                    }`}
+                    className={`slider-nav-btn ${isBeginning
+                      ? "pointer-events-none opacity-50"
+                      : "opacity-100"
+                      }`}
                     aria-label="Cuộn trái"
                   >
                     <svg
@@ -201,9 +209,8 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
 
                   <button
                     ref={nextRef}
-                    className={`slider-nav-btn ${
-                      isEnd ? "pointer-events-none opacity-50" : "opacity-100"
-                    }`}
+                    className={`slider-nav-btn ${isEnd ? "pointer-events-none opacity-50" : "opacity-100"
+                      }`}
                     aria-label="Cuộn phải"
                   >
                     <svg
@@ -229,103 +236,101 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
 
         <div className="relative py-4">
           <Swiper {...commonSwiperProps} className="anime-card-swiper">
-              {movies.map((movie, index) => {
-                const {
-                  id,
-                  slug,
-                  ten_phim,
-                  poster_url,
-                  thumb_url,
-                  tinh_trang,
-                  ngon_ngu,
-                  ten_khac,
-                  nam_phat_hanh,
-                  thoi_luong,
-                  do_tuoi,
-                } = movie;
-                const movieKey = id || slug || `movie-${index}`;
-                // Use thumb_url as main image (landscape), poster_url as small thumbnail
-                const mainImage = thumb_url || poster_url;
+            {movies.map((movie, index) => {
+              const {
+                id,
+                slug,
+                ten_phim,
+                poster_url,
+                thumb_url,
+                tinh_trang,
+                ngon_ngu,
+                ten_khac,
+                nam_phat_hanh,
+                thoi_luong,
+                do_tuoi,
+              } = movie;
+              const movieKey = id || slug || `movie-${index}`;
+              // Use thumb_url as main image (landscape), poster_url as small thumbnail
+              const mainImage = thumb_url || poster_url;
 
-                return (
-                  <SwiperSlide key={movieKey}>
-                    <a 
-                      href={`/phim/${slug}`} 
-                      className="anime-card-link group block"
-                    >
-                      <div className="anime-card-wrapper">
-                        {/* Main landscape image */}
-                        <div className="anime-card-image-container">
-                          <img
-                            src={mainImage}
-                            alt={`Xem ${ten_phim || ten_khac} Vietsub Thuyết Minh Full HD`}
-                            className="anime-card-main-image"
-                            loading="lazy"
-                          />
-                          
-                          {/* Gradient overlay */}
-                          <div className="anime-card-gradient"></div>
-                          
-                          {/* Hover play overlay */}
-                          <div className="anime-card-hover-overlay">
-                            <div className="anime-play-icon">
-                              <svg className="h-12 w-12 lg:h-16 lg:w-16" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Small poster thumbnail + Movie info */}
-                        <div className="anime-card-info-row">
-                          {/* Small poster thumbnail */}
-                          <div className="anime-card-thumbnail">
-                            <img
-                              src={poster_url}
-                              alt={ten_phim}
-                              className="anime-card-thumbnail-img"
-                              loading="lazy"
-                            />
-                            {/* Language badge on thumbnail */}
-                            <span className="anime-thumb-badge">
-                              {rutGonTinhTrangNgonNgu(ngon_ngu)}
-                            </span>
-                          </div>
-                          
-                          {/* Movie info */}
-                          <div className="anime-card-info">
-                            <h3 className="anime-card-title" title={ten_phim}>
-                              {ten_phim}
-                            </h3>
-                            <p className="anime-card-subtitle">{ten_khac}</p>
-                            
-                            {/* Meta info row */}
-                            <div className="anime-card-meta">
-                              {do_tuoi && (
-                                <span className="anime-meta-badge anime-age-badge">
-                                  {do_tuoi}
-                                </span>
-                              )}
-                              {nam_phat_hanh && (
-                                <span className="anime-meta-item">{nam_phat_hanh}</span>
-                              )}
-                              {thoi_luong && (
-                                <span className="anime-meta-item">{thoi_luong}</span>
-                              )}
-                              {tinh_trang && (
-                                <span className="anime-meta-item anime-status">
-                                  {rutGonTinhTrangPhim(tinh_trang)}
-                                </span>
-                              )}
-                            </div>
+              return (
+                <SwiperSlide key={movieKey}>
+                  <a
+                    href={`/phim/${slug}`}
+                    className="anime-card-link group block"
+                  >
+                    <div className="anime-card-wrapper">
+                      {/* Main landscape image */}
+                      <div className="anime-card-image-container">
+                        <img
+                          data-src={mainImage}
+                          alt={`Xem ${ten_phim || ten_khac} Vietsub Thuyết Minh Full HD`}
+                          className="anime-card-main-image lozad"
+                        />
+
+                        {/* Gradient overlay */}
+                        <div className="anime-card-gradient"></div>
+
+                        {/* Hover play overlay */}
+                        <div className="anime-card-hover-overlay">
+                          <div className="anime-play-icon">
+                            <svg className="h-12 w-12 lg:h-16 lg:w-16" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                            </svg>
                           </div>
                         </div>
                       </div>
-                    </a>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+
+                      {/* Small poster thumbnail + Movie info */}
+                      <div className="anime-card-info-row">
+                        {/* Small poster thumbnail */}
+                        <div className="anime-card-thumbnail">
+                          <img
+                            data-src={poster_url}
+                            alt={ten_phim}
+                            className="anime-card-thumbnail-img lozad"
+                          />
+                          {/* Language badge on thumbnail */}
+                          <span className="anime-thumb-badge">
+                            {rutGonTinhTrangNgonNgu(ngon_ngu)}
+                          </span>
+                        </div>
+
+                        {/* Movie info */}
+                        <div className="anime-card-info">
+                          <h3 className="anime-card-title" title={ten_phim}>
+                            {ten_phim}
+                          </h3>
+                          <p className="anime-card-subtitle">{ten_khac}</p>
+
+                          {/* Meta info row */}
+                          <div className="anime-card-meta">
+                            {do_tuoi && (
+                              <span className="anime-meta-badge anime-age-badge">
+                                {do_tuoi}
+                              </span>
+                            )}
+                            {nam_phat_hanh && (
+                              <span className="anime-meta-item">{nam_phat_hanh}</span>
+                            )}
+                            {thoi_luong && (
+                              <span className="anime-meta-item">{thoi_luong}</span>
+                            )}
+                            {tinh_trang && (
+                              <span className="anime-meta-item anime-status">
+                                {rutGonTinhTrangPhim(tinh_trang)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         </div>
       </section>
     </>

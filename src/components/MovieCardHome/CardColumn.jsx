@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import lozad from "lozad";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -41,7 +42,7 @@ const cardVariants = {
 
 const imageHoverVariants = {
   initial: { scale: 1 },
-  hover: { 
+  hover: {
     scale: 1,
     transition: { duration: 0.3, ease: "easeOut" }
   }
@@ -68,6 +69,14 @@ export default function MovieCard({ movies = [], title, loading, error }) {
       swiperInstance.navigation.init();
       swiperInstance.navigation.update();
     }
+
+    // Initialize lozad
+    const observer = lozad(".lozad", {
+      loaded: function (el) {
+        el.classList.add("loaded");
+      },
+    });
+    observer.observe();
   }, [isMounted, movies.length]);
 
   const commonSwiperProps = {
@@ -190,11 +199,10 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                 <div className="slider-controls-group">
                   <button
                     ref={prevRef}
-                    className={`slider-nav-btn ${
-                      isBeginning
-                        ? "pointer-events-none opacity-50"
-                        : "opacity-100"
-                    }`}
+                    className={`slider-nav-btn ${isBeginning
+                      ? "pointer-events-none opacity-50"
+                      : "opacity-100"
+                      }`}
                     aria-label="Cuộn trái"
                   >
                     <svg
@@ -214,9 +222,8 @@ export default function MovieCard({ movies = [], title, loading, error }) {
 
                   <button
                     ref={nextRef}
-                    className={`slider-nav-btn ${
-                      isEnd ? "pointer-events-none opacity-50" : "opacity-100"
-                    }`}
+                    className={`slider-nav-btn ${isEnd ? "pointer-events-none opacity-50" : "opacity-100"
+                      }`}
                     aria-label="Cuộn phải"
                   >
                     <svg
@@ -257,8 +264,8 @@ export default function MovieCard({ movies = [], title, loading, error }) {
 
                 return (
                   <SwiperSlide key={movieKey}>
-                    <motion.a 
-                      href={`/phim/${slug}`} 
+                    <motion.a
+                      href={`/phim/${slug}`}
                       className="movie-card-link group"
                       custom={index}
                       initial="hidden"
@@ -273,15 +280,13 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                             variants={imageHoverVariants}
                           >
                             <img
-                              src={poster_url}
-                              alt={`Xem ${
-                                ten_phim || ten_khac
-                              } Vietsub Thuyết Minh Full HD`}
-                              className="movie-poster-image"
-                              loading="lazy"
+                              data-src={poster_url}
+                              alt={`Xem ${ten_phim || ten_khac
+                                } Vietsub Thuyết Minh Full HD`}
+                              className="movie-poster-image lozad"
                             />
                           </motion.div>
-                          
+
                           {/* Hover overlay */}
                           <div className="movie-hover-overlay">
                             <div className="movie-play-icon">
@@ -290,7 +295,7 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                               </svg>
                             </div>
                           </div>
-                          
+
                           {/* Tags */}
                           <div className="movie-tags-container">
                             <span className="movie-lang-badge">
@@ -301,7 +306,7 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                             </span>
                           </div>
                         </div>
-                        
+
                         {/* Movie info */}
                         <div className="movie-info-container">
                           <h3 className="movie-card-title" title={ten_phim}>

@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import lozad from "lozad";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -45,7 +46,7 @@ const cardVariants = {
 
 const imageHoverVariants = {
   initial: { scale: 1 },
-  hover: { 
+  hover: {
     scale: 1,
     transition: { duration: 0.3, ease: "easeOut" }
   }
@@ -90,6 +91,13 @@ export default function MovieCard({ movies = [], title, loading, error }) {
       swiperInstance.navigation.init();
       swiperInstance.navigation.update();
     }
+
+    const observer = lozad(".lozad", {
+      loaded: function (el) {
+        el.classList.add("loaded");
+      },
+    });
+    observer.observe();
   }, [isMounted, movies.length]);
 
   const commonSwiperProps = {
@@ -212,11 +220,10 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                 <div className="slider-controls-group">
                   <button
                     ref={prevRef}
-                    className={`slider-nav-btn ${
-                      isBeginning
-                        ? "pointer-events-none opacity-50"
-                        : "opacity-100"
-                    }`}
+                    className={`slider-nav-btn ${isBeginning
+                      ? "pointer-events-none opacity-50"
+                      : "opacity-100"
+                      }`}
                     aria-label="Cuộn trái"
                   >
                     <svg
@@ -236,9 +243,8 @@ export default function MovieCard({ movies = [], title, loading, error }) {
 
                   <button
                     ref={nextRef}
-                    className={`slider-nav-btn ${
-                      isEnd ? "pointer-events-none opacity-50" : "opacity-100"
-                    }`}
+                    className={`slider-nav-btn ${isEnd ? "pointer-events-none opacity-50" : "opacity-100"
+                      }`}
                     aria-label="Cuộn phải"
                   >
                     <svg
@@ -264,85 +270,82 @@ export default function MovieCard({ movies = [], title, loading, error }) {
 
         <div className="relative py-4">
           <Swiper {...commonSwiperProps} className="movie-card-swiper">
-              {movies.map((movie, index) => {
-                const {
-                  id,
-                  slug,
-                  ten_phim,
-                  poster_url,
-                  tinh_trang,
-                  ngon_ngu,
-                  ten_khac,
-                } = movie;
-                const movieKey = id || slug || `movie-${index}`;
-                const clipPath = index % 2 === 0 ? clipPathLeft : clipPathRight;
+            {movies.map((movie, index) => {
+              const {
+                id,
+                slug,
+                ten_phim,
+                poster_url,
+                tinh_trang,
+                ngon_ngu,
+                ten_khac,
+              } = movie;
+              const movieKey = id || slug || `movie-${index}`;
+              const clipPath = index % 2 === 0 ? clipPathLeft : clipPathRight;
 
-                return (
-                  <SwiperSlide key={movieKey}>
-                    <a 
-                      href={`/phim/${slug}`} 
-                      className="top10-card-link group"
-                    >
-                      <div className="top10-card-wrapper">
-                        <div className="top10-poster-container" style={{ clipPath: clipPath }}>
-                          <div
-                            className="top10-poster-inner"
-                          >
-                            <img
-                              src={poster_url}
-                              alt={`Xem ${
-                                ten_phim || ten_khac
+              return (
+                <SwiperSlide key={movieKey}>
+                  <a
+                    href={`/phim/${slug}`}
+                    className="top10-card-link group"
+                  >
+                    <div className="top10-card-wrapper">
+                      <div className="top10-poster-container" style={{ clipPath: clipPath }}>
+                        <div
+                          className="top10-poster-inner"
+                        >
+                          <img
+                            data-src={poster_url}
+                            alt={`Xem ${ten_phim || ten_khac
                               } Vietsub Thuyết Minh Full HD`}
-                              className="top10-poster-image"
-                              loading={index < 6 ? "eager" : "lazy"}
-                              fetchPriority={index < 3 ? "high" : "auto"}
-                              decoding="async"
-                            />
-                          </div>
-                          
-                          {/* Hover overlay */}
-                          <div className="top10-hover-overlay">
-                            <div className="movie-play-icon">
-                              <svg className="h-8 w-8 lg:h-12 lg:w-12" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                          </div>
-                          
-                          {/* Tags */}
-                          <div className="movie-tags-container">
-                            <span className="movie-lang-badge">
-                              {rutGonTinhTrangNgonNgu(ngon_ngu)}
-                            </span>
-                            <span className="movie-status-badge">
-                              {rutGonTinhTrangPhim(tinh_trang)}
-                            </span>
+                            className="top10-poster-image lozad"
+                            decoding="async"
+                          />
+                        </div>
+
+                        {/* Hover overlay */}
+                        <div className="top10-hover-overlay">
+                          <div className="movie-play-icon">
+                            <svg className="h-8 w-8 lg:h-12 lg:w-12" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                            </svg>
                           </div>
                         </div>
-                        
-                        {/* Ranking row */}
-                        <div className="movie-ranking-row">
-                          <span 
-                            className="movie-ranking-number"
-                          >
-                            {index + 1}
+
+                        {/* Tags */}
+                        <div className="movie-tags-container">
+                          <span className="movie-lang-badge">
+                            {rutGonTinhTrangNgonNgu(ngon_ngu)}
                           </span>
-                          <div className="movie-details-text">
-                            <h3 className="movie-title-main" title={ten_phim}>
-                              {ten_phim}
-                            </h3>
-                            <p
-                              className="movie-subtitle"
-                              dangerouslySetInnerHTML={{ __html: ten_khac }}
-                            ></p>
-                          </div>
+                          <span className="movie-status-badge">
+                            {rutGonTinhTrangPhim(tinh_trang)}
+                          </span>
                         </div>
                       </div>
-                    </a>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+
+                      {/* Ranking row */}
+                      <div className="movie-ranking-row">
+                        <span
+                          className="movie-ranking-number"
+                        >
+                          {index + 1}
+                        </span>
+                        <div className="movie-details-text">
+                          <h3 className="movie-title-main" title={ten_phim}>
+                            {ten_phim}
+                          </h3>
+                          <p
+                            className="movie-subtitle"
+                            dangerouslySetInnerHTML={{ __html: ten_khac }}
+                          ></p>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         </div>
       </section>
     </>

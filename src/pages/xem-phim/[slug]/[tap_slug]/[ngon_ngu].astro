@@ -133,6 +133,10 @@ const pageUrl = Astro.url.href;
 ---
 
 <BaseLayout>
+  <Fragment slot="preload">
+    {poster && <link rel="preload" as="image" href={poster} fetchpriority="high" />}
+  </Fragment>
+
   <Fragment slot="head">
     <Seo
       tenPhim={tenPhim as string}

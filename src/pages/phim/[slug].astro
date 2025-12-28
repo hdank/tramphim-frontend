@@ -65,28 +65,29 @@ const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
 ---
 
 <BaseLayout>
+  <Fragment slot="preload">
+    <link rel="preload" as="image" href={movie.banner_url} fetchpriority="high" />
+  </Fragment>
+
   <Fragment slot="head">
     <SEO movie={movie} slug={slug} />
   </Fragment>
 
-  <div
-    class="relative"
-    style={{
-      backgroundImage: `url(${movie.banner_url})`,
-      backgroundSize: "auto",
-      backgroundPosition: "center",
-    }}
-  >
-    <img
-      src={movie.banner_url}
-      alt="banner phim"
-      fetchpriority="high"
-      decoding="async"
-      class="hidden"
-    />
+  <div class="relative">
+    <div class="absolute inset-0">
+      <img
+        src={movie.banner_url}
+        alt={`Banner ${movie.ten_phim}`}
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
+        class="h-full w-full object-cover"
+      />
+      <div class="absolute inset-0 bg-black/60"></div>
+    </div>
 
     <div class="movie-banner-background"></div>
-    <div class="movie-content-base">
+    <div class="movie-content-base relative z-10">
       <div class="header-shadow">
         <Header client:load />
       </div>

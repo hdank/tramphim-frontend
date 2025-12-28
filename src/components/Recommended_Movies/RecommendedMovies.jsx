@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import lozad from "lozad";
 import {
   rutGonTinhTrangPhim,
   rutGonTinhTrangNgonNgu,
@@ -23,6 +24,15 @@ export default function MovieCard({ movies = [], title, loading, error }) {
     // Dọn dẹp event listener khi component unmount
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const observer = lozad(".lozad", {
+      loaded: function (el) {
+        el.classList.add("loaded");
+      },
+    });
+    observer.observe();
+  }, [movies]);
 
   if (!loading && (error || !movies || movies.length === 0)) {
     return (
@@ -125,10 +135,9 @@ export default function MovieCard({ movies = [], title, loading, error }) {
                   <div className="relative h-full">
                     <div className="relative aspect-[2/3] w-full overflow-hidden rounded-md">
                       <img
-                        src={poster_url}
+                        data-src={poster_url}
                         alt={`Poster phim ${ten_phim || ten_khac}`}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
+                        className="h-full w-full object-cover lozad"
                       />
                       <div
                         className="absolute bottom-0 left-0 h-[40%] w-full rounded-b-[4px]"
