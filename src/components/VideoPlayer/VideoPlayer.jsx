@@ -259,15 +259,6 @@ const VideoPlayer = ({
       })
       .sort((a, b) => getEpisodeNumber(a) - getEpisodeNumber(b)); // Sắp xếp theo số tập đã trích xuất
 
-    console.log(
-      "DEBUG [Next Episode]: Current Slug (sotap):",
-      currentEpisodeSlug,
-    );
-    console.log(
-      "DEBUG [Next Episode]: Filtered & Sorted Count:",
-      filteredAndSortedList.length,
-    );
-
     const currentIndex = filteredAndSortedList.findIndex((ep) => {
       const apiSlug = (ep.tap_phim?.slug || ep.slug)?.toString();
 

