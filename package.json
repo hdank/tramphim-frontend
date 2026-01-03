@@ -6,11 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "cap:sync": "cap sync",
-    "tv:build": "npm run build",
-    "tv:cap-add-android": "cd capacitor-tv && npx cap add android",
-    "tv:cap-sync": "cd capacitor-tv && npx cap sync android"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/node": "^9.2.2",
@@ -33,6 +29,7 @@
     "dotenv": "^17.0.1",
     "framer-motion": "^12.23.25",
     "hls.js": "^1.6.5",
+    "lozad": "^1.16.0",
     "lucide-react": "^0.526.0",
     "m3u8": "^0.0.10",
     "nanostores": "^1.0.1",
