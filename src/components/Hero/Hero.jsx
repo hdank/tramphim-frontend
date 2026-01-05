@@ -61,17 +61,32 @@ const staggerChildren = {
 
 export default function MovieCard({ movies = [], loading }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hasSSRBackground, setHasSSRBackground] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const heroMovies = movies.slice(0, 8);
   const activeMovie = heroMovies[activeIndex];
 
   // Auto-rotate every 8 seconds
   useEffect(() => {
     if (heroMovies.length === 0) return;
+    if (isPaused) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % heroMovies.length);
     }, 8000);
     return () => clearInterval(interval);
-  }, [heroMovies.length]);
+  }, [heroMovies.length, isPaused]);
+
+  // Detect server-rendered hero image to avoid double-loading and prioritize SSR LCP
+  useEffect(() => {
+    try {
+      if (typeof document !== "undefined") {
+        const ssrImg = document.querySelector('.hero-featured-bg-img[data-ssr="true"]');
+        if (ssrImg) setHasSSRBackground(true);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
 
   if (loading || !heroMovies || heroMovies.length === 0) {
     return <HeroSkeleton />;
@@ -92,7 +107,20 @@ export default function MovieCard({ movies = [], loading }) {
   const movieLink = `/phim/${slug}`;
 
   return (
-    <section className="hero-featured-section">
+    <section
+      className="hero-featured-section"
+      style={{
+        position: "relative",
+        left: "50%",
+        right: "50%",
+        marginLeft: "-50vw",
+        marginRight: "-50vw",
+        width: "100vw",
+        minHeight: "60vh"
+      }}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       {/* Background Image with transition */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -107,9 +135,25 @@ export default function MovieCard({ movies = [], loading }) {
             src={banner_url || poster_url}
             alt={ten_phim}
             className="hero-featured-bg-img"
-            fetchPriority="high"
-            loading="eager"
+            fetchPriority={hasSSRBackground ? "low" : "high"}
+            loading={hasSSRBackground ? "lazy" : "eager"}
             decoding="async"
+            style={{ filter: "brightness(1.26) saturate(1.15)" }}
+          />
+          {/* dotted overlay pattern (desktop-only) */}
+          <div
+            className="hidden md:block"
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              backgroundImage:
+                "radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px)",
+              backgroundSize: "5px 5px",
+              mixBlendMode: "overlay",
+              opacity: 0.9,
+              zIndex: 30
+            }}
           />
           <div className="hero-featured-gradient" />
           <div className="hero-featured-gradient-left" />
@@ -207,7 +251,7 @@ export default function MovieCard({ movies = [], loading }) {
 
         {/* Right side - Movie thumbnails */}
         <div className="hero-featured-right">
-          <div className="hero-thumbnails-container">
+          <div className="hero-thumbnails-container hidden md:flex">
             {heroMovies.map((movie, index) => (
               <button
                 key={movie.id || movie.slug}
@@ -226,6 +270,19 @@ export default function MovieCard({ movies = [], loading }) {
             ))}
           </div>
         </div>
+      </div>
+      {/* Pagination dots (centered, accessible) - show only on mobile */}
+      <div className="absolute left-1/2 transform -translate-x-1/2 bottom-6 flex gap-2 z-30 md:hidden">
+        {heroMovies.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`h-2 rounded-full transition-all focus:outline-none ${
+              i === activeIndex ? 'w-6 bg-white' : 'w-2 bg-white/40'
+            }`}
+            onClick={() => setActiveIndex(i)}
+          />
+        ))}
       </div>
     </section>
   );
