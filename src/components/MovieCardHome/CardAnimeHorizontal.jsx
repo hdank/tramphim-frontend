@@ -57,7 +57,10 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
     }
 
     // Initialize lozad
+    // Preload images slightly before they enter viewport to avoid blank frames during fast swipes.
     const observer = lozad(".lozad", {
+      rootMargin: "200px 0px",
+      threshold: 0.1,
       loaded: function (el) {
         el.classList.add("loaded");
       },
@@ -242,6 +245,7 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
                 slug,
                 ten_phim,
                 poster_url,
+                banner_url,
                 thumb_url,
                 tinh_trang,
                 ngon_ngu,
@@ -252,7 +256,7 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
               } = movie;
               const movieKey = id || slug || `movie-${index}`;
               // Use thumb_url as main image (landscape), poster_url as small thumbnail
-              const mainImage = thumb_url || poster_url;
+              const mainImage = banner_url;
 
               return (
                 <SwiperSlide key={movieKey}>
@@ -267,10 +271,12 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
                           data-src={mainImage}
                           alt={`Xem ${ten_phim || ten_khac} Vietsub Thuyết Minh Full HD`}
                           className="anime-card-main-image lozad"
+                          loading="lazy"
+                          decoding="async"
                         />
 
                         {/* Gradient overlay */}
-                        <div className="anime-card-gradient"></div>
+                        {/* <div className="anime-card-gradient"></div> */}
 
                         {/* Hover play overlay */}
                         <div className="anime-card-hover-overlay">
@@ -290,6 +296,8 @@ export default function AnimeCardHorizontal({ movies = [], title, loading, error
                             data-src={poster_url}
                             alt={ten_phim}
                             className="anime-card-thumbnail-img lozad"
+                            loading="lazy"
+                            decoding="async"
                           />
                           {/* Language badge on thumbnail */}
                           <span className="anime-thumb-badge">

@@ -22,6 +22,10 @@ const {
   moviephimbos,
   moviephimles,
   movieanimes,
+  movie2026,
+  latestAnimes,
+  chineseAnime,
+  dramaMovies,
 } = homePageData;
 const loading = false;
 const error = null;
@@ -73,7 +77,18 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
               error={error}
             />
           </section>
-          
+
+          <!-- Phim Mới 2026 Section -->
+          <section class="section-wrapper animate-section phim-moi-2026-section">
+            <AnimeCardHorizontal
+              client:idle
+              title="Phim Mới 2026"
+              movies={movie2026}
+              loading={loading}
+              error={error}
+            />
+          </section>
+
           <!-- Anime Section - Japanese Animation -->
           <section class="section-wrapper animate-section anime-section">
             <AnimeCardHorizontal
@@ -95,7 +110,18 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
               error={error}
             />
           </section>
-          
+
+          <!-- Chinese Anime Section -->
+          <section class="section-wrapper animate-section chinese-anime-section">
+            <AnimeCardHorizontal
+              client:idle
+              title="Nữ Nhân Chỉ Ảnh Hưởng Tốc Độ Chạy Bo Của Ta"
+              movies={chineseAnime}
+              loading={loading}
+              error={error}
+            />
+          </section>
+
           <!-- Cinema Movies -->
           <section class="section-wrapper animate-section">
             <MovieCardColumn
@@ -106,7 +132,29 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
               error={error}
             />
           </section>
-          
+
+          <!-- Latest Anime Section -->
+          <section class="section-wrapper animate-section">
+            <MovieCardColumn
+              client:idle
+              title="Anime Mới Nhất"
+              movies={latestAnimes}
+              loading={loading}
+              error={error}
+            />
+          </section>
+
+          <!-- Drama Movies Section -->
+          <section class="section-wrapper animate-section drama-movies-section">
+            <AnimeCardHorizontal
+              client:idle
+              title="Hít Chút Drama Cho Bể Phổi Nè Bé Iu"
+              movies={dramaMovies}
+              loading={loading}
+              error={error}
+            />
+          </section>
+
           <!-- Single Movies -->
           <section class="section-wrapper animate-section">
             <MovieCardColumn
@@ -144,6 +192,28 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
   
   .hero-wrapper {
     @apply relative;
+    /* default smaller height on mobile / tablet; overridden on desktop */
+    min-height: 60vh;
+  }
+
+  /* Desktop: make hero full viewport height (subtract header height) */
+  @media (min-width: 1024px) {
+    .hero-wrapper {
+      min-height: calc(100vh - 80px);
+    }
+
+    /* Ensure hero section fills the available area and content is centered vertically */
+    .hero-featured-section {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+    }
+
+    /* Make sure background covers the full hero height */
+    .hero-featured-bg {
+      min-height: calc(100vh - 80px);
+      height: 100%;
+    }
   }
   
   .section-wrapper {
@@ -164,8 +234,41 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
   .anime-section {
     @apply relative;
   }
-  
+
   .anime-section::before {
+    content: '';
+    @apply absolute -inset-4 rounded-2xl opacity-25 -z-10;
+    background: radial-gradient(ellipse at center, rgba(255, 107, 157, 0.15) 0%, transparent 70%);
+  }
+
+  /* Phim Mới 2026 Section Special Styling */
+  .phim-moi-2026-section {
+    @apply relative;
+  }
+
+  .phim-moi-2026-section::before {
+    content: '';
+    @apply absolute -inset-4 rounded-2xl opacity-25 -z-10;
+    background: radial-gradient(ellipse at center, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+  }
+
+  /* Chinese Anime Section Special Styling */
+  .chinese-anime-section {
+    @apply relative;
+  }
+
+  .chinese-anime-section::before {
+    content: '';
+    @apply absolute -inset-4 rounded-2xl opacity-25 -z-10;
+    background: radial-gradient(ellipse at center, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+  }
+
+  /* Drama Movies Section Special Styling */
+  .drama-movies-section {
+    @apply relative;
+  }
+
+  .drama-movies-section::before {
     content: '';
     @apply absolute -inset-4 rounded-2xl opacity-25 -z-10;
     background: radial-gradient(ellipse at center, rgba(255, 107, 157, 0.15) 0%, transparent 70%);
@@ -183,6 +286,10 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
   .animate-section:nth-child(5) { animation-delay: 0.3s; }
   .animate-section:nth-child(6) { animation-delay: 0.35s; }
   .animate-section:nth-child(7) { animation-delay: 0.4s; }
+  .animate-section:nth-child(8) { animation-delay: 0.45s; }
+  .animate-section:nth-child(9) { animation-delay: 0.5s; }
+  .animate-section:nth-child(10) { animation-delay: 0.55s; }
+  .animate-section:nth-child(11) { animation-delay: 0.6s; }
   
   @keyframes fadeInSection {
     to {

@@ -68,6 +68,8 @@
   --radius-lg: 14px;
   --radius-xl: 18px;
   --radius-2xl: 24px;
+  /* dynamic header bg opacity (0 = transparent at top) */
+  --header-bg-opacity: 0;
 }
 
 /* ========================================
@@ -546,10 +548,18 @@
    ======================================== */
 .header-wrapper-main {
   @apply relative;
+  /* use dynamic opacity from JS for a smooth fade when scrolling */
+  background-color: rgba(15, 15, 15, var(--header-bg-opacity, 0));
+  transition:
+    background-color 300ms var(--transition-base),
+    box-shadow 300ms var(--transition-base),
+    backdrop-filter 300ms var(--transition-base);
+  /* subtle blur that scales with opacity (0..8px) */
+  backdrop-filter: blur(calc(var(--header-bg-opacity, 0) * 8px));
 }
 
 .header-scrolled {
-  @apply bg-[#0f0f0f]/80 backdrop-blur-lg;
+  /* keep shadow when scrolled past threshold */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -728,20 +738,24 @@
     }
   }
   
+  /* Desktop: let hero expand to viewport height minus header height */
   @media (min-width: 1024px) {
     .hero-featured-section {
-      min-height: 550px;
-      height: 70vh;
-      max-height: 750px;
+      min-height: calc(100vh - var(--header-height, 72px));
+      height: calc(100vh - var(--header-height, 72px));
+      max-height: none;
     }
   }
   
   .hero-featured-bg {
     @apply absolute inset-0 z-0;
+    height: 100%;
   }
   
   .hero-featured-bg-img {
     @apply h-full w-full object-cover object-center;
+    width: 100%;
+    height: 100%;
   }
   
   /* Gradient from bottom */
@@ -1168,6 +1182,7 @@
 @layer components {
   .top10-card-link {
     @apply block h-full pt-2;
+    overflow: visible;
   }
   
   .top10-card-wrapper {
@@ -1185,19 +1200,25 @@
   
   .top10-poster-inner {
     @apply h-full w-full overflow-hidden;
+    position: relative;
+    z-index: 0;
   }
   
   .top10-poster-image {
-    @apply h-full w-full object-cover transition-all duration-500;
+    @apply h-full w-full object-cover;
+    /* enable smooth zoom on hover */
+    transition: transform 260ms var(--transition-base);
+    will-change: transform;
   }
   
+  /* Zoom slightly on hover to enhance UI (keeps outline visible) */
   .top10-card-link:hover .top10-poster-image {
-    transform: scale(1.05);
+    transform: scale(1.035);
   }
   
   .top10-hover-overlay {
     @apply absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300;
-    @apply group-hover:bg-black/40;
+    /* keep play icon visible on hover but do not darken the poster with an overlay */
   }
 }
 
@@ -1240,6 +1261,10 @@
   
   .anime-card-main-image {
     @apply h-full w-full object-cover transition-transform duration-500;
+    /* performance: promote to its own layer and hint GPU compositing for smoother swipes */
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
   
   .anime-card-link:hover .anime-card-main-image {
@@ -1258,7 +1283,7 @@
   
   .anime-card-hover-overlay {
     @apply absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300;
-    @apply group-hover:bg-black/40;
+    /* removed grey hover overlay to keep main image unobscured on hover */
   }
   
   .anime-play-icon {
@@ -1279,6 +1304,9 @@
   
   .anime-card-thumbnail-img {
     @apply h-full w-full object-cover;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
   
   .anime-thumb-badge {
