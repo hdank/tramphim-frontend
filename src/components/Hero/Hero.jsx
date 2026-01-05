@@ -148,10 +148,10 @@ export default function MovieCard({ movies = [], loading }) {
               inset: 0,
               pointerEvents: "none",
               backgroundImage:
-                "radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px)",
+                "radial-gradient(circle, rgba(0, 0, 0, 0.3) 1px, transparent 1px)",
               backgroundSize: "5px 5px",
               mixBlendMode: "overlay",
-              opacity: 0.9,
+              opacity: 1,
               zIndex: 30
             }}
           />
