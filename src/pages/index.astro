@@ -10,6 +10,7 @@ import MovieCardColumn from "../components/MovieCardHome/CardColumn.jsx";
 import MovieCardTop from "../components/MovieCardHome/CardColumnTop.jsx";
 import AnimeCardHorizontal from "../components/MovieCardHome/CardAnimeHorizontal.jsx";
 import MovieCardCategory from "../components/MovieCardHome/CardPhimCategory.jsx";
+import MinimalHeroMovieCard from "../components/MovieCardHome/MinimalHeroMovieCard.jsx"
 import SeoHome from "../seometas/SeoHome.astro";
 import ChuDe from "../components/ToPics/ToPics.jsx";
 const homePageData = await getHomePageData();
@@ -26,6 +27,9 @@ const {
   latestAnimes,
   chineseAnime,
   dramaMovies,
+  horrorMovies,
+  koreaMovies,
+  familyMovies,
 } = homePageData;
 const loading = false;
 const error = null;
@@ -133,6 +137,21 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
             />
           </section>
 
+          <!-- Family Movies Section -->
+          <section class="section-wrapper animate-section">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="inline-block w-8 h-1 rounded-full bg-cyan-400" />
+              <h3 class="header-title">Đường Về Nhà Là Vào Tim Ta</h3>
+            </div>
+
+            <MinimalHeroMovieCard
+              client:idle
+              movies={familyMovies}
+              loading={loading}
+              error={error}
+            />
+          </section>
+
           <!-- Latest Anime Section -->
           <section class="section-wrapper animate-section">
             <MovieCardColumn
@@ -148,13 +167,34 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
           <section class="section-wrapper animate-section drama-movies-section">
             <AnimeCardHorizontal
               client:idle
-              title="Hít Chút Drama Cho Bể Phổi Nè Bé Iu"
+              title="Hít Chút Drama Cho Bổ Phổi Nè Bé Iu"
               movies={dramaMovies}
               loading={loading}
               error={error}
             />
           </section>
 
+          <!-- Horror Movies Section -->
+          <section class="section-wrapper animate-section drama-movies-section">
+            <MovieCardColumn
+              client:idle
+              title="Bạn Sợ À ?"
+              movies={horrorMovies}
+              loading={loading}
+              error={error}
+            />
+          </section>
+
+          <!-- Top Korea Movies -->
+          <section class="section-wrapper animate-section top-section">
+            <MovieCardTop
+              client:idle
+              movies={koreaMovies}
+              title="TOP Phim Hàn Xẻng Để Cày Nè"
+              loading={loading}
+              error={error}
+            />
+          </section>
           <!-- Single Movies -->
           <section class="section-wrapper animate-section">
             <MovieCardColumn

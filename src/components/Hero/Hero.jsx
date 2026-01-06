@@ -105,6 +105,8 @@ export default function MovieCard({ movies = [], loading }) {
   } = activeMovie;
 
   const movieLink = `/phim/${slug}`;
+  // Decode HTML entities in description to avoid showing raw entities like &quot;
+  const decodedDescription = cleanhtml(mo_ta);
 
   return (
     <section
@@ -220,7 +222,7 @@ export default function MovieCard({ movies = [], loading }) {
               variants={fadeInUp}
               className="hero-featured-desc hidden md:block"
             >
-              {mo_ta ? (mo_ta.length > 200 ? mo_ta.substring(0, 200) + '...' : mo_ta) : ''}
+              {decodedDescription ? (decodedDescription.length > 200 ? decodedDescription.substring(0, 200) + '...' : decodedDescription) : ''}
             </motion.p>
 
             {/* Action buttons */}

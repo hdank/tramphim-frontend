@@ -9,11 +9,14 @@ export async function getHomePageData() {
     { key: "movieupdates", url: `${BASE_URL}/api/filter/?page=1&limit=24&loai_phim=phim-bo&sort=moi-cap-nhat` },
     { key: "moviephimbos", url: `${BASE_URL}/api/filter/?page=1&limit=18&loai_phim=phim-bo&sort=ngay-tao` },
     { key: "moviephimles", url: `${BASE_URL}/api/filter/?page=1&limit=18&loai_phim=phim-le&sort=ngay-tao` },
-    { key: "movieanimes", url: `${BASE_URL}/api/filter/?page=1&limit=12&loai_phim=hoat-hinh&quoc_gia=nhat-ban&nam_phat_hanh=2025&sort=ngay-tao` },
-    { key: "movie2026", url: `${BASE_URL}/api/filter/?page=1&limit=12&nam_phat_hanh=2026&sort=ngay-tao` },
-    { key: "latestAnimes", url: `${BASE_URL}/api/filter/?page=1&limit=18&loai_phim=hoat-hinh&quoc_gia=nhat-ban&sort=ngay-tao` },
-    { key: "chineseAnime", url: `${BASE_URL}/api/filter/?page=1&limit=12&loai_phim=hoat-hinh&quoc_gia=trung-quoc&sort=ngay-tao` },
-    { key: "dramaMovies", url: `${BASE_URL}/api/filter/?page=1&limit=12&the_loai=chinh-kich&the_loai=tam-ly&the_loai=tinh-cam&sort=ngay-tao` }
+    { key: "movieanimes", url: `${BASE_URL}/api/filter/?page=1&limit=20&loai_phim=hoat-hinh&quoc_gia=nhat-ban&nam_phat_hanh=2025&sort=ngay-tao` },
+    { key: "movie2026", url: `${BASE_URL}/api/filter/?page=1&limit=20&nam_phat_hanh=2026&sort=ngay-tao` },
+    { key: "latestAnimes", url: `${BASE_URL}/api/filter/?page=1&limit=20&loai_phim=hoat-hinh&quoc_gia=nhat-ban&sort=ngay-tao` },
+    { key: "chineseAnime", url: `${BASE_URL}/api/filter/?page=1&limit=20&loai_phim=hoat-hinh&the_loai=hanh-dong&quoc_gia=trung-quoc&sort=ngay-tao` },
+    { key: "dramaMovies", url: `${BASE_URL}/api/filter/?page=1&limit=20&the_loai=chinh-kich&the_loai=tam-ly&the_loai=tinh-cam&sort=ngay-tao` },
+    { key: "horrorMovies", url: `${BASE_URL}/api/filter/?page=1&limit=20&the_loai=kinh-di&sort=ngay-tao` },
+    { key: "koreaMovies", url: `${BASE_URL}/api/filter/?page=1&limit=20&quoc_gia=han-quoc&sort=ngay-tao` },
+    { key: "familyMovies", url: `${BASE_URL}/api/filter/?page=1&limit=10&the_loai=gia-dinh&sort=ngay-tao` }
   ];
 
   try {
