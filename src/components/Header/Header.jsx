@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/logo.png";
+import logoOnly from "../../assets/logo_only.png";
 
 import UserProfileDropdown from "../User/UserProfileDropdown";
 import NotificationDropdown from "../Notifications/NotificationDropdown";
@@ -8,7 +9,7 @@ import { AuthProvider } from "../../context/AuthProvider";
 
 // Ensure HTTPS in production and provide fallback
 const getBaseUrl = () => {
-  let url = import.meta.env.PUBLIC_API_BASE_URL || 'https://api.tramphim.com';
+  let url = import.meta.env.PUBLIC_API_BASE_URL || 'https://api.tramphim.online';
   // Force HTTPS in production (when not localhost)
   if (url && !url.includes('localhost') && url.startsWith('http://')) {
     url = url.replace('http://', 'https://');
@@ -163,15 +164,57 @@ export default function Header() {
 
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleScroll = () => setScrolled(window.scrollY > 50);
-      window.addEventListener("scroll", handleScroll);
-      setCurrentPath(window.location.pathname);
+    if (typeof window === "undefined") return;
 
-      fetchTheLoaiList();
-      return () => window.removeEventListener("scroll", handleScroll);
-    }
+    // Smoothly update header background opacity based on scroll position.
+    // Behavior:
+    // - At top (scrollY === 0) -> fully transparent (opacity 0).
+    // - As user scrolls down up to fadeDistance, opacity moves from 0 -> maxOpacity.
+    // - We still set the `scrolled` state for any existing logic that depends on it.
+    const fadeDistance = 140; // px over which the fade occurs
+    const maxOpacity = 0.9;
+
+    let ticking = false;
+    const updateOpacity = () => {
+      const y = window.scrollY || 0;
+      const raw = Math.max(0, Math.min(1, y / fadeDistance));
+      const computed = raw * maxOpacity;
+      document.documentElement.style.setProperty("--header-bg-opacity", `${computed}`);
+      setScrolled(y > 10);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateOpacity);
+        ticking = true;
+      }
+    };
+
+    // initialize immediately (handles reloads where page is scrolled)
+    updateOpacity();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    setCurrentPath(window.location.pathname);
+    fetchTheLoaiList();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [fetchTheLoaiList]);
+
+  // expose header height as CSS variable for layout calculations (hero)
+  useEffect(() => {
+    if (typeof window !== "undefined" && headerRef.current) {
+      const setHeaderCssVar = () => {
+        const height = headerRef.current.offsetHeight || 72;
+        document.documentElement.style.setProperty("--header-height", `${height}px`);
+      };
+      // initialize and update on resize
+      setHeaderCssVar();
+      window.addEventListener("resize", setHeaderCssVar);
+      return () => window.removeEventListener("resize", setHeaderCssVar);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof document !== "undefined") {
@@ -544,15 +587,21 @@ export default function Header() {
                   aria-label="Trang chủ"
                   onClick={(e) => handleInternalNavLinkClick(e, "/")}
                 >
-                  <img
-                    src={typeof logo === "string" ? logo : logo.src}
-                    alt="Logo trang web phim"
-                    width="96"
-                    height="96"
-                    fetchPriority="high"
-                    loading="eager"
-                    className="h-12 w-auto sm:h-14 md:h-16 lg:h-20 xl:h-24"
-                  />
+                  <picture>
+                    <source
+                      media="(max-width: 767px)"
+                      srcSet={typeof logoOnly === "string" ? logoOnly : logoOnly.src}
+                    />
+                    <img
+                      src={typeof logo === "string" ? logo : logo.src}
+                      alt="Logo trang web phim"
+                      width="96"
+                      height="96"
+                      fetchPriority="high"
+                      loading="eager"
+                      className="h-12 w-auto sm:h-14 md:h-16 lg:h-20 xl:h-24"
+                    />
+                  </picture>
                 </a>
               </div>
               <nav
