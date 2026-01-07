@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { cleanhtml, convertImage } from "../../utils/movieUtils";
 
 /**
@@ -13,6 +13,20 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
   if (loading || !movies || movies.length === 0) return null;
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [mobileImageLoaded, setMobileImageLoaded] = useState(true);
+  const mobileImgRef = useRef(null);
+
+  useEffect(() => {
+    // reset mobile image loaded flag on featured change to trigger fade
+    setMobileImageLoaded(false);
+    // if the new image is already cached/complete, immediately set loaded
+    const img = mobileImgRef.current;
+    if (img && img.complete) {
+      // allow DOM to update before showing
+      setTimeout(() => setMobileImageLoaded(true), 0);
+    }
+  }, [activeIndex]);
+
   useEffect(() => {
     if (!movies || movies.length === 0) return;
     if (activeIndex >= movies.length) setActiveIndex(0);
@@ -31,6 +45,7 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
   } = featured;
 
   const description = cleanhtml(mo_ta || ten_khac || "");
+  const subtitle = ten_khac || "";
   const movieLink = `/phim/${slug}`;
 
   // badges from genres if available (safe split)
@@ -48,7 +63,7 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
     .filter(Boolean);
 
   return (
-    <section className="minimal-hero-card relative bg-[#0b1220]/60 rounded-3xl p-6 lg:p-8 mb-8 overflow-hidden">
+    <section className="minimal-hero-card relative bg-transparent sm:bg-[#0b1220]/60 rounded-3xl p-6 lg:p-8 mb-8 overflow-hidden">
       {/* Background underlay (featured poster/banner) */}
       <div
         className="minimal-hero-bg absolute inset-0 z-0 bg-no-repeat"
@@ -59,9 +74,9 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
         }}
         aria-hidden="true"
       />
-      {/* dotted overlay pattern (desktop-only) */}
+      {/* dotted overlay pattern (now visible on all sizes so it overlays the mobile poster) */}
       <div
-        className="hidden md:block absolute inset-0 z-10"
+        className="absolute inset-0 z-10"
         style={{
           backgroundImage:
             "radial-gradient(circle, rgba(0, 0, 0, 0.28) 1px, transparent 1px)",
@@ -92,8 +107,8 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
 
       <div className="max-w-[1300px] mx-0 relative z-30 pl-4 md:pl-8">
         <div className="lg:flex lg:items-start lg:gap-8">
-          {/* Left content */}
-          <div className="lg:flex-1">
+          {/* Left content (hidden on small screens - mobile shows poster + controls only) */}
+          <div className="hidden lg:block lg:flex-1">
             {title && (
               <div className="flex items-center gap-3 mb-3">
                 <span className="inline-block w-8 h-1 rounded-full bg-cyan-400" />
@@ -101,7 +116,7 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
               </div>
             )}
 
-            <h2 className="header-title text-3xl lg:text-4xl leading-tight mb-2">
+            <h2 className="header-title text-2xl sm:text-3xl lg:text-4xl leading-tight mb-2">
               {ten_phim}
             </h2>
 
@@ -119,8 +134,8 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
             </div>
 
             {description && (
-              <p className="text-gray-300 max-w-2xl mb-6 hidden md:block font-mono">
-                {description.length > 260 ? description.substring(0, 260) + "..." : description}
+              <p className="text-gray-300 max-w-2xl mb-6 block md:block font-mono">
+                {description.length > 180 ? description.substring(0, 180) + "..." : description}
               </p>
             )}
 
@@ -143,19 +158,121 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
                   Xem chi tiết
                 </a>
               </div>
+              
+              {/* Controls under the image for mobile (centered) */}
+              <div className="mt-4 flex items-center justify-center gap-3 px-1 z-40">
+                <a
+                  href={movieLink}
+                  className="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-yellow-400 to-yellow-500 shadow-lg"
+                  aria-label="Play"
+                >
+                  <svg className="h-6 w-6 text-black" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                  </svg>
+                </a>
+
+                <a
+                  href={movieLink}
+                  className="h-12 px-4 rounded-md border border-white/10 text-sm text-white/90 flex items-center gap-2"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Xem chi tiết
+                </a>
+              </div>
             </div>
           </div>
 
           {/* Right poster/banner */}
           {/* Right area now uses the background underlay; keep slide controls positioned over it */}
           <div className="mt-6 lg:mt-0 lg:w-[640px] lg:flex-shrink-0">
-            <div className="relative h-0 lg:h-0" style={{ minHeight: 0 }}>
+            {/* Mobile: poster image + controls stacked (visible only on small screens) */}
+            <div className="relative w-full block lg:hidden mb-4">
+              {/* clickable area for the banner (navigates to movie page) */}
+              <a href={movieLink} className="block rounded-2xl overflow-hidden relative -mx-10 md:-mx-14 lg:mx-0">
+                <img
+                  ref={mobileImgRef}
+                  src={convertImage(banner_url || poster_url, 1200)}
+                  alt={ten_phim}
+                  className="w-full rounded-none shadow-lg object-cover transition-opacity duration-500 ease-in-out"
+                  loading="lazy"
+                  onLoad={() => setMobileImageLoaded(true)}
+                  style={{ opacity: mobileImageLoaded ? 1 : 0 }}
+                />
+
+                {/* darker gradient overlay for legibility (heavier at bottom) */}
+                <div
+                  className="absolute inset-0 rounded-lg pointer-events-none"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(0,0,0,0.0) 10%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.95) 100%)",
+                  }}
+                  aria-hidden="true"
+                />
+
+                {/* Title + subtitle positioned above the circular carousel (centered) */}
+                <div className="absolute left-4 right-4 bottom-24 z-40 flex flex-col items-center text-center px-2">
+                  <h2 className="text-white font-bold text-2xl leading-tight truncate max-w-full">
+                    {ten_phim}
+                  </h2>
+                  {subtitle && <div className="text-yellow-400 text-sm mt-1">{subtitle}</div>}
+                </div>
+              </a>
+
+              {/* Bottom centered overlay: circular interactive thumbnails + compact badges */}
+              <div className="absolute left-4 right-4 bottom-4 z-40 flex items-center justify-center">
+                <div className="flex items-center gap-3 bg-transparent py-1 px-2 rounded-md">
+                  {movies.slice(0, 6).map((m, i) => {
+                    const isActiveThumb = i === activeIndex;
+                    return (
+                      <button
+                        key={`thumb-btn-${i}`}
+                        onClick={(e) => {
+                          // prevent the parent anchor from navigating when clicking thumbs
+                          e.stopPropagation();
+                          e.preventDefault && e.preventDefault();
+                          setActiveIndex(i);
+                        }}
+                        className={`w-8 h-8 rounded-full overflow-hidden ring-2 ${isActiveThumb ? "ring-cyan-400" : "ring-white/20"} focus:outline-none`}
+                        title={m.ten_phim}
+                        aria-label={`Chuyển tới ${m.ten_phim}`}
+                      >
+                        <img src={m.poster_url} alt={m.ten_phim} className="w-full h-full object-cover" loading="lazy" />
+                      </button>
+                    );
+                  })}
+                </div>
+                {/* compact badges to the right of thumbnails on larger mobiles, hidden on very small */}
+                <div className="ml-3 hidden xs:flex items-center gap-2">
+                  {nam_phat_hanh && (
+                    <span className="text-xs bg-white/5 text-white/90 px-2 py-1 rounded-full border border-white/5">
+                      {nam_phat_hanh}
+                    </span>
+                  )}
+                  {badges[0] && (
+                    <span className="text-xs bg-white/5 text-white/90 px-2 py-1 rounded-full border border-white/5">
+                      {badges[0]}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="relative hidden lg:block h-full" style={{ minHeight: 0 }}>
+              {/* desktop uses background underlay; keep an accessible poster for non-decorative scenarios */}
+              <img
+                src={convertImage(banner_url || poster_url, 1200)}
+                alt={ten_phim}
+                className="w-full rounded-2xl object-cover hidden"
+                aria-hidden="true"
+              />
             </div>
           </div>
         </div>
 
         {/* Thumbnails */}
-        <div className="mt-6">
+        <div className="mt-6 hidden lg:block">
           <div className="flex gap-3 overflow-x-auto pb-3">
             {movies.map((m, idx) => {
               const isActive = idx === activeIndex;
@@ -163,7 +280,7 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
                 <button
                   key={m.id || m.slug || idx}
                   onClick={() => setActiveIndex(idx)}
-                  className={`flex-shrink-0 rounded-lg overflow-hidden w-20 h-28 shadow-sm border ${isActive ? "ring-2 ring-cyan-400" : "border-white/5"}`}
+                className={`flex-shrink-0 rounded-lg overflow-hidden w-16 h-24 sm:w-20 sm:h-28 shadow-sm border ${isActive ? "ring-2 ring-cyan-400" : "border-white/5"}`}
                   title={m.ten_phim}
                 >
                   <img src={m.poster_url} alt={m.ten_phim} className="w-full h-full object-cover" loading="lazy" />

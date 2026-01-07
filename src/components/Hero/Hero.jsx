@@ -101,12 +101,22 @@ export default function MovieCard({ movies = [], loading }) {
     title_image_url,
     tinh_trang, 
     ten_khac,
-    mo_ta
+    mo_ta,
+    the_loai
   } = activeMovie;
 
   const movieLink = `/phim/${slug}`;
   // Decode HTML entities in description to avoid showing raw entities like &quot;
   const decodedDescription = cleanhtml(mo_ta);
+  // normalize genres/badges
+  const rawBadges = Array.isArray(the_loai)
+    ? the_loai
+    : typeof the_loai === "string" && the_loai.length
+    ? the_loai.split(",").map((s) => s.trim())
+    : [];
+  const badges = rawBadges
+    .map((b) => (typeof b === "string" ? b : b && (b.ten || b.name || b.slug || "")))
+    .filter(Boolean);
 
   return (
     <section
@@ -205,15 +215,22 @@ export default function MovieCard({ movies = [], loading }) {
               {cleanhtml(ten_khac)}
             </motion.p>
 
-            {/* Status badge */}
-            {tinh_trang && (
-              <motion.div 
+            {/* Status + genre badges */}
+            {(tinh_trang || badges.length > 0) && (
+              <motion.div
                 variants={fadeInUp}
                 className="hero-featured-meta"
               >
-                <span className="hero-meta-badge">
-                  {tinh_trang}
-                </span>
+                {tinh_trang && (
+                  <span className="hero-meta-badge">
+                    {tinh_trang}
+                  </span>
+                )}
+                {badges.slice(0, 4).map((b, i) => (
+                  <span key={i} className="hero-meta-badge ml-2">
+                    {b}
+                  </span>
+                ))}
               </motion.div>
             )}
 
@@ -225,10 +242,10 @@ export default function MovieCard({ movies = [], loading }) {
               {decodedDescription ? (decodedDescription.length > 200 ? decodedDescription.substring(0, 200) + '...' : decodedDescription) : ''}
             </motion.p>
 
-            {/* Action buttons */}
+            {/* Action buttons (hidden on mobile) */}
             <motion.div 
               variants={fadeInUp}
-              className="hero-featured-actions"
+              className="hero-featured-actions hidden md:flex"
             >
               <a 
                 href={movieLink}
