@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -65,6 +65,10 @@ export default function MovieCard({ movies = [], loading }) {
   const [isPaused, setIsPaused] = useState(false);
   const heroMovies = movies.slice(0, 8);
   const activeMovie = heroMovies[activeIndex];
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+  const touchMovedRef = useRef(false);
+  const SWIPE_THRESHOLD = 40;
 
   // Auto-rotate every 8 seconds
   useEffect(() => {
@@ -132,6 +136,51 @@ export default function MovieCard({ movies = [], loading }) {
       }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={(e) => {
+        touchMovedRef.current = false;
+        const t = e.touches && e.touches[0];
+        if (t) {
+          touchStartXRef.current = t.clientX;
+          touchStartYRef.current = t.clientY;
+        }
+      }}
+      onTouchMove={(e) => {
+        const t = e.touches && e.touches[0];
+        if (!t) return;
+        const dx = Math.abs(t.clientX - touchStartXRef.current);
+        const dy = Math.abs(t.clientY - touchStartYRef.current);
+        if (dx > 10 || dy > 10) touchMovedRef.current = true;
+      }}
+      onTouchEnd={(e) => {
+        const touch = e.changedTouches && e.changedTouches[0];
+        if (!touch) return;
+        const dx = touch.clientX - touchStartXRef.current;
+        const dy = touch.clientY - touchStartYRef.current;
+        // horizontal swipe
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
+          if (dx < 0) {
+            // swipe left -> next
+            setActiveIndex((prev) => (prev + 1) % heroMovies.length);
+          } else {
+            // swipe right -> prev
+            setActiveIndex((prev) => (prev - 1 + heroMovies.length) % heroMovies.length);
+          }
+          return;
+        }
+        // treat as tap if not moved much and target isn't interactive
+        if (!touchMovedRef.current) {
+          const target = document.elementFromPoint(touch.clientX, touch.clientY);
+          if (target && !target.closest("a, button, input, svg")) {
+            window.location.href = `/phim/${heroMovies[activeIndex].slug}`;
+          }
+        }
+      }}
+      onClick={(e) => {
+        // if user clicked an interactive control, don't navigate
+        if (e.target && (e.target.closest && e.target.closest("a, button, input, svg"))) return;
+        // navigate to current active movie
+        window.location.href = `/phim/${heroMovies[activeIndex].slug}`;
+      }}
     >
       {/* Background Image with transition */}
       <AnimatePresence mode="wait">

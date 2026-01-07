@@ -158,29 +158,6 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
                   Xem chi tiết
                 </a>
               </div>
-              
-              {/* Controls under the image for mobile (centered) */}
-              <div className="mt-4 flex items-center justify-center gap-3 px-1 z-40">
-                <a
-                  href={movieLink}
-                  className="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-yellow-400 to-yellow-500 shadow-lg"
-                  aria-label="Play"
-                >
-                  <svg className="h-6 w-6 text-black" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                  </svg>
-                </a>
-
-                <a
-                  href={movieLink}
-                  className="h-12 px-4 rounded-md border border-white/10 text-sm text-white/90 flex items-center gap-2"
-                >
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Xem chi tiết
-                </a>
-              </div>
             </div>
           </div>
 
@@ -190,7 +167,15 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
             {/* Mobile: poster image + controls stacked (visible only on small screens) */}
             <div className="relative w-full block lg:hidden mb-4">
               {/* clickable area for the banner (navigates to movie page) */}
-              <a href={movieLink} className="block rounded-2xl overflow-hidden relative -mx-10 md:-mx-14 lg:mx-0">
+              <a
+                href={movieLink}
+                onClick={() => (window.location.href = movieLink)}
+                onTouchEnd={(e) => {
+                  e.preventDefault && e.preventDefault();
+                  window.location.href = movieLink;
+                }}
+                className="block rounded-2xl overflow-hidden relative -mx-10 md:-mx-14 lg:mx-0"
+              >
                 <img
                   ref={mobileImgRef}
                   src={convertImage(banner_url || poster_url, 1200)}
