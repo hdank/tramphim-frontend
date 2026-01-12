@@ -203,13 +203,13 @@ export default function MovieCard({ movies = [], loading }) {
           />
           {/* dotted overlay pattern (desktop-only) */}
           <div
-            className="hidden md:block"
+            className="hidden lg:block"
             style={{
               position: "absolute",
               inset: 0,
               pointerEvents: "none",
               backgroundImage:
-                "radial-gradient(circle, rgba(0, 0, 0, 0.3) 1px, transparent 1px)",
+                "radial-gradient(circle, rgba(10, 10, 15, 0.3) 1px, transparent 1px)",
               backgroundSize: "5px 5px",
               mixBlendMode: "overlay",
               opacity: 1,

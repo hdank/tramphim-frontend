@@ -63,10 +63,10 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
     .filter(Boolean);
 
   return (
-    <section className="minimal-hero-card relative bg-transparent sm:bg-[#0b1220]/60 rounded-3xl p-6 lg:p-8 mb-8 overflow-hidden">
+    <section className="minimal-hero-card relative bg-transparent lg:bg-[#0b1220]/60 rounded-3xl p-0 lg:p-8 mb-8 overflow-hidden">
       {/* Background underlay (featured poster/banner) */}
       <div
-        className="minimal-hero-bg absolute inset-0 z-0 bg-no-repeat"
+        className="minimal-hero-bg absolute inset-0 z-0 bg-no-repeat hidden lg:block"
         style={{
           backgroundImage: `url(${convertImage(banner_url || poster_url, 1600)})`,
           backgroundPosition: "right center",
@@ -76,10 +76,10 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
       />
       {/* dotted overlay pattern (now visible on all sizes so it overlays the mobile poster) */}
       <div
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-10 hidden lg:block"
         style={{
           backgroundImage:
-            "radial-gradient(circle, rgba(0, 0, 0, 0.28) 1px, transparent 1px)",
+            "radial-gradient(circle, rgba(10, 10, 15, 0.28) 1px, transparent 1px)",
           backgroundSize: "5px 5px",
           mixBlendMode: "overlay",
           opacity: 1,
@@ -88,7 +88,7 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
       />
       {/* general gradient to ensure readability */}
       <div
-        className="hero-featured-gradient absolute inset-0 z-20"
+        className="hero-featured-gradient absolute inset-0 z-20 hidden lg:block"
         aria-hidden="true"
         style={{
           background:
@@ -97,7 +97,7 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
       />
       {/* smoother fade overlay (subtle) sits above general gradient but below content */}
       <div
-        className="minimal-hero-fade absolute inset-0 z-25 pointer-events-none"
+        className="minimal-hero-fade absolute inset-0 z-25 pointer-events-none hidden lg:block"
         aria-hidden="true"
         style={{
           background:

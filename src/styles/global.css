@@ -72,6 +72,22 @@
   --header-bg-opacity: 0;
 }
 
+/* Ensure root/background fills overscroll area and prevent white gaps on mobile bounce */
+html, body {
+  height: 100%;
+  background-color: var(--color-bg-primary);
+}
+
+/* Prevent bounce from exposing white on mobile */
+body, .page-body {
+  overscroll-behavior-y: contain;
+}
+
+/* Mobile-safe floating nav: respect the safe area (override default bottom) */
+.mobile-nav-wrapper {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+}
+
 /* ========================================
    SKELETON & SHIMMER ANIMATIONS
    ======================================== */
@@ -524,7 +540,9 @@
 .page-body {
   @apply m-0 h-full w-full font-montserrat text-white;
   background: linear-gradient(180deg, #0a0a0f 0%, #0d0d15 50%, #0a0a0f 100%);
-  background-attachment: fixed;
+  /* avoid `fixed` on mobile (can expose white on overscroll); use scroll */
+  background-attachment: scroll;
+  min-height: 100vh;
 }
 
 /* Premium Background Pattern */
