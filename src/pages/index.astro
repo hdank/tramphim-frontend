@@ -4,6 +4,7 @@ export const revalidate = 1800;
 import BaseLayout from "../layouts/Layout.astro";
 import { getHomePageData } from "../utils/getMovieHome.js";
 import Hero from "../components/Hero/Hero";
+import HeroOverlay from "../components/HeroOverlay/HeroOverlay";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/index";
 import MovieCardColumn from "../components/MovieCardHome/CardColumn.jsx";
@@ -67,6 +68,7 @@ const top10PosterUrl = moviehots?.[0]?.poster_url;
         <!-- Hero Section -->
         <section class="hero-wrapper">
           <Hero client:load movies={moviehots} loading={loading} />
+          <HeroOverlay client:load />
         </section>
         
         <!-- Movie Sections -->

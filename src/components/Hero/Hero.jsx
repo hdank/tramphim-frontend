@@ -2,8 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
+import { toast } from "react-toastify";
+import HeroOverlay from "../HeroOverlay/HeroOverlay";
 
-import { rutGonTinhTrangPhim, cleanhtml } from "../../utils/movieUtils";
+import {
+  rutGonTinhTrangPhim,
+  cleanhtml,
+  addMovieToFavorites,
+  removeMovieFromFavorites,
+  isMovieFavorite
+} from "../../utils/movieUtils";
 
 // Skeleton with shimmer effect
 const HeroSkeleton = () => {
@@ -42,8 +50,8 @@ const HeroSkeleton = () => {
 // Animation variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.5, ease: "easeOut" }
   }
@@ -63,6 +71,8 @@ export default function MovieCard({ movies = [], loading }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hasSSRBackground, setHasSSRBackground] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const heroMovies = movies.slice(0, 8);
   const activeMovie = heroMovies[activeIndex];
   const touchStartXRef = useRef(0);
@@ -80,6 +90,17 @@ export default function MovieCard({ movies = [], loading }) {
     return () => clearInterval(interval);
   }, [heroMovies.length, isPaused]);
 
+  // Check favorite status when active movie changes
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (activeMovie?.slug) {
+        const status = await isMovieFavorite(activeMovie.slug);
+        setIsFavorite(status);
+      }
+    };
+    checkFavoriteStatus();
+  }, [activeMovie]);
+
   // Detect server-rendered hero image to avoid double-loading and prioritize SSR LCP
   useEffect(() => {
     try {
@@ -92,21 +113,44 @@ export default function MovieCard({ movies = [], loading }) {
     }
   }, []);
 
+  const handleFavoriteClick = async () => {
+    if (!activeMovie || !activeMovie.slug) {
+      toast.error("Không tìm thấy thông tin phim.");
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        await removeMovieFromFavorites(activeMovie.slug);
+        setIsFavorite(false);
+        toast.info("Đã xóa khỏi danh sách yêu thích");
+      } else {
+        await addMovieToFavorites(activeMovie);
+        setIsFavorite(true);
+        toast.success("Đã thêm vào danh sách yêu thích");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Có lỗi xảy ra.");
+    }
+  };
+
   if (loading || !heroMovies || heroMovies.length === 0) {
     return <HeroSkeleton />;
   }
 
-  const { 
-    id, 
-    slug, 
-    ten_phim, 
-    banner_url, 
+  const {
+    id,
+    slug,
+    ten_phim,
+    banner_url,
     poster_url,
     title_image_url,
-    tinh_trang, 
+    tinh_trang,
     ten_khac,
     mo_ta,
-    the_loai
+    the_loai,
+    tmdb
   } = activeMovie;
 
   const movieLink = `/phim/${slug}`;
@@ -116,8 +160,8 @@ export default function MovieCard({ movies = [], loading }) {
   const rawBadges = Array.isArray(the_loai)
     ? the_loai
     : typeof the_loai === "string" && the_loai.length
-    ? the_loai.split(",").map((s) => s.trim())
-    : [];
+      ? the_loai.split(",").map((s) => s.trim())
+      : [];
   const badges = rawBadges
     .map((b) => (typeof b === "string" ? b : b && (b.ten || b.name || b.slug || "")))
     .filter(Boolean);
@@ -234,12 +278,12 @@ export default function MovieCard({ movies = [], loading }) {
           >
             {/* Title Image - Display if available */}
             {title_image_url && (
-              <motion.div 
+              <motion.div
                 variants={fadeInUp}
                 className="hero-title-image-wrapper"
               >
-                <img 
-                  src={title_image_url} 
+                <img
+                  src={title_image_url}
                   alt={ten_phim}
                   className="hero-title-image"
                 />
@@ -248,7 +292,7 @@ export default function MovieCard({ movies = [], loading }) {
 
             {/* Title - Hide if title image is displayed */}
             {!title_image_url && (
-              <motion.h1 
+              <motion.h1
                 variants={fadeInUp}
                 className="hero-featured-title"
               >
@@ -257,34 +301,47 @@ export default function MovieCard({ movies = [], loading }) {
             )}
 
             {/* Alt name */}
-            <motion.p 
+            <motion.p
               variants={fadeInUp}
-              className="hero-featured-alt-name"
+              className="font-medium text-yellow-400 text-base lg:text-lg mb-1"
             >
-              {cleanhtml(ten_khac)}
+              {cleanhtml(ten_khac || ten_phim)}
             </motion.p>
 
             {/* Status + genre badges */}
-            {(tinh_trang || badges.length > 0) && (
-              <motion.div
-                variants={fadeInUp}
-                className="hero-featured-meta"
-              >
+            <motion.div variants={fadeInUp} className="flex flex-col gap-3 mb-2">
+              {/* Row 1: Technical Meta (TMDb, Quality, Year, Duration) */}
+              <div className="flex flex-wrap items-center gap-2">
+                {tmdb && (
+                  <span className="px-2 py-0.5 rounded border border-yellow-400 text-yellow-400 text-xs font-bold tracking-wider">
+                    TMDB {tmdb}
+                  </span>
+                )}
                 {tinh_trang && (
-                  <span className="hero-meta-badge">
+                  <span className="px-2 py-0.5 rounded border border-white/60 text-white text-xs font-bold tracking-wider uppercase">
                     {tinh_trang}
                   </span>
                 )}
-                {badges.slice(0, 4).map((b, i) => (
-                  <span key={i} className="hero-meta-badge ml-2">
-                    {b}
-                  </span>
-                ))}
-              </motion.div>
-            )}
+                {/* Placeholder for Year/Quality if available in data, otherwise just static placeholders for design match if needed, but using real data is better. keeping it simple with real data + style */}
+                <span className="px-2 py-0.5 rounded border border-white/60 text-white text-xs font-bold tracking-wider">
+                  2025
+                </span>
+              </div>
+
+              {/* Row 2: Genres */}
+              {badges.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {badges.slice(0, 5).map((b, i) => (
+                    <span key={i} className="px-3 py-1 rounded bg-white/10 text-gray-200 text-xs font-medium hover:bg-white/20 transition-colors">
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </motion.div>
 
             {/* Description - hidden on mobile */}
-            <motion.p 
+            <motion.p
               variants={fadeInUp}
               className="hero-featured-desc hidden md:block"
             >
@@ -292,62 +349,90 @@ export default function MovieCard({ movies = [], loading }) {
             </motion.p>
 
             {/* Action buttons (hidden on mobile) */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
-              className="hero-featured-actions hidden md:flex"
+              className="flex items-center gap-4 mt-2 hidden md:flex"
             >
-              <a 
+              {/* Play Button - Large Red Circle */}
+              <a
                 href={movieLink}
-                className="hero-play-btn"
+                className="flex items-center justify-center w-16 h-16 rounded-full bg-red-600 hover:bg-red-700 hover:scale-105 transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)] group"
               >
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                <svg className="w-8 h-8 text-white fill-current ml-1" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
                 </svg>
               </a>
-              <a 
-                href={movieLink}
-                className="hero-info-btn"
-                title="Xem chi tiết"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </a>
+
+              {/* Secondary Actions Pill */}
+              <div className="flex items-center rounded-full bg-black/40 backdrop-blur-md border border-white/10 h-14 overflow-hidden">
+                {/* Heart Button */}
+                <button
+                  onClick={handleFavoriteClick}
+                  className="w-16 h-full flex items-center justify-center text-white transition-colors border-r border-white/10 hover:bg-white/10 active:scale-95"
+                  title={isFavorite ? "Bỏ yêu thích" : "Yêu thích"}
+                >
+                  <svg
+                    className={`w-6 h-6 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-white'}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    {isFavorite ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={0} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    )}
+                  </svg>
+                </button>
+
+                {/* Info Button */}
+                <a href={movieLink} className="w-16 h-full flex items-center justify-center text-white transition-colors hover:bg-white/10" title="Chi tiết">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </a>
+              </div>
             </motion.div>
           </motion.div>
         </AnimatePresence>
 
         {/* Right side - Movie thumbnails */}
         <div className="hero-featured-right">
-          <div className="hero-thumbnails-container hidden md:flex">
-            {heroMovies.map((movie, index) => (
-              <button
-                key={movie.id || movie.slug}
-                onClick={() => setActiveIndex(index)}
-                className={`hero-thumbnail ${index === activeIndex ? 'hero-thumbnail-active' : ''}`}
-              >
-                <img
-                  src={movie.poster_url}
-                  alt={movie.ten_phim}
-                  className="hero-thumbnail-img"
-                />
-                {index === activeIndex && (
-                  <div className="hero-thumbnail-border" />
-                )}
-              </button>
-            ))}
+          {/* Glass Effect Wrapper for Thumbnails - Recreating the 'Edge Card' look */}
+          <div className="hidden md:block relative p-3 rounded-2xl bg-black/20 backdrop-blur-xl border border-white/10 shadow-2xl">
+            {/* Gradient glow behind */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+
+            <div className="hero-thumbnails-container relative z-10">
+              {heroMovies.map((movie, index) => (
+                <button
+                  key={movie.id || movie.slug}
+                  onClick={() => setActiveIndex(index)}
+                  className={`hero-thumbnail ${index === activeIndex ? 'hero-thumbnail-active' : ''}`}
+                >
+                  <img
+                    src={movie.poster_url}
+                    alt={movie.ten_phim}
+                    className="hero-thumbnail-img"
+                  />
+                  {index === activeIndex && (
+                    <div className="hero-thumbnail-border" />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
+
       {/* Pagination dots (centered, accessible) - show only on mobile */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 bottom-6 flex gap-2 z-30 md:hidden">
+      <div className="absolute left-1/2 transform -translate-x-1/2 bottom-36 flex gap-2 z-30 md:hidden">
         {heroMovies.map((_, i) => (
           <button
             key={i}
             aria-label={`Go to slide ${i + 1}`}
-            className={`h-2 rounded-full transition-all focus:outline-none ${
-              i === activeIndex ? 'w-6 bg-white' : 'w-2 bg-white/40'
-            }`}
+            className={`h-2 rounded-full transition-all focus:outline-none ${i === activeIndex ? 'w-6 bg-white' : 'w-2 bg-white/40'
+              }`}
             onClick={() => setActiveIndex(i)}
           />
         ))}
