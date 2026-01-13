@@ -1,56 +1,56 @@
-name: Build Android APK
+# name: Build Android APK
 
-on:
-  push:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '20'
 
-      - name: Install Dependencies
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          npm install
+#       - name: Install Dependencies
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           npm install
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '21'
+#       - name: Setup Java
+#         uses: actions/setup-java@v3
+#         with:
+#           distribution: 'zulu'
+#           java-version: '21'
 
-      - name: Sync Capacitor
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          npm run cap:sync
+#       - name: Sync Capacitor
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           npm run cap:sync
 
-      - name: Build Android APK
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
+#       - name: Build Android APK
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           cd android
+#           chmod +x gradlew
+#           ./gradlew assembleDebug
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug
-          path: |
-            android/app/build/outputs/apk/debug/app-debug.apk
-            tramphim-frontend/android/app/build/outputs/apk/debug/app-debug.apk
+#       - name: Upload APK
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: app-debug
+#           path: |
+#             android/app/build/outputs/apk/debug/app-debug.apk
+#             tramphim-frontend/android/app/build/outputs/apk/debug/app-debug.apk

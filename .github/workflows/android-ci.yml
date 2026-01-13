@@ -1,90 +1,90 @@
-name: Build Android APK
+# name: Build Android APK
 
-on:
-  push:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '20'
 
-      - name: Install Dependencies
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          npm install
+#       - name: Install Dependencies
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           npm install
 
-      - name: Sync Capacitor (TV)
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          npm run tv:cap-sync || npx @capacitor/cli@latest sync android
+#       - name: Sync Capacitor (TV)
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           npm run tv:cap-sync || npx @capacitor/cli@latest sync android
 
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '21'
+#       - name: Set up Java
+#         uses: actions/setup-java@v3
+#         with:
+#           distribution: 'zulu'
+#           java-version: '21'
 
-      - name: Ensure gradle wrapper jar present for TV project
-        run: |
-          # copy gradle wrapper jar from mobile android project into capacitor-tv if missing
-          if [ -f "android/gradle/wrapper/gradle-wrapper.jar" ]; then
-            mkdir -p capacitor-tv/android/gradle/wrapper
-            cp android/gradle/wrapper/gradle-wrapper.jar capacitor-tv/android/gradle/wrapper/gradle-wrapper.jar || true
-          else
-            echo "Warning: android/gradle/wrapper/gradle-wrapper.jar not found in repo root"
-          fi
+#       - name: Ensure gradle wrapper jar present for TV project
+#         run: |
+#           # copy gradle wrapper jar from mobile android project into capacitor-tv if missing
+#           if [ -f "android/gradle/wrapper/gradle-wrapper.jar" ]; then
+#             mkdir -p capacitor-tv/android/gradle/wrapper
+#             cp android/gradle/wrapper/gradle-wrapper.jar capacitor-tv/android/gradle/wrapper/gradle-wrapper.jar || true
+#           else
+#             echo "Warning: android/gradle/wrapper/gradle-wrapper.jar not found in repo root"
+#           fi
 
 
 
-      - name: Build Android APK
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          cd capacitor-tv/android
-          chmod +x gradlew
-          ./gradlew :app:assembleDebug --no-daemon --console=plain
+#       - name: Build Android APK
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           cd capacitor-tv/android
+#           chmod +x gradlew
+#           ./gradlew :app:assembleDebug --no-daemon --console=plain
 
-      - name: Find any APKs produced (diagnostic)
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          echo "Searching for APK files under capacitor-tv/android..."
-          find capacitor-tv/android -type f -name "*.apk" -print || true
-          echo "Also list app build outputs directory (if present):"
-          ls -la capacitor-tv/android/app/build/outputs || true
-      - name: List built APKs (diagnostic)
-        run: |
-          if [ -d "tramphim-frontend" ]; then
-            cd tramphim-frontend
-          fi
-          echo "Listing capacitor-tv android APK outputs"
-          ls -la capacitor-tv/android/app/build/outputs/apk || true
-          ls -la capacitor-tv/android/app/build/outputs/apk/debug || true
-          ls -la capacitor-tv/android/app/build/outputs/apk/* || true
+#       - name: Find any APKs produced (diagnostic)
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           echo "Searching for APK files under capacitor-tv/android..."
+#           find capacitor-tv/android -type f -name "*.apk" -print || true
+#           echo "Also list app build outputs directory (if present):"
+#           ls -la capacitor-tv/android/app/build/outputs || true
+#       - name: List built APKs (diagnostic)
+#         run: |
+#           if [ -d "tramphim-frontend" ]; then
+#             cd tramphim-frontend
+#           fi
+#           echo "Listing capacitor-tv android APK outputs"
+#           ls -la capacitor-tv/android/app/build/outputs/apk || true
+#           ls -la capacitor-tv/android/app/build/outputs/apk/debug || true
+#           ls -la capacitor-tv/android/app/build/outputs/apk/* || true
 
-      - name: Upload APK
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tramphim-tv-apk
-          path: |
-            capacitor-tv/android/app/build/outputs/apk/**/*.apk
-            tramphim-frontend/capacitor-tv/android/app/build/outputs/apk/**/*.apk
+#       - name: Upload APK
+#         if: always()
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: tramphim-tv-apk
+#           path: |
+#             capacitor-tv/android/app/build/outputs/apk/**/*.apk
+#             tramphim-frontend/capacitor-tv/android/app/build/outputs/apk/**/*.apk
 
 
