@@ -426,7 +426,7 @@ export default function MovieCard({ movies = [], loading }) {
       </div>
 
       {/* Pagination dots (centered, accessible) - show only on mobile */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 bottom-36 flex gap-2 z-30 md:hidden">
+      <div className="hero-mobile-pagination absolute left-1/2 transform -translate-x-1/2 bottom-6 flex gap-2 z-30 md:hidden">
         {heroMovies.map((_, i) => (
           <button
             key={i}

@@ -857,7 +857,6 @@ body,
 
   .hero-featured-left {
     @apply flex max-w-3xl flex-col gap-3 lg:gap-5;
-    transform: translateY(-10rem);
   }
 
   .hero-title-image-wrapper {
@@ -924,7 +923,6 @@ body,
 
   .hero-featured-right {
     @apply mt-4 lg:mt-0 lg:ml-8;
-    transform: translateY(-10rem);
   }
 
   .hero-thumbnails-container {
@@ -948,10 +946,49 @@ body,
       width: 56px;
       height: 80px;
     }
+}
+
+/* Apply vertical offset for large screens only so mobile/tablet keep stacked layout */
+@media (min-width: 1024px) {
+  .hero-featured-left,
+  .hero-featured-right {
+    transform: translateY(-10rem);
   }
+}
 
   .hero-thumbnail:hover {
     @apply opacity-80;
+  }
+
+  /* Mobile / Tablet adjustments: keep hero aligned and put pagination at bottom */
+  @media (max-width: 1024px) {
+    .hero-featured-section {
+      top: 0;
+    }
+
+    .hero-featured-content {
+      padding-top: calc(var(--header-height, 72px) + 0px);
+      padding-bottom: 0.5rem;
+    }
+
+    .mySwiper {
+      position: relative;
+    }
+
+    .mySwiper .swiper-pagination {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      padding-top: 0;
+      padding-right: 0;
+    }
+    
+    /* mobile specific override for our custom pagination */
+    .hero-mobile-pagination {
+      bottom: 12px !important;
+    }
   }
 
   .hero-thumbnail-active {
@@ -2008,4 +2045,14 @@ body,
 /* Remove default tap highlight on mobile to look more native */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+ 
+/* Topography background used for hero/category cards */
+.topography-bg {
+  /* lightweight inline SVG pattern to give contour/topography lines */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500' preserveAspectRatio='xMidYMid slice'><g fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='2'><path d='M0 80 C50 20,150 20,200 80 S350 140,400 80 S550 20,600 80 S750 140,800 80' /><path d='M0 120 C60 60,160 60,220 120 S360 180,420 120 S560 60,620 120 S760 180,800 120' /><path d='M0 40 C40 -20,140 -20,180 40 S340 100,380 40 S540 -20,580 40 S740 100,800 40' /><path d='M0 200 C80 140,180 140,260 200 S420 260,500 200 S660 140,740 200 S820 260,900 200' /></g></svg>");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
 }
