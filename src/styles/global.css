@@ -565,20 +565,33 @@ body, .page-body {
    HEADER STYLES
    ======================================== */
 .header-wrapper-main {
-  @apply relative;
-  /* use dynamic opacity from JS for a smooth fade when scrolling */
-  background-color: rgba(15, 15, 15, var(--header-bg-opacity, 0));
+  @apply sticky top-0;
+  /* transparent background by default */
+  background-color: transparent;
   transition:
-    background-color 300ms var(--transition-base),
-    box-shadow 300ms var(--transition-base),
-    backdrop-filter 300ms var(--transition-base);
-  /* subtle blur that scales with opacity (0..8px) */
-  backdrop-filter: blur(calc(var(--header-bg-opacity, 0) * 8px));
+    background-color 10ms var(--transition-base),
+    box-shadow 10ms var(--transition-base);
 }
 
 .header-scrolled {
+  /* solid black background when scrolled */
+  background-color: #000000;
   /* keep shadow when scrolled past threshold */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Allow black background on larger screens when scrolled */
+@media (min-width: 768px) {
+  .header-wrapper-main {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  /* Allow black background and shadow on larger screens when scrolled */
+  .header-wrapper-main.header-scrolled {
+    background-color: #000000 !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
+  }
 }
 
 @layer components {
@@ -747,6 +760,11 @@ body, .page-body {
     height: 60vh;
     max-height: 650px;
   }
+  /* Move hero up so its background underlays the header, but keep content visible */
+  .hero-featured-section {
+    position: relative;
+    top: calc(-1 * var(--header-height, 72px));
+  }
   
   @media (min-width: 768px) {
     .hero-featured-section {
@@ -806,6 +824,10 @@ body, .page-body {
     @apply lg:flex-row lg:items-end lg:justify-between lg:px-8 lg:pb-12 lg:pt-40;
     @apply xl:px-12 xl:pb-14;
     @apply 2xl:px-16 2xl:pb-16;
+  }
+  /* Ensure hero content is pushed down below the header so it's not covered */
+  .hero-featured-content {
+    padding-top: calc(var(--header-height, 72px) + 8px);
   }
   
   .hero-featured-left {

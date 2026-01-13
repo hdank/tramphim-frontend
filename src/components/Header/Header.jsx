@@ -166,33 +166,33 @@ export default function Header() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Smoothly update header background opacity based on scroll position.
+    // Update header background based on scroll position.
     // Behavior:
-    // - At top (scrollY === 0) -> fully transparent (opacity 0).
-    // - As user scrolls down up to fadeDistance, opacity moves from 0 -> maxOpacity.
-    // - We still set the `scrolled` state for any existing logic that depends on it.
-    const fadeDistance = 140; // px over which the fade occurs
-    const maxOpacity = 0.9;
+    // - At top (scrollY <= 10) -> transparent background.
+    // - When scrolled down (> 10px) -> black background.
+    const scrollThreshold = 10; // px after which header gets black background
 
     let ticking = false;
-    const updateOpacity = () => {
+    const updateBackground = () => {
       const y = window.scrollY || 0;
-      const raw = Math.max(0, Math.min(1, y / fadeDistance));
-      const computed = raw * maxOpacity;
-      document.documentElement.style.setProperty("--header-bg-opacity", `${computed}`);
-      setScrolled(y > 10);
+      // Skip background change on /phim/ pages
+      if (window.location.pathname.startsWith('/phim/')) {
+        setScrolled(false);
+      } else {
+        setScrolled(y > scrollThreshold);
+      }
       ticking = false;
     };
 
     const onScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(updateOpacity);
+        window.requestAnimationFrame(updateBackground);
         ticking = true;
       }
     };
 
     // initialize immediately (handles reloads where page is scrolled)
-    updateOpacity();
+    updateBackground();
     window.addEventListener("scroll", onScroll, { passive: true });
     setCurrentPath(window.location.pathname);
     fetchTheLoaiList();
@@ -592,15 +592,15 @@ export default function Header() {
                       media="(max-width: 767px)"
                       srcSet={typeof logoOnly === "string" ? logoOnly : logoOnly.src}
                     />
-                    <img
-                      src={typeof logo === "string" ? logo : logo.src}
-                      alt="Logo trang web phim"
-                      width="96"
-                      height="96"
-                      fetchPriority="high"
-                      loading="eager"
-                      className="h-12 w-auto sm:h-14 md:h-16 lg:h-20 xl:h-24"
-                    />
+                  <img
+                    src={typeof logo === "string" ? logo : logo.src}
+                    alt="Logo trang web phim"
+                    width="96"
+                    height="96"
+                    fetchPriority="high"
+                    loading="eager"
+                    className="h-12 w-auto sm:h-14 md:h-16 lg:h-20 xl:h-24"
+                  />
                   </picture>
                 </a>
               </div>
