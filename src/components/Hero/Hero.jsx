@@ -78,6 +78,8 @@ export default function MovieCard({ movies = [], loading }) {
   const touchStartXRef = useRef(0);
   const touchStartYRef = useRef(0);
   const touchMovedRef = useRef(false);
+  const touchStartScrollRef = useRef(0);
+  const isTouchRef = useRef(false);
   const SWIPE_THRESHOLD = 40;
 
   // Auto-rotate every 8 seconds
@@ -110,6 +112,14 @@ export default function MovieCard({ movies = [], loading }) {
       }
     } catch (e) {
       // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      isTouchRef.current = !!(typeof window !== "undefined" && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+    } catch (err) {
+      isTouchRef.current = false;
     }
   }, []);
 
@@ -182,6 +192,12 @@ export default function MovieCard({ movies = [], loading }) {
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={(e) => {
         touchMovedRef.current = false;
+        // record starting scroll to detect page scrolls vs taps
+        try {
+          touchStartScrollRef.current = typeof window !== "undefined" ? window.scrollY : 0;
+        } catch (err) {
+          touchStartScrollRef.current = 0;
+        }
         const t = e.touches && e.touches[0];
         if (t) {
           touchStartXRef.current = t.clientX;
@@ -193,13 +209,29 @@ export default function MovieCard({ movies = [], loading }) {
         if (!t) return;
         const dx = Math.abs(t.clientX - touchStartXRef.current);
         const dy = Math.abs(t.clientY - touchStartYRef.current);
-        if (dx > 10 || dy > 10) touchMovedRef.current = true;
+        // treat small movements as possible scrolls; be conservative
+        if (dx > 10 || dy > 10) {
+          touchMovedRef.current = true;
+        } else {
+          // also consider page scroll as movement
+          try {
+            const scrollDelta = Math.abs((typeof window !== "undefined" ? window.scrollY : 0) - touchStartScrollRef.current);
+            if (scrollDelta > 5) touchMovedRef.current = true;
+          } catch (err) {}
+        }
       }}
       onTouchEnd={(e) => {
         const touch = e.changedTouches && e.changedTouches[0];
         if (!touch) return;
         const dx = touch.clientX - touchStartXRef.current;
         const dy = touch.clientY - touchStartYRef.current;
+        // if the page scrolled during the touch, don't treat as tap
+        try {
+          const scrollDelta = Math.abs((typeof window !== "undefined" ? window.scrollY : 0) - touchStartScrollRef.current);
+          if (scrollDelta > 5) {
+            touchMovedRef.current = true;
+          }
+        } catch (err) {}
         // horizontal swipe
         if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
           if (dx < 0) {
@@ -212,15 +244,20 @@ export default function MovieCard({ movies = [], loading }) {
           return;
         }
         // treat as tap if not moved much and target isn't interactive
-        if (!touchMovedRef.current) {
-          const target = document.elementFromPoint(touch.clientX, touch.clientY);
-          if (target && !target.closest("a, button, input, svg")) {
-            window.location.href = `/phim/${heroMovies[activeIndex].slug}`;
-          }
-        }
+        // Do NOT navigate on touchend — rely on onClick handler for navigation.
+        // This prevents accidental navigations from scroll/press gestures.
       }}
       onClick={(e) => {
+        // On touch devices, disable container tap-to-navigate to avoid accidental redirects while scrolling.
+        if (isTouchRef.current) return;
+
         // if user clicked an interactive control, don't navigate
+        // also avoid navigating if touch moved (scroll/swipe) occurred
+        if (touchMovedRef.current) {
+          touchMovedRef.current = false;
+          return;
+        }
+
         if (e.target && (e.target.closest && e.target.closest("a, button, input, svg"))) return;
         // navigate to current active movie
         window.location.href = `/phim/${heroMovies[activeIndex].slug}`;
@@ -358,8 +395,20 @@ export default function MovieCard({ movies = [], loading }) {
                 href={movieLink}
                 className="flex items-center justify-center w-16 h-16 rounded-full bg-red-600 hover:bg-red-700 hover:scale-105 transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)] group"
               >
-                <svg className="w-8 h-8 text-white fill-current ml-1" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
+                <svg
+                  className="w-16 h-16 text-white fill-current"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  style={{ transform: "translate(0.6px, 0.6px)" }}
+                >
+                  {/* Larger triangle with rounded corners achieved via stroked join */}
+                  <polygon
+                    points="8,6 16,12 8,18"
+                    fill="currentColor"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </a>
 

@@ -611,6 +611,43 @@ body,
   }
 }
 
+/* Mobile header: remove any container margins/padding that create side gaps */
+@media (max-width: 767px) {
+  .header-wrapper-main {
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  /* ensure inner container doesn't add extra left/right spacing */
+  .header-wrapper-main > .md\\:h-18,
+  .header-wrapper-main .flex-grow,
+  .header-wrapper-main .flex-row {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  /* Prevent logo upscaling and ensure crisp rendering */
+  .header-wrapper-main picture,
+  .header-wrapper-main img {
+    max-width: none !important;
+    width: auto !important;
+    height: var(--logo-height-mobile, 40px) !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  /* reduce search input width further to keep negative space for logo */
+  .header-wrapper-main input#mobile-search {
+    max-width: 160px !important;
+  }
+}
+
 @layer components {
   .main-container {
     @apply relative mx-auto min-h-screen w-full px-4 lg:px-6 xl:px-8 2xl:px-12;

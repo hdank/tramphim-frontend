@@ -15,6 +15,11 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
   const [activeIndex, setActiveIndex] = useState(0);
   const [mobileImageLoaded, setMobileImageLoaded] = useState(true);
   const mobileImgRef = useRef(null);
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+  const touchMovedRef = useRef(false);
+  const touchStartScrollRef = useRef(0);
+  const MOVE_THRESHOLD = 10;
 
   useEffect(() => {
     // reset mobile image loaded flag on featured change to trigger fade
@@ -169,12 +174,45 @@ export default function MinimalHeroMovieCard({ movies = [], title = "", loading 
               {/* clickable area for the banner (navigates to movie page) */}
               <a
                 href={movieLink}
-                onClick={() => (window.location.href = movieLink)}
+                className="block rounded-2xl overflow-hidden relative -mx-10 md:-mx-14 lg:mx-0"
+                onTouchStart={(e) => {
+                  touchMovedRef.current = false;
+                  try {
+                    touchStartScrollRef.current = typeof window !== "undefined" ? window.scrollY : 0;
+                  } catch (err) {
+                    touchStartScrollRef.current = 0;
+                  }
+                  const t = e.touches && e.touches[0];
+                  if (t) {
+                    touchStartXRef.current = t.clientX;
+                    touchStartYRef.current = t.clientY;
+                  }
+                }}
+                onTouchMove={(e) => {
+                  const t = e.touches && e.touches[0];
+                  if (!t) return;
+                  const dx = Math.abs(t.clientX - touchStartXRef.current);
+                  const dy = Math.abs(t.clientY - touchStartYRef.current);
+                  if (dx > MOVE_THRESHOLD || dy > MOVE_THRESHOLD) {
+                    touchMovedRef.current = true;
+                    return;
+                  }
+                  try {
+                    const scrollDelta = Math.abs((typeof window !== "undefined" ? window.scrollY : 0) - touchStartScrollRef.current);
+                    if (scrollDelta > 5) touchMovedRef.current = true;
+                  } catch (err) {}
+                }}
                 onTouchEnd={(e) => {
+                  const touch = e.changedTouches && e.changedTouches[0];
+                  // if movement/scroll detected, do nothing (allow scroll)
+                  if (touchMovedRef.current) {
+                    touchMovedRef.current = false;
+                    return;
+                  }
+                  // otherwise treat as deliberate tap -> navigate
                   e.preventDefault && e.preventDefault();
                   window.location.href = movieLink;
                 }}
-                className="block rounded-2xl overflow-hidden relative -mx-10 md:-mx-14 lg:mx-0"
               >
                 <img
                   ref={mobileImgRef}

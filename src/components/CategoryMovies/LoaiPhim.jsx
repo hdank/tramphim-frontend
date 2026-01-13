@@ -42,10 +42,14 @@ export default function CategoryMovies({
       } else if (slug === "phim-chieu-rap") {
         initialFilters.chieu_rap = "true";
         initialFilters.loai_phim = "";
-      } else if (slug === "anime") {
+    } else if (slug === "anime") {
         initialFilters.loai_phim = "hoat-hinh";
         initialFilters.quoc_gia = "nhat-ban";
         initialFilters.chieu_rap = "";
+    } else if (slug === "dong-hua") {
+      initialFilters.loai_phim = "hoat-hinh";
+      initialFilters.quoc_gia = "trung-quoc";
+      initialFilters.chieu_rap = "";
       } else if (slug) {
         initialFilters.the_loai = slug;
         initialFilters.loai_phim = "";

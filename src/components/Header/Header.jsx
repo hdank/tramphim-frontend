@@ -2,6 +2,8 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/logo.png";
 import logoOnly from "../../assets/logo_only.png";
+import logoSvg from "../../assets/logo.svg";
+import logoOnlySvg from "../../assets/logo_only.svg";
 
 import UserProfileDropdown from "../User/UserProfileDropdown";
 import NotificationDropdown from "../Notifications/NotificationDropdown";
@@ -562,9 +564,9 @@ export default function Header() {
           aria-label="Đóng overlay"
         ></motion.div>
       ) : null}
-      <header
+        <header
         ref={headerRef}
-        className={`header-wrapper-main z-50 mx-auto max-w-screen-2xl px-4 py-0 transition-all duration-500 ease-out lg:px-6 lg:py-2 2xl:px-4 ${scrolled ? 'header-scrolled' : ''
+        className={`header-wrapper-main z-50 mx-auto max-w-screen-2xl px-[1px] py-0 transition-all duration-500 ease-out lg:px-6 lg:py-2 2xl:px-4 ${scrolled ? 'header-scrolled' : ''
           }`}
         role="banner"
       >
@@ -588,18 +590,19 @@ export default function Header() {
                   onClick={(e) => handleInternalNavLinkClick(e, "/")}
                 >
                   <picture>
-                    <source
-                      media="(max-width: 767px)"
-                      srcSet={typeof logoOnly === "string" ? logoOnly : logoOnly.src}
-                    />
+                  <source
+                    media="(max-width: 767px)"
+                    srcSet={typeof logoOnlySvg === "string" ? logoOnlySvg : (typeof logoOnly === "string" ? logoOnly : logoOnly.src)}
+                  />
                   <img
-                    src={typeof logo === "string" ? logo : logo.src}
+                    src={typeof logoSvg === "string" ? logoSvg : (typeof logo === "string" ? logo : logo.src)}
                     alt="Logo trang web phim"
                     width="96"
                     height="96"
                     fetchPriority="high"
                     loading="eager"
                     className="h-12 w-auto sm:h-14 md:h-16 lg:h-20 xl:h-24"
+                    style={{ maxWidth: 'none' }}
                   />
                   </picture>
                 </a>
@@ -706,7 +709,7 @@ export default function Header() {
                     }
                   }}
                   placeholder="Tìm kiếm phim..."
-                  className="h-8 w-full rounded-[4px] bg-white/10 px-4 pr-10 text-xs text-white placeholder-white/60 focus:outline-none"
+                  className="h-8 w-full max-w-[180px] rounded-[4px] bg-white/10 px-4 pr-10 text-xs text-white placeholder-white/60 focus:outline-none"
                   autoComplete="off"
                   aria-describedby={
                     showMobileSearchResults
@@ -829,7 +832,8 @@ export default function Header() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="mobile-search-results-dropdown absolute left-0 right-0 top-16 z-[51] max-h-[100vh] overflow-y-auto rounded-xl bg-[#0F111A]/95 shadow-2xl backdrop-blur-xl border border-white/10 lg:hidden"
+            className="mobile-search-results-dropdown fixed left-0 right-0 z-[51] max-h-[100vh] overflow-y-auto rounded-xl bg-[#0F111A]/95 shadow-2xl backdrop-blur-xl border border-white/10 lg:hidden"
+            style={{ top: "var(--header-height)" }}
             onClick={(e) => e.stopPropagation()}
             onTouchEnd={(e) => e.stopPropagation()}
             id="mobile-search-results"
@@ -852,7 +856,8 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-0 right-0 top-16 z-[51] w-full border-t border-white/10 bg-[#1a1a1a]/95 backdrop-blur-xl text-sm font-medium shadow-2xl lg:m-8 lg:w-[30%] xl:hidden"
+            className="fixed left-0 right-0 z-[51] w-full border-t border-white/10 bg-[#1a1a1a]/95 backdrop-blur-xl text-sm font-medium shadow-2xl lg:m-8 lg:w-[30%] xl:hidden"
+            style={{ top: "var(--header-height)" }}
             id="mobile-menu"
             role="navigation"
             aria-label="Menu di động"
