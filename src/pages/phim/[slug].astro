@@ -154,23 +154,6 @@ const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
     </div>
   </div>
 
-  {/* Synchronized Recommendation Section */}
-  <div class="main-content-layout">
-    <div class="recommend-section-wrapper py-10">
-      <RecommendMovies
-        movies={recommendedMovies?.data}
-        title="Đề Xuất Cho Bạn"
-        client:idle
-        loading={false}
-        error={null}
-      />
-    </div>
-  </div>
-
-  <div class="breadcrumb-padding">
-    <Breadcrumb movie={movie} />
-  </div>
-
   <footer class="px-0">
     <Footer />
   </footer>
