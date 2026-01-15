@@ -4,6 +4,7 @@ import MovieCast from "./MovieActor.jsx";
 import MovieImages from "./MovieGallery";
 import Trailer from "./Trailer.jsx";
 import PhanLienQuan from "./MovieSeaSon.jsx";
+import RecommendMovies from "../Recommended_Movies/RecommendedMovies.jsx";
 
 const MovieTabsAndCast = ({
   vietsubEpisodes,
@@ -17,6 +18,7 @@ const MovieTabsAndCast = ({
   trailer_url,
   movieTitle,
   initialSortAscending,
+  recommendedMovies,
 }) => {
   const [activeTab, setActiveTab] = useState("episodes");
 
@@ -52,10 +54,9 @@ const MovieTabsAndCast = ({
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
-        {/* Tab Hình ảnh luôn hiển thị */}
         <TabButton
-          label="Hình ảnh"
-          tabName="images"
+          label="Đề Xuất"
+          tabName="recommendedMovies"
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
@@ -77,6 +78,7 @@ const MovieTabsAndCast = ({
         {activeTab === "images" && <MovieImages imagesData={images} />}
         {activeTab === "trailer" && <Trailer trailer_url={trailer_url} />}
         {activeTab === "phanlienquans" && <PhanLienQuan movie={phanlienquan} />}
+        {activeTab === "recommendedMovies" && <RecommendMovies movies={recommendedMovies?.data} title="Phim Đề Xuất" loading={false} error={null} />}
       </div>
     </div>
   );

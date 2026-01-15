@@ -140,10 +140,10 @@ const Episodes = ({
       displayType === currentType;
 
     const buttonClasses = `
-     relative flex items-center justify-center rounded-[4px] p-2.5 text-center text-[13px] lg:text-sm font-medium transition-colors duration-200
+     relative flex items-center justify-center gap-2 rounded-xl py-3 px-5 text-center text-[13px] lg:text-sm font-semibold transition-all duration-300
      ${isCurrentEpisode
-        ? "bg-[#252525] shadow-lg text-sky-300"
-        : "bg-[#252525] text-gray-200 hover:text-sky-300"
+        ? "bg-[#3a3d4d] text-sky-400 shadow-[0_0_20px_rgba(56,189,248,0.2)] scale-[1.05]"
+        : "bg-[#2a2c36] text-gray-200 hover:bg-[#323542] hover:text-white"
       }
   `;
 
@@ -156,20 +156,26 @@ const Episodes = ({
           displayType,
         )})`}
       >
-        <div className="flex flex-row items-center justify-center gap-2">
-          {isCurrentEpisode && (
-            <img
-              src={eposideGif.src}
-              alt="Playing"
-              className="absolute bottom-0 left-1 h-4 w-4"
-              style={{
-                filter:
-                  "invert(38%) sepia(96%) saturate(2073%) hue-rotate(179deg) brightness(94%) contrast(102%)",
-              }}
-            />
-          )}
-          <span>{`${soTapDisplay}`}</span>
-        </div>
+        {isCurrentEpisode ? (
+          <img
+            src={eposideGif.src}
+            alt="Playing"
+            className="h-5 w-5"
+            style={{
+              filter: "invert(38%) sepia(96%) saturate(2073%) hue-rotate(179deg) brightness(94%) contrast(102%)",
+            }}
+          />
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-5 h-5 text-white"
+          >
+            <path d="M8 5.147v13.706l11-6.853-11-6.853z" />
+          </svg>
+        )}
+        <span>{soTapDisplay}</span>
       </a>
     );
   };
@@ -255,7 +261,7 @@ const Episodes = ({
                 className="w-28 rounded-[4px] border border-gray-600 bg-[#252525] p-1 px-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
               />
             </div>
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-6 lg:gap-4 xl:grid-cols-7">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 lg:gap-5 xl:grid-cols-5">
               {sortedAndFilteredVietsub
                 .slice(
                   0,
@@ -302,7 +308,7 @@ const Episodes = ({
                 className="w-28 rounded-[4px] border border-gray-600 bg-[#252525] p-1 px-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
               />
             </div>
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-6 lg:gap-4 xl:grid-cols-7">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 lg:gap-5 xl:grid-cols-5">
               {sortedAndFilteredThuyetminh
                 .slice(
                   0,
@@ -349,7 +355,7 @@ const Episodes = ({
                 className="w-28 rounded-[4px] border border-gray-600 bg-[#252525] p-1 px-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
               />
             </div>
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-6 lg:gap-4 xl:grid-cols-7">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 lg:gap-5 xl:grid-cols-5">
               {sortedAndFilteredLongtieng
                 .slice(
                   0,

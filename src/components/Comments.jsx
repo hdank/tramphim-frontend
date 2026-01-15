@@ -95,10 +95,10 @@ const Comments = ({ slug }) => {
       const hash = window.location.hash;
       if (hash && comments.length > 0) {
         const targetId = hash.substring(1).replace('binh_luan_', ''); // Get comment ID
-        
+
         // Check if this is a reply by finding it in comments
         const targetComment = comments.find(c => c.id === targetId);
-        
+
         // Retry mechanism to wait for element to appear in DOM
         const scrollToElement = (attempt = 0) => {
           const element = document.getElementById(hash.substring(1));
@@ -121,7 +121,7 @@ const Comments = ({ slug }) => {
             setTimeout(() => scrollToElement(attempt + 1), 400);
           }
         };
-        
+
         // Start scrolling attempts immediately
         scrollToElement();
       }
@@ -177,7 +177,7 @@ const Comments = ({ slug }) => {
       } else {
         const errorText = await response.text();
         console.error("API error response:", errorText);
-        
+
         // Check if it's a 500 error - the comment might still have been created
         if (response.status === 500) {
           // Wait and refresh to check if comment was created
@@ -270,7 +270,7 @@ const Comments = ({ slug }) => {
       } else {
         const errorText = await response.text();
         console.error("API error response:", errorText);
-        
+
         // Check if it's a 500 error - the reply might still have been created
         if (response.status === 500) {
           // Wait and refresh to check if reply was created
@@ -336,7 +336,7 @@ const Comments = ({ slug }) => {
   const CommentItem = ({ comment, allComments, isReply = false }) => {
     // Find replies for this comment from all comments
     const replies = allComments?.filter(c => c.parent_id === comment.id) || [];
-    
+
     return (
       <div className={`flex gap-3 ${isReply ? "ml-8" : "mb-6"}`} id={`binh_luan_${comment.id}`}>
         {/* Avatar */}
@@ -380,7 +380,7 @@ const Comments = ({ slug }) => {
                 Trả lời
               </button>
             )}
-            
+
             {user && user.id === comment.nguoi_dung.id && (
               <button
                 onClick={() => handleDeleteComment(comment.id)}
@@ -438,87 +438,79 @@ const Comments = ({ slug }) => {
   const topLevelComments = comments.filter((comment) => !comment.parent_id);
 
   return (
-    <div className="w-full max-w-4xl mx-auto rounded-lg bg-white/5 p-6 border border-white/10">
-      <h2 className="text-lg font-semibold text-white mb-6">Bình Luận</h2>
+    <div className="w-full mt-10">
+      {/* Comment Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
+        </svg>
+        <h2 className="text-lg font-bold text-white tracking-wide">
+          Bình luận <span className="text-gray-500 font-medium ml-1">({comments.length})</span>
+        </h2>
+      </div>
 
-      {/* Comment form */}
-      {!isMounted ? (
-        <div className="mb-8 p-4 bg-white/5 rounded-lg border border-white/10 text-center">
-          <p className="text-gray-400">Đang tải...</p>
-        </div>
-      ) : user ? (
-        <form onSubmit={handleSubmitComment} className="mb-8">
-          <div className="flex gap-3">
-            {/* User avatar */}
-            <div className="flex-shrink-0">
-              {user.anh_dai_dien_url ? (
-                <img
-                  src={user.anh_dai_dien_url}
-                  alt={user.username}
-                  className="w-10 h-10 rounded-full object-cover ring-2 ring-white/10"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold">
-                  {user.username?.charAt(0).toUpperCase()}
-                </div>
-              )}
-            </div>
-
-            {/* Comment input */}
-            <div className="flex-1">
-              <textarea
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                placeholder="Chia sẻ ý kiến của bạn..."
-                className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-400 resize-none"
-                rows="3"
-              />
-              <div className="flex justify-end mt-3">
-                <button
-                  type="submit"
-                  disabled={submitting || !commentText.trim()}
-                  className="px-6 py-2 bg-sky-400 text-white rounded-lg font-medium hover:bg-sky-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {submitting ? "Đang gửi..." : "Bình luận"}
-                </button>
-              </div>
-            </div>
+      {/* Login Prompt & Input Area */}
+      <div className="rounded-xl overflow-hidden bg-[#16161b] border border-white/5">
+        {!isMounted ? (
+          <div className="p-8 text-center text-gray-500 text-sm">Đang tải bình luận...</div>
+        ) : !user ? (
+          <div className="p-4 border-b border-white/5">
+            <p className="text-xs text-gray-500">
+              Vui lòng <a href="/dang-nhap" className="text-yellow-500/80 font-bold hover:underline">đăng nhập</a> để tham gia bình luận.
+            </p>
           </div>
-        </form>
-      ) : (
-        <div className="mb-8 p-4 bg-white/5 rounded-lg border border-white/10 text-center">
-          <p className="text-gray-300 mb-4">
-            Vui lòng đăng nhập để bình luận
-          </p>
-          <a
-            href="/dang-nhap"
-            className="inline-block px-6 py-2 bg-sky-400 text-white rounded-lg font-medium hover:bg-sky-500 transition-colors"
-          >
-            Đăng nhập
-          </a>
+        ) : null}
+
+        <div className="relative">
+          <textarea
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Viết bình luận..."
+            className="w-full bg-transparent px-5 py-4 text-sm text-gray-200 placeholder-gray-600 outline-none resize-none min-h-[100px]"
+            disabled={!user}
+          />
+
+          {/* Action Bar inside Input Area */}
+          <div className="flex items-center justify-between px-4 py-3 border-t border-white/5">
+            <button className="flex items-center gap-2 text-gray-600 hover:text-gray-400 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
+              <span className="text-xs font-bold uppercase tracking-widest">Thêm GIF</span>
+            </button>
+
+            <button
+              onClick={handleSubmitComment}
+              disabled={submitting || !commentText.trim() || !user}
+              className="flex items-center gap-2 text-gray-600 hover:text-white transition-all disabled:opacity-30"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 -rotate-45" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+              </svg>
+              <span className="text-xs font-bold uppercase tracking-widest">{submitting ? "Đang gửi..." : "Gửi"}</span>
+            </button>
+          </div>
         </div>
-      )}
+      </div>
 
       {/* Comments list */}
-      {loading ? (
-        <div className="text-center py-8 text-gray-400">
-          Đang tải bình luận...
-        </div>
-      ) : topLevelComments.length === 0 ? (
-        <div className="text-center py-8 text-gray-400">
-          Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
-        </div>
-      ) : (
-        <div className="space-y-0">
-          {topLevelComments.map((comment) => (
-            <CommentItem 
-              key={comment.id} 
-              comment={comment} 
-              allComments={comments}
-            />
-          ))}
-        </div>
-      )}
+      <div className="mt-10 space-y-6">
+        {loading ? (
+          <div className="text-center py-8 text-gray-500 text-sm italic">Đang tải bình luận...</div>
+        ) : topLevelComments.length === 0 ? (
+          <div className="text-center py-20 bg-white/2 rounded-3xl border border-dashed border-white/5">
+            <p className="text-gray-600 text-sm">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            {topLevelComments.map((comment) => (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                allComments={comments}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

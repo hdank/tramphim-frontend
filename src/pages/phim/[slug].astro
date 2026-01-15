@@ -11,30 +11,14 @@ import Header from "../../components/Header/Header";
 import MovieDetail from "../../components/MovieDetail/MovieDetailStaticInfo";
 import Footer from "../../components/Footer";
 import MovieTabsAndCast from "../../components/MovieDetail/MovieTab";
-import { getMoviePageData, BASE_URL } from "../../utils/getMovieData";
+import { BASE_URL } from "../../utils/getMovieData";
+import { fetchAllMovieData } from "../../utils/getEpisodeData";
+import RecommendMovies from "../../components/Recommended_Movies/RecommendedMovies";
 import TopMovies from "../../components/TopMovies/TopMovies";
 import Comments from "../../components/Comments";
 import SEO from "../../seometas/SeoPhim.astro";
 import Breadcrumb from "../../components/Breadcrumb";
 let movie = null;
-try {
-  const movieApiUrl = `${BASE_URL}/api/phim/${slug}/`;
-  const movieResponse = await fetch(movieApiUrl);
-
-  if (movieResponse.ok) {
-    const movieData = await movieResponse.json();
-    movie = movieData;
-  } else {
-  }
-} catch (error) {}
-
-if (!movie) {
-  return new Response(null, {
-    status: 404,
-    statusText: "Not Found",
-  });
-}
-
 let vietsub = [];
 let thuyetminh = [];
 let longtieng = [];
@@ -44,18 +28,42 @@ let images = [];
 let topmovies = [];
 let thongbao = [];
 let phanLienQuan = [];
+let recommendedMovies = [];
+
 try {
-  const moviePageData = await getMoviePageData(slug);
-  vietsub = moviePageData.vietsub || [];
-  thuyetminh = moviePageData.thuyetminh || [];
-  longtieng = moviePageData.longtieng || [];
-  firstEpisode = moviePageData.firstEpisode || null;
-  phanLienQuan = moviePageData.phanlienquan || null;
-  topmovies = moviePageData.topmovies;
-  actors = moviePageData.actors || [];
-  images = moviePageData.images || [];
-  thongbao = moviePageData.thongbao;
-} catch (error) {}
+  const allData = await fetchAllMovieData(slug, null, null);
+  movie = allData.movie;
+  vietsub = allData.vietsubData || [];
+  thuyetminh = allData.thuyetminhData || [];
+  longtieng = allData.longtiengData || [];
+  topmovies = allData.topData?.data || [];
+  recommendedMovies = allData.deXuatData;
+  actors = allData.actors || [];
+
+  // Fetch images and thongbao separately as they are specific to the detail page
+  const [imagesRes, thongbaoRes] = await Promise.all([
+    fetch(`${BASE_URL}/api/phim/${slug}/images`).then(r => r.json()).catch(() => []),
+    fetch(`${BASE_URL}/api/phim/${slug}/thong-bao`).then(r => r.json()).catch(() => [])
+  ]);
+  images = imagesRes;
+  thongbao = thongbaoRes;
+
+  // Determine first episode
+  if (vietsub.length > 0) firstEpisode = vietsub[0];
+  else if (thuyetminh.length > 0) firstEpisode = thuyetminh[0];
+  else if (longtieng.length > 0) firstEpisode = longtieng[0];
+
+} catch (error) {
+  console.error("Error fetching movie data:", error);
+}
+
+if (!movie) {
+  return new Response(null, {
+    status: 404,
+    statusText: "Not Found",
+  });
+}
+
 const firstEpisodeSlug = firstEpisode?.tap_phim?.slug;
 const firstEpisodeType = firstEpisode?.ngon_ngu;
 const pageUrl = Astro.url.href;
@@ -73,26 +81,40 @@ const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
     <SEO movie={movie} slug={slug} />
   </Fragment>
 
-  <div class="relative">
-    <div class="absolute inset-0">
-      <img
+  <div class="relative min-h-screen">
+    {/* === NEW BIG HERO BANNER === */}
+    <div class="absolute top-0 left-0 w-full h-[550px] md:h-[650px] lg:h-[750px] overflow-hidden select-none pointer-events-none">
+       {/* Banner Image */}
+       <img
         src={movie.banner_url}
         alt={`Banner ${movie.ten_phim}`}
         fetchpriority="high"
         loading="eager"
         decoding="async"
-        class="h-full w-full object-cover"
+        class="h-full w-full object-cover object-top select-none"
       />
-      <div class="absolute inset-0 bg-black/60"></div>
+      
+      {/* Overlay: Darken slightly overall */}
+      <div class="absolute inset-0 bg-black/35"></div>
+
+      {/* Overlay: Gradient Fade to Body Background (Bottom) - ENHANCED */}
+      <div class="absolute inset-0 banner-bottom-fade"></div>
+      
+      {/* Overlay: Blue Glow/Shadow Effect at edges/top if desired (optional, subtle) */}
+      <div class="absolute inset-0 shadow-[inset_0_100px_150px_-50px_rgba(0,0,0,0.7)]"></div>
+
+      {/* Cinematic Dots Overlay */}
+      <div class="pattern-overlay"></div>
     </div>
 
-    <div class="movie-banner-background"></div>
-    <div class="movie-content-base relative z-10">
+    {/* Content Wrapper */}
+    <div class="movie-content-base relative z-10 transition-all duration-500">
       <div class="header-shadow">
         <Header client:load />
       </div>
 
-      <main class="main-content-layout">
+      {/* Main content pushed down to overlap banner properly */}
+      <main class="main-content-layout pt-[250px] md:pt-[380px] lg:pt-[450px]">
         <MovieDetail
           movie={movie}
           firstEpisodeSlug={firstEpisodeSlug}
@@ -100,40 +122,53 @@ const sortEpisode = Astro.cookies.get("sortEpisode")?.value !== "0";
           client:load
           thongbao={thongbao}
           initialIsFavorite={initialIsFavorite}
-        />
+        >
+          <div class="mt-8 flex flex-col gap-8 2xl:flex-row">
+            <div class="flex-1 overflow-hidden">
+              <MovieTabsAndCast
+                vietsubEpisodes={vietsub}
+                thuyetMinhEpisodes={thuyetminh}
+                longtiengEpisodes={longtieng}
+                slug={slug}
+                currentType={null}
+                movieTitle={movie.ten_phim}
+                trailer_url={movie.trailer_url}
+                phanlienquan={phanLienQuan}
+                actors={actors}
+                images={{ images: images }}
+                initialSortAscending={sortEpisode}
+                recommendedMovies={recommendedMovies}
+                client:load
+              />
+              <div class="comment-section-padding mt-8">
+                <Comments slug={slug} client:visible />
+              </div>
+            </div>
+
+            <div class="w-full 2xl:w-[320px] shrink-0">
+               <TopMovies movies={topmovies} client:idle />
+            </div>
+          </div>
+        </MovieDetail>
       </main>
+    </div>
+  </div>
+
+  {/* Synchronized Recommendation Section */}
+  <div class="main-content-layout">
+    <div class="recommend-section-wrapper py-10">
+      <RecommendMovies
+        movies={recommendedMovies?.data}
+        title="Đề Xuất Cho Bạn"
+        client:idle
+        loading={false}
+        error={null}
+      />
     </div>
   </div>
 
   <div class="breadcrumb-padding">
     <Breadcrumb movie={movie} />
-  </div>
-  <div class="page-wrapper-base">
-    <div class="main-column-flex">
-      <div class="detail-tabs-column">
-        <MovieTabsAndCast
-          vietsubEpisodes={vietsub}
-          thuyetMinhEpisodes={thuyetminh}
-          longtiengEpisodes={longtieng}
-          slug={slug}
-          currentType={null}
-          movieTitle={movie.ten_phim}
-          trailer_url={movie.trailer_url}
-          phanlienquan={phanLienQuan}
-          actors={actors}
-          images={{ images: images }}
-          initialSortAscending={sortEpisode}
-          client:load
-        />
-        <div class="comment-section-padding">
-          <Comments slug={slug} client:visible />
-        </div>
-      </div>
-
-      <div class="sidebar-column">
-        <TopMovies movies={topmovies} client:idle />
-      </div>
-    </div>
   </div>
 
   <footer class="px-0">

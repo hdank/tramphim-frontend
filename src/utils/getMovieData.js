@@ -13,7 +13,6 @@ export async function getMoviePageData(slug) {
   const urlThongBao = `${BASE_URL}/api/phim/${slug}/thong-bao`;
 
 
-
   try {
     const [
       vietsub,
@@ -29,13 +28,11 @@ export async function getMoviePageData(slug) {
       fetch(urlThuyetMinh).then((r) => r.json()),
       fetch(urlLongTieng).then((r) => r.json()),
       fetch(urlTop).then((r) => r.json()),
-      fetch(urlDeXuat).then((r) => r.json()),
+      fetch(urlDeXuat).then((r) => r.json()).catch(() => []),
       fetch(urlActors).then((r) => r.json()),
       fetch(urlImages).then((r) => r.json()), // Lệnh gọi API /images
       fetch(urlThongBao).then((r) => r.json()),
     ]);
-
-
 
     let firstEpisode = null;
     if (vietsub && vietsub.length > 0) {
@@ -53,7 +50,7 @@ export async function getMoviePageData(slug) {
       thuyetminh,
       longtieng,
       topmovies: top?.data || [],
-      dexuatmovies: deXuat?.data || [],
+      dexuatmovies: deXuat,
       actors: actors || [],
       images: images || [],
       thongbao: thongbao || [],
