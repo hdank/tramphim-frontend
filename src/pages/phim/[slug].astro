@@ -64,8 +64,9 @@ if (!movie) {
   });
 }
 
-const firstEpisodeSlug = firstEpisode?.tap_phim?.slug;
-const firstEpisodeType = firstEpisode?.ngon_ngu;
+const rawFirstSlug = firstEpisode?.tap_phim?.slug || firstEpisode?.slug || "1";
+const firstEpisodeSlug = /^\d+$/.test(rawFirstSlug) ? `tap-${rawFirstSlug.padStart(2, "0")}` : rawFirstSlug;
+const firstEpisodeType = firstEpisode?.ngon_ngu || "vietsub";
 const pageUrl = Astro.url.href;
 const slugCookieName = `fav_${slug}`;
 const initialIsFavorite = Astro.cookies.get(slugCookieName)?.value === "1";

@@ -75,12 +75,18 @@ const Episodes = ({
     );
   }
 
+  const extractSoTap = (ep) => {
+    // Support both old format (single video object) and new aggregated format
+    const raw =
+      (ep && (ep.tap_phim?.so_tap || ep.so_tap)) ||
+      (ep && ep.tap_phim && ep.tap_phim.so_tap) ||
+      "";
+    return String(raw);
+  };
+
   const sortedAndFilteredVietsub = useMemo(() => {
     let filtered = vietsub.filter((ep) =>
-      (ep.tap_phim?.so_tap || ep.so_tap || "")
-        .toString()
-        .toLowerCase()
-        .includes(vietsubSearchQuery.toLowerCase()),
+      extractSoTap(ep).toLowerCase().includes(vietsubSearchQuery.toLowerCase()),
     );
     if (!vietsubSortAscending) {
       return filtered.slice().reverse();
@@ -90,10 +96,7 @@ const Episodes = ({
 
   const sortedAndFilteredThuyetminh = useMemo(() => {
     let filtered = thuyetminh.filter((ep) =>
-      (ep.tap_phim?.so_tap || ep.so_tap || "")
-        .toString()
-        .toLowerCase()
-        .includes(thuyetminhSearchQuery.toLowerCase()),
+      extractSoTap(ep).toLowerCase().includes(thuyetminhSearchQuery.toLowerCase()),
     );
     if (!thuyetminhSortAscending) {
       return filtered.slice().reverse();
@@ -103,10 +106,7 @@ const Episodes = ({
 
   const sortedAndFilteredLongtieng = useMemo(() => {
     let filtered = longtieng.filter((ep) =>
-      (ep.tap_phim?.so_tap || ep.so_tap || "")
-        .toString()
-        .toLowerCase()
-        .includes(longtiengSearchQuery.toLowerCase()),
+      extractSoTap(ep).toLowerCase().includes(longtiengSearchQuery.toLowerCase()),
     );
     if (!longtiengSortAscending) {
       return filtered.slice().reverse();
@@ -128,10 +128,38 @@ const Episodes = ({
   };
 
   const renderEpisodeButton = (ep, displayType) => {
-    const tap_slug = ep.tap_phim?.slug || "1";
-    const soTapRaw = ep.tap_phim?.so_tap || ep.so_tap || "1";
-    const soTapDisplay = soTapRaw.toString();
-    const href = `/xem-phim/${slug}/${tap_slug}/${displayType}`;
+    const tap_slug_raw = ep.tap_phim?.slug || ep.slug || "1";
+    const tap_slug = /^\d+$/.test(tap_slug_raw) ? `tap-${tap_slug_raw.padStart(2, "0")}` : tap_slug_raw;
+
+    const soTapRaw = ep.tap_phim?.so_tap || ep.so_tap || extractSoTap(ep) || "1";
+    let soTapDisplay = soTapRaw.toString();
+    if (/^\d+$/.test(soTapDisplay)) {
+      soTapDisplay = `Tập ${soTapDisplay.padStart(2, "0")}`;
+    } else if (!soTapDisplay.toLowerCase().startsWith("tập")) {
+      soTapDisplay = `Tập ${soTapDisplay}`;
+    }
+
+    const hrefBase = `/xem-phim/${slug}/${tap_slug}/${displayType}`;
+
+    // Determine primary server: prefer sv1->sv2->sv3 if available
+    const preferredOrder = ["sv1", "sv2", "sv3"];
+    let primaryServer = null;
+    let primaryLink = null;
+    if (ep.servers) {
+      for (const s of preferredOrder) {
+        if (ep.servers[s] && ep.servers[s].link_video) {
+          primaryServer = s;
+          primaryLink = ep.servers[s].link_video;
+          break;
+        }
+      }
+    } else {
+      // legacy single link object - no server map
+      primaryServer = null;
+      primaryLink = ep.link_video || null;
+    }
+    // We always prefer the internal player page for consistency and to avoid "messy" direct links
+    const href = hrefBase;
 
     const isCurrentEpisode =
       currentEpisodeSlug &&
@@ -176,6 +204,24 @@ const Episodes = ({
           </svg>
         )}
         <span>{soTapDisplay}</span>
+        {/* Server badges: show which servers contain this episode */}
+        {/* Server badges: hidden to avoid "messy" look as requested */}
+        {/* ep.servers && (
+          <span className="ml-3 flex items-center gap-1">
+            {["sv1", "sv2", "sv3"].map((s) => {
+              const has = Boolean(ep.servers[s] && ep.servers[s].link_video);
+              return (
+                <span
+                  key={s}
+                  title={has ? `Has video on ${s.toUpperCase()}` : `No ${s.toUpperCase()}`}
+                  className={`inline-flex items-center justify-center w-5 h-5 text-[10px] font-semibold rounded-full border ${has ? "bg-green-600 text-white border-green-700" : "bg-gray-700 text-gray-300 border-gray-600"}`}
+                >
+                  {s.replace("sv", "")}
+                </span>
+              );
+            })}
+          </span>
+        ) */}
       </a>
     );
   };

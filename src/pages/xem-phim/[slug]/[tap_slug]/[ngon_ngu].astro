@@ -116,7 +116,7 @@ const {
   longtiengData,
   topData,
   deXuatData,
-} = (await fetchAllMovieData(slug, tap_slug, ngon_ngu)) as AllMovieDataResult;
+} = (await fetchAllMovieData(slug, tap_slug, ngon_ngu, server)) as AllMovieDataResult;
 
 const finalPhimInfo: MovieInfo = movie || phimInfo || {};
 const displayEpisode = episodeNumberFromApi || getDisplayEpisodeNumber(tap_slug);

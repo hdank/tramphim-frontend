@@ -105,24 +105,38 @@ export const fetchMovieBySlug = async (slug) => {
   }
 };
 
-export const fetchEpisodeLists = async (slug) => {
-  const defaultServerForLists = "sv1";
-  // ⭐️ ĐÃ THÊM FETCH CHO LONGTIENG
+export const fetchEpisodeLists = async (slug, server = null) => {
+  const serverParam = server ? `?server=${server}` : "";
+
   const [vietsubData, thuyetminhData, longtiengData] = await Promise.all([
-    fetchJson(
-      `${BASE_URL}/api/phim/${slug}/vietsub?server=${defaultServerForLists}`,
-    ).catch(() => ({})),
-    fetchJson(
-      `${BASE_URL}/api/phim/${slug}/thuyetminh?server=${defaultServerForLists}`,
-    ).catch(() => ({})),
-    // ⭐️ FETCH DỮ LIỆU LONG TIẾNG MỚI
-    fetchJson(
-      `${BASE_URL}/api/phim/${slug}/longtieng?server=${defaultServerForLists}`,
-    ).catch(() => ({})),
+    fetchJson(`${BASE_URL}/api/phim/${slug}/vietsub${serverParam}`).catch(() => []),
+    fetchJson(`${BASE_URL}/api/phim/${slug}/thuyetminh${serverParam}`).catch(() => []),
+    fetchJson(`${BASE_URL}/api/phim/${slug}/longtieng${serverParam}`).catch(() => []),
   ]);
 
-  // ⭐️ ĐÃ THÊM longtiengData VÀO RETURN
-  return { vietsubData, thuyetminhData, longtiengData };
+  // We deduplicate by episode slug/number to avoid the "mess" of duplicate buttons.
+  const deduplicate = (list) => {
+    if (!Array.isArray(list)) return [];
+    const seen = new Set();
+    return list.filter((ep) => {
+      const rawKey = ep.tap_phim?.slug || ep.slug || ep.so_tap || ep.tap_phim?.so_tap;
+      if (!rawKey) return false;
+
+      // Normalize key: remove 'tap-', then pad numbers to 2 digits
+      let key = String(rawKey).toLowerCase().replace(/^tap-/, "");
+      if (/^\d+$/.test(key)) key = key.padStart(2, "0");
+
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
+  return {
+    vietsubData: server ? vietsubData : deduplicate(vietsubData),
+    thuyetminhData: server ? thuyetminhData : deduplicate(thuyetminhData),
+    longtiengData: server ? longtiengData : deduplicate(longtiengData),
+  };
 };
 
 
@@ -149,16 +163,14 @@ export const fetchActorFilmography = async (actorSlug) => {
   }
 };
 
-export const fetchAllMovieData = async (slug, so_tap, ngon_ngu) => {
-  // ⭐️ ĐÃ XÓA tapData KHÔNG CẦN THIẾT
+export const fetchAllMovieData = async (slug, so_tap, ngon_ngu, server = null) => {
   const [movie, episodeLists, sidebarData, actors] = await Promise.all([
     fetchMovieBySlug(slug),
-    fetchEpisodeLists(slug),
+    fetchEpisodeLists(slug, server),
     fetchSidebarData(),
     fetchActorFilmography(slug),
   ]);
 
-  // ⭐️ ĐÃ THÊM longtiengData VÀO RETURN
   return {
     movie,
     actors,
